@@ -26,7 +26,6 @@ for i = 1:l
     imagesc(rr1)
     colormap([1 1 1;0.8 0.8 0.8;jet(20)])
     caxis([-1 20]) 
-    %drwvect([-135 25 -65 50],[625 1750],'/home/dank/t3_vects/us_states_outl_ug.tmp','k')
     drwvect([-135 25 -65 50],[625 1750],'us_states_outl_ug.tmp','k');
     colorbar('vertical')
     %title(fn1);
@@ -35,7 +34,6 @@ for i = 1:l
     imagesc(rr2)
     colormap([1 1 1;0.8 0.8 0.8;jet(20)])
     caxis([-1 20]) 
-    %drwvect([-135 25 -65 50],[625 1750],'/home/dank/t3_vects/us_states_outl_ug.tmp','k')
     drwvect([-135 25 -65 50],[625 1750],'us_states_outl_ug.tmp','k');
     colorbar('vertical')
     %title(fn2)
@@ -44,7 +42,6 @@ for i = 1:l
     imagesc(ir)
     colormap(jet(120))
     caxis([180 300]) 
-    %drwvect([-135 25 -65 50],[625 1750],'/home/dank/t3_vects/us_states_outl_ug.tmp','k')
     drwvect([-135 25 -65 50],[625 1750],'us_states_outl_ug.tmp','k');
     colorbar('vertical')
     %title(ir)
@@ -53,7 +50,6 @@ for i = 1:l
     imagesc(obs)
     colormap([1 1 1;0.8 0.8 0.8;jet(20)])
     caxis([-1 20]) 
-    %drwvect([-135 25 -65 50],[625 1750],'/home/dank/t3_vects/us_states_outl_ug.tmp','k')
     drwvect([-135 25 -65 50],[625 1750],'us_states_outl_ug.tmp','k');
     colorbar('vertical')
     %title(obs)
