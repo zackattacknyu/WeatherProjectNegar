@@ -1,15 +1,25 @@
+dataFiles = dir('data/compiledData/data*');
+%%
 
+N = length(dataFiles);
+rr1Array = cell(1,N);
+rr2Array = cell(1,N);
+irArray = cell(1,N);
+obsArray = cell(1,N);
 
-for i = 1:nImgs
-%for i = 1:3
+for i = 1:length(dataFiles)
     
-    % Get image id: YYMMDDHHmm
-    imgId = imgIds{i};
+    load(['data/compiledData/' dataFiles(i).name]);
     
-    ST4 = load([trnImgDir 'ST4/' imgId(1:end-2) '.mat']);
-    gt = ST4.I;
+    rr1 = rr1(251:875,5626:7375);
+    rr2 = rr2(1:625,:);
+    ir = ir(1:625,:);
+    obs = obs(1:625,:); 
     
-    allImgs{i} = gt;
+    rr1Array{i} = rr1;
+    rr2Array{i} = rr2;
+    irArray{i} = ir;
+    obsArray{i} = obs;
     
     if(mod(i,10)==0)
        i 
