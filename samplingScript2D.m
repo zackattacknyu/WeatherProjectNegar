@@ -52,6 +52,22 @@ for k = 1:maxTries
    if(slots(slotX,slotY) > 0)
       continue; 
    end
+   
+   curLocation = [randStartRow randStartCol];
+   %tests if others are near
+    isBad=false;
+    for j=1:(imgIndex-1)
+        iLoc = randPatchesCornerCoord{j};
+        if(norm(curLocation-iLoc)<minDist)
+           isBad=true;
+           break;
+        end
+    end
+    if(isBad)
+       continue; 
+    end
+    
+   
 
    slots(slotX,slotY)=1;
 
@@ -59,7 +75,7 @@ for k = 1:maxTries
        (randStartRow-patchSize/2):(randStartRow+patchSize/2-1),...
        (randStartCol-patchSize/2):(randStartCol+patchSize/2-1));
 
-   curLocation = [randStartRow randStartCol];
+   
 
    ourPatch = randPatch;
    curPatchSum = sum(ourPatch(:));
@@ -86,6 +102,7 @@ maxNum = length(randPatches);
 patchesCornerCoord = cell(1,maxNum);
 curIndex=1;
 
+%{
 %closest ones
 for i = 1:maxNum
     patchLoc = randPatchesCornerCoord{i};
@@ -105,6 +122,8 @@ for i = 1:maxNum
     end
 end
 patchesCornerCoord = patchesCornerCoord(1:(curIndex-1));
+%}
+patchesCornerCoord = randPatchesCornerCoord;
 
 figure(1)
 imagesc(curImage)
