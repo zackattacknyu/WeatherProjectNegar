@@ -13,7 +13,7 @@ curImage(curImage<0)=0;
 
 %make octree for all the slots where sample
 %   could come from in (x,y,t) space
-minDist = 15;
+minDist = 30;
 patchSize = 20;
 slotDist=minDist/2;
 slots = zeros(floor(size(curImage)/slotDist)+1);
@@ -24,21 +24,13 @@ patchSum = zeros(1,maxTotalPatches);
 randPatches = cell(1,maxTotalPatches);
 randPatchesCornerCoord = cell(1,maxTotalPatches);
 
-%gets indices using precip map as PDF
-imageValues = curImage(:);
-cdfX = cumsum(imageValues./sum(imageValues));
-numSamples = maxTotalPatches*2;
-samples = zeros(1,numSamples);
-uniformSamples = rand(1,numSamples);
-for i = 1:numSamples
-    curUniform = uniformSamples(i);
-   samples(i) = find(curUniform<cdfX, 1 );
-end
-[indsR,indsC] = ind2sub(size(curImage),samples);
+possibleIndices = find(curImage>0);
+randomizedInds = possibleIndices(randperm(length(possibleIndices)));
+[indsR,indsC] = ind2sub(size(curImage),randomizedInds);
 
 imgIndex=1;
 
-for k = 1:length(samples)
+for k = 1:length(randomizedInds)
 
    randStartRow = indsR(k);
    randStartCol = indsC(k);
@@ -118,7 +110,6 @@ colorbar('vertical')
 hold on
 for i = 1:length(patchesCornerCoord)
    centerLoc = patchesCornerCoord{i};
-   centerLoc = centerLoc - [patchSize/2 patchSize/2];
    rectangle('Position',[centerLoc(2) centerLoc(1) patchSize patchSize]);
 end
 hold off
