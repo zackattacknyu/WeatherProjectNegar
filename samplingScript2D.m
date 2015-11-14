@@ -27,27 +27,24 @@ randPatchesCornerCoord = cell(1,maxTotalPatches);
 %gets indices using precip map as PDF
 imageValues = curImage(:);
 cdfX = cumsum(imageValues./sum(imageValues));
-numSamples = maxTotalPatches*2;
-samples = zeros(1,numSamples);
-uniformSamples = rand(1,numSamples);
-for i = 1:numSamples
-    curUniform = uniformSamples(i);
-   samples(i) = find(curUniform<cdfX, 1 );
-end
-[indsR,indsC] = ind2sub(size(curImage),samples);
 
 imgIndex=1;
+maxTries = 1000;
 
-for k = 1:length(samples)
+for k = 1:maxTries
 
-   randStartRow = indsR(k);
-   randStartCol = indsC(k);
+    curSample = find(rand<cdfX, 1 );
+   [randStartRow,randStartCol] = ind2sub(size(curImage),curSample);
    if(randStartRow-patchSize/2 < 1 || randStartRow+patchSize/2 > size(curImage,1))
       continue; 
    end
    if(randStartCol-patchSize/2 < 1 || randStartCol+patchSize/2 > size(curImage,2))
       continue; 
    end
+   
+   %if(imgIndex>200)
+   %   break; 
+   %end
    
    slotX = floor(randStartRow/slotDist)+1;
    slotY = floor(randStartCol/slotDist)+1;
