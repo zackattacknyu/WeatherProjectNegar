@@ -17,8 +17,14 @@ maxNumPatches = 50;
 [ randPatches, randPatchesCornerCoord, patchSum ] = ...
     getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries );
 
-
+figure
 drawMapWithPatches(curImage,randPatchesCornerCoord,patchSize);
+
+figure
+subplot(1,2,1);
+drawMapWithPatches(rr1,randPatchesCornerCoord,patchSize);
+subplot(1,2,2);
+drawMapWithPatches(rr2,randPatchesCornerCoord,patchSize);
 
 
 

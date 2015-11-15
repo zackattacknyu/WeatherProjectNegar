@@ -1,8 +1,8 @@
 function [  ] = drawMapWithPatches( curImage ,randPatchesCornerCoord, patchSize )
-%DRAWMAPWITHPATCHES Summary of this function goes here
+%DRAWMAPWITHPATCHES 
 %   Draws the US Precip Map with the Patches added
+%   NOTE: NEEDS A FIGURE HANDLE FIRST
 
-figure
 imagesc(curImage)
 colormap([1 1 1;0.8 0.8 0.8;jet(20)])
 caxis([-1 20]) 
