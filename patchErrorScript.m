@@ -78,13 +78,25 @@ numDisplay = 5;
 figure
 for i = 1:numDisplay
     patchNum = indices(i);
+    
+    oldBetter = false;
+    if(oldPredErrors(patchNum)<newPredErrors(patchNum))
+        oldBetter=true;
+    end
+    
     pInd = 3*(i-1);
     subplot(numDisplay,3,1+pInd);
     imagesc(targetPatches{i});
     subplot(numDisplay,3,2+pInd);
     imagesc(oldPredPatches{i});
+    if(oldBetter)
+       text(10,10,'*'); 
+    end
     subplot(numDisplay,3,3+pInd);
     imagesc(newPredPatches{i});
+    if(~oldBetter)
+       text(10,10,'*'); 
+    end
 end
 
 
