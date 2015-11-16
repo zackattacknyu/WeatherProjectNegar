@@ -19,7 +19,7 @@ maxNumPatches = 100;
 
 oldPredPatches = getPatchesFromCoords(rr1,randPatchesCornerCoord,patchSize);
 newPredPatches = getPatchesFromCoords(rr2,randPatchesCornerCoord,patchSize);
-%%
+
 targetPatches2 = cell(1,length(targetPatches));
 oldPredPatches2 = cell(1,length(oldPredPatches));
 newPredPatches2 = cell(1,length(newPredPatches));
@@ -38,8 +38,8 @@ end
 targetPatches = targetPatches2(1:(newInd-1));
 oldPredPatches = oldPredPatches2(1:(newInd-1));
 newPredPatches = newPredPatches2(1:(newInd-1));
-%%
-%{
+
+
 figure
 drawMapWithPatches(curImage,randPatchesCornerCoord,patchSize);
 
@@ -48,54 +48,70 @@ subplot(1,2,1);
 drawMapWithPatches(rr1,randPatchesCornerCoord,patchSize);
 subplot(1,2,2);
 drawMapWithPatches(rr2,randPatchesCornerCoord,patchSize);
-%}
 
-oldPredErrors = zeros(1,length(targetPatches));
-newPredErrors = zeros(1,length(targetPatches));
-oldPredErrorsEMD = zeros(1,length(targetPatches));
-newPredErrorsEMD = zeros(1,length(targetPatches));
-for i = 1:length(targetPatches)
-    curTarget = targetPatches{i};
-    curOldPred = oldPredPatches{i};
-    curNewPred = newPredPatches{i};
+%indices = randperm(length(targetPatches));
+indices = 1:length(targetPatches);
+
+numCalc = 5;
+%numCalc = length(targetPatches);
+oldPredErrors = zeros(1,numCalc);
+newPredErrors = zeros(1,numCalc);
+oldPredErrorsEMD = zeros(1,numCalc);
+newPredErrorsEMD = zeros(1,numCalc);
+for i = 1:numCalc
+    
+    patchNum = indices(i);
+    
+    curTarget = targetPatches{patchNum};
+    curOldPred = oldPredPatches{patchNum};
+    curNewPred = newPredPatches{patchNum};
     oldPredErrors(i) = rmsePatches(curTarget,curOldPred);
     newPredErrors(i) = rmsePatches(curTarget,curNewPred);
    
     i
    
-    %oldPredErrorsEMD(i) = getEMDwQP(curTarget,curOldPred);
-    %newPredErrorsEMD(i) = getEMDwQP(curTarget,curNewPred);
+    oldPredErrorsEMD(i) = getEMDwQP(curTarget,curOldPred);
+    newPredErrorsEMD(i) = getEMDwQP(curTarget,curNewPred);
 end
 
-meanOldError = mean(oldPredErrors)
-meanNewError = mean(newPredErrors)
-
+%meanOldError = mean(oldPredErrors)
+%meanNewError = mean(newPredErrors)
 %meanOldErrorEMD = mean(oldPredErrorsEMD)
 %meanNewErrorEMD = mean(newPredErrorsEMD)
 
-indices = randperm(length(targetPatches));
-numDisplay = 5;
+%%
+
 figure
-for i = 1:numDisplay
-    patchNum = indices(i);
+for i = 1:numCalc
     
     oldBetter = false;
-    if(oldPredErrors(patchNum)<newPredErrors(patchNum))
+    if(oldPredErrors(i)<newPredErrors(i))
         oldBetter=true;
     end
     
+    oldBetterEMD = false;
+    if(oldPredErrorsEMD(i)<newPredErrorsEMD(i))
+        oldBetterEMD=true;
+    end
+    
     pInd = 3*(i-1);
-    subplot(numDisplay,3,1+pInd);
+    subplot(numCalc,3,1+pInd);
     imagesc(targetPatches{i});
-    subplot(numDisplay,3,2+pInd);
+    subplot(numCalc,3,2+pInd);
     imagesc(oldPredPatches{i});
     if(oldBetter)
-       text(10,10,'*'); 
+       text(10,10,'**'); 
     end
-    subplot(numDisplay,3,3+pInd);
+    if(oldBetterEMD)
+       text(10,12,'$$'); 
+    end
+    subplot(numCalc,3,3+pInd);
     imagesc(newPredPatches{i});
     if(~oldBetter)
-       text(10,10,'*'); 
+       text(10,10,'**'); 
+    end
+    if(~oldBetterEMD)
+       text(10,12,'$$'); 
     end
 end
 
