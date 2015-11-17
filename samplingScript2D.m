@@ -1,4 +1,4 @@
-fileNum=25;
+fileNum=50;
 
 dataFiles = dir('data/compiledData/data*');
 load(['data/compiledData/' dataFiles(fileNum).name]);

@@ -1,4 +1,5 @@
 fileNum=23;
+%fileNum=50;
 
 dataFiles = dir('data/compiledData/data*');
 load(['data/compiledData/' dataFiles(fileNum).name]);
@@ -48,7 +49,7 @@ subplot(1,2,1);
 drawMapWithPatches(rr1,randPatchesCornerCoord,patchSize);
 subplot(1,2,2);
 drawMapWithPatches(rr2,randPatchesCornerCoord,patchSize);
-
+%%
 %indices = randperm(length(targetPatches));
 indices = 1:length(targetPatches);
 
@@ -103,7 +104,7 @@ for i = 1:numCalc
        text(10,10,'**'); 
     end
     if(oldBetterEMD)
-       text(10,12,'$$'); 
+       text(10,12,'##'); 
     end
     subplot(numCalc,3,3+pInd);
     imagesc(newPredPatches{i});
@@ -111,7 +112,7 @@ for i = 1:numCalc
        text(10,10,'**'); 
     end
     if(~oldBetterEMD)
-       text(10,12,'$$'); 
+       text(10,12,'##'); 
     end
 end
 

@@ -4,17 +4,19 @@ files = dir('data/compiledData/');
 
 l = length(files);
 
+num = 50;
+
 DIM1=[3000,9000];
 DIM2 =[1000,1750];
 
-oldPredErrors = zeros(1,l);
-newPredErrors = zeros(1,l);
+oldPredErrors = zeros(1,num);
+newPredErrors = zeros(1,num);
 
-rr1Block = zeros(l,625,1750);
-rr2Block = zeros(l,625,1750);
-obsBlock = zeros(l,625,1750);
+rr1Block = zeros(625,1750,num);
+rr2Block = zeros(625,1750,num);
+obsBlock = zeros(625,1750,num);
 
-for i = 1:l
+for i = 1:num
     
     curFileName = files(i).name;
     
@@ -29,9 +31,9 @@ for i = 1:l
     ir = ir(1:625,:);
     obs = obs(1:625,:); 
     
-    rr1Block(i,:,:)=rr1;
-    rr2Block(i,:,:)=rr2;
-    obsBlock(i,:,:)=obs;
+    rr1Block(:,:,i)=rr1;
+    rr2Block(:,:,i)=rr2;
+    obsBlock(:,:,i)=obs;
     
     squError1 = (rr1-obs).^2;
     squError2 = (rr2-obs).^2;
