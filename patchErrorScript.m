@@ -1,5 +1,5 @@
-%fileNum=23;
-fileNum=50;
+fileNum=23;
+%fileNum=50;
 
 dataFiles = dir('data/compiledData/data*');
 load(['data/compiledData/' dataFiles(fileNum).name]);
@@ -12,8 +12,8 @@ obs = obs(1:625,:);
 curImage = obs;
 minDist = 15;
 patchSize = 20;
-maxTries = 1000;
-maxNumPatches = 100;
+maxTries = 2000;
+maxNumPatches = 200;
 
 [ targetPatches, randPatchesCornerCoord, patchSum ] = ...
     getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries );
@@ -81,6 +81,7 @@ end
 %%
 
 displayInds = zeros(1,numCalc);
+emdBetter = false(1,numCalc);
 curInd = 1;
 for i = 1:numCalc
     
@@ -98,19 +99,23 @@ for i = 1:numCalc
     %   meaning the MSE and EMD predict different patches
     if(oldBetter+oldBetterEMD==1) 
         displayInds(curInd)=i;
+        if(oldBetterEMD)
+           emdBetter(curInd)=true; 
+        end
         curInd = curInd+1;
     end
 end
 displayInds = displayInds(1:(curInd-1));
-
+emdBetter = emdBetter(1:(curInd-1));
+%%
 numDisplay = length(displayInds);
-numPerWindow = 5;
+numPerWindow = 8;
 %displayInds = randperm(numCalc);
 %displayInds = displayInds(randperm(length(displayInds)));
-%%
+
 for j = 1:numDisplay
     
-    if(mod(j-1,5)==0)
+    if(mod(j-1,numPerWindow)==0)
        figure
        rowInd = 0;
     end
@@ -118,41 +123,28 @@ for j = 1:numDisplay
     
     i = displayInds(j);
     
-    oldBetter = false;
-    if(oldPredErrors(i)<newPredErrors(i))
-        oldBetter=true;
-    end
-    
-    oldBetterEMD = false;
-    if(oldPredErrorsEMD(i)<newPredErrorsEMD(i))
-        oldBetterEMD=true;
-    end
-    
     targetP = targetPatches{i};
     maxPixel = max(targetP(:));
     
+    
+    leftP = newPredPatches{i};
+    rightP = oldPredPatches{i};
+    if(emdBetter(j))
+        leftP = oldPredPatches{i};
+        rightP = newPredPatches{i};
+    end
+    
+    
     pInd = 3*(rowInd-1);
     subplot(numPerWindow,3,1+pInd);
-    imagesc(targetPatches{i},[0 maxPixel]);
+    imagesc(targetP,[0 maxPixel]);
     colorbar;
     subplot(numPerWindow,3,2+pInd);
-    imagesc(oldPredPatches{i},[0 maxPixel]);
+    imagesc(leftP,[0 maxPixel]);
     colorbar;
-    if(oldBetter)
-       text(10,10,'**'); 
-    end
-    if(oldBetterEMD)
-       text(10,12,'##'); 
-    end
     subplot(numPerWindow,3,3+pInd);
-    imagesc(newPredPatches{i},[0 maxPixel]);
+    imagesc(rightP,[0 maxPixel]);
     colorbar;
-    if(~oldBetter)
-       text(10,10,'**'); 
-    end
-    if(~oldBetterEMD)
-       text(10,12,'##'); 
-    end
 end
 
 
