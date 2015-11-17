@@ -1,5 +1,5 @@
-fileNum=23;
-%fileNum=50;
+%fileNum=23;
+fileNum=50;
 
 dataFiles = dir('data/compiledData/data*');
 load(['data/compiledData/' dataFiles(fileNum).name]);
@@ -43,11 +43,9 @@ newPredPatches = newPredPatches2(1:(newInd-1));
 
 figure
 drawMapWithPatches(curImage,randPatchesCornerCoord,patchSize);
-
 figure
-subplot(1,2,1);
 drawMapWithPatches(rr1,randPatchesCornerCoord,patchSize);
-subplot(1,2,2);
+figure
 drawMapWithPatches(rr2,randPatchesCornerCoord,patchSize);
 %%
 %indices = randperm(length(targetPatches));
@@ -109,7 +107,7 @@ numDisplay = length(displayInds);
 numPerWindow = 5;
 %displayInds = randperm(numCalc);
 %displayInds = displayInds(randperm(length(displayInds)));
-
+%%
 for j = 1:numDisplay
     
     if(mod(j-1,5)==0)
@@ -139,6 +137,7 @@ for j = 1:numDisplay
     colorbar;
     subplot(numPerWindow,3,2+pInd);
     imagesc(oldPredPatches{i},[0 maxPixel]);
+    colorbar;
     if(oldBetter)
        text(10,10,'**'); 
     end
@@ -147,6 +146,7 @@ for j = 1:numDisplay
     end
     subplot(numPerWindow,3,3+pInd);
     imagesc(newPredPatches{i},[0 maxPixel]);
+    colorbar;
     if(~oldBetter)
        text(10,10,'**'); 
     end
