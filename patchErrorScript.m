@@ -53,8 +53,8 @@ drawMapWithPatches(rr2,randPatchesCornerCoord,patchSize);
 %indices = randperm(length(targetPatches));
 indices = 1:length(targetPatches);
 
-numCalc = 5;
-%numCalc = length(targetPatches);
+%numCalc = 5;
+numCalc = length(targetPatches);
 oldPredErrors = zeros(1,numCalc);
 newPredErrors = zeros(1,numCalc);
 oldPredErrorsEMD = zeros(1,numCalc);
@@ -82,8 +82,43 @@ end
 
 %%
 
-figure
+displayInds = zeros(1,numCalc);
+curInd = 1;
 for i = 1:numCalc
+    
+    oldBetter = 0;
+    if(oldPredErrors(i)<newPredErrors(i))
+        oldBetter=1;
+    end
+    
+    oldBetterEMD = 0;
+    if(oldPredErrorsEMD(i)<newPredErrorsEMD(i))
+        oldBetterEMD=1;
+    end
+    
+    %one of them true and the other false
+    %   meaning the MSE and EMD predict different patches
+    if(oldBetter+oldBetterEMD==1) 
+        displayInds(curInd)=i;
+        curInd = curInd+1;
+    end
+end
+displayInds = displayInds(1:(curInd-1));
+
+numDisplay = length(displayInds);
+numPerWindow = 5;
+%displayInds = randperm(numCalc);
+%displayInds = displayInds(randperm(length(displayInds)));
+
+for j = 1:numDisplay
+    
+    if(mod(j-1,5)==0)
+       figure
+       rowInd = 0;
+    end
+    rowInd = rowInd+1;
+    
+    i = displayInds(j);
     
     oldBetter = false;
     if(oldPredErrors(i)<newPredErrors(i))
@@ -95,19 +130,23 @@ for i = 1:numCalc
         oldBetterEMD=true;
     end
     
-    pInd = 3*(i-1);
-    subplot(numCalc,3,1+pInd);
-    imagesc(targetPatches{i});
-    subplot(numCalc,3,2+pInd);
-    imagesc(oldPredPatches{i});
+    targetP = targetPatches{i};
+    maxPixel = max(targetP(:));
+    
+    pInd = 3*(rowInd-1);
+    subplot(numPerWindow,3,1+pInd);
+    imagesc(targetPatches{i},[0 maxPixel]);
+    colorbar;
+    subplot(numPerWindow,3,2+pInd);
+    imagesc(oldPredPatches{i},[0 maxPixel]);
     if(oldBetter)
        text(10,10,'**'); 
     end
     if(oldBetterEMD)
        text(10,12,'##'); 
     end
-    subplot(numCalc,3,3+pInd);
-    imagesc(newPredPatches{i});
+    subplot(numPerWindow,3,3+pInd);
+    imagesc(newPredPatches{i},[0 maxPixel]);
     if(~oldBetter)
        text(10,10,'**'); 
     end
