@@ -46,7 +46,7 @@ for i = 1:l
     
     
     
-    pause(7)
+    pause(1)
     clf
     
 end
