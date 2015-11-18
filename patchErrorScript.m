@@ -82,6 +82,8 @@ end
 
 displayInds = zeros(1,numCalc);
 emdBetter = false(1,numCalc);
+emdGap = zeros(1,numCalc);
+mseGap = zeros(1,numCalc);
 curInd = 1;
 for i = 1:numCalc
     
@@ -102,6 +104,10 @@ for i = 1:numCalc
         if(oldBetterEMD)
            emdBetter(curInd)=true; 
         end
+        
+        emdGap(curInd) = oldPredErrors(i)-newPredErrors(i);
+        mseGap(curInd) = oldPredErrorsEMD(i)-newPredErrorsEMD(i);
+        
         curInd = curInd+1;
     end
 end
