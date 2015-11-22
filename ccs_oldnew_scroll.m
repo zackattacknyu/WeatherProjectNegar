@@ -4,7 +4,7 @@ files = dir('data/compiledData2/data*');
 
 l = length(files);
 
-num = 30;
+num = 10;
 
 DIM1=[3000,9000];
 DIM2 =[1000,1750];
@@ -39,19 +39,24 @@ for i = 1:num
     
 end
 %%
-
 numSlices = size(rr1Block,3);
+slideStep = 1/(numSlices-1);
 
-figure(1)
+hh = figure(1);
 panel1 = uipanel('Parent',1);
 panel2 = uipanel('Parent',panel1);
 set(panel1,'Position',[0 0 0.95 1]);
 set(panel2,'Position',[0 0 1 1]);
 set(gca,'Parent',panel2);
+fun1 = @(src,event) slider_precipMap(src,event,rr1Block);
 s = uicontrol('Style','Slider','Parent',1,...
     'Units','normalized','Position',[0.95 0 0.05 1],...
     'Value',1,'Min',1,'Max',numSlices,...
-    'Callback',{@slider_precipMap,rr1Block});
+    'SliderStep',[slideStep slideStep],...
+    'Callback',fun1);
+fun2 = @(src,event) scrollWheel_precipMap(src,event,rr1Block,s);
+set(hh,'WindowScrollWheelFcn',fun2);
+displayPrecipMap(rr1Block,1);
 
 
     
