@@ -1,8 +1,8 @@
 
-currentFile = 'patchesSet11-21.mat';
-load(currentFile);
+load('matlabRun11-22_2.mat');
 
-NN = length(patchesT);
+NN=98;
+%NN = length(patchesT);
 
 predErrorOldMSE = cell(1,NN);
 predErrorNewMSE = cell(1,NN);
@@ -11,7 +11,7 @@ predErrorOldEMD = cell(1,NN);
 predErrorNewEMD = cell(1,NN);
 predErrorNew2EMD = cell(1,NN);
 
-for j = 1:NN
+for j = 2:NN
     
     targetPatches = patchesT{j};
     oldPredPatches = patchesOld{j};
@@ -21,8 +21,8 @@ for j = 1:NN
     %indices = randperm(length(targetPatches));
     indices = 1:length(targetPatches);
     
-    numCalc=3;
-    %numCalc = length(targetPatches);
+    %numCalc=3;
+    numCalc = length(targetPatches);
     
     oldPredErrors = zeros(1,numCalc);
     newPredErrors = zeros(1,numCalc);
@@ -45,17 +45,23 @@ for j = 1:NN
 
         i
 
-        oldPredErrorsEMD(i) = getEMDwQP(curTarget,curOldPred);
-        newPredErrorsEMD(i) = getEMDwQP(curTarget,curNewPred);
-        newPred2ErrorsEMD(i) = getEMDwQP(curTarget,curNewPred2);
+        try
+            oldPredErrorsEMD(i) = getEMDwQP(curTarget,curOldPred);
+            newPredErrorsEMD(i) = getEMDwQP(curTarget,curNewPred);
+            newPred2ErrorsEMD(i) = getEMDwQP(curTarget,curNewPred2);
+        catch
+            oldPredErrorsEMD(i) = NaN;
+            newPredErrorsEMD(i) = NaN;
+            newPred2ErrorsEMD(i) = NaN;
+        end
     end
 
-    predErrorOldMSE{fileNum} = oldPredErrors;
-    predErrorNewMSE{fileNum} = newPredErrors;
-    predErrorNew2MSE{fileNum} = newPred2Errors;
-    predErrorOldEMD{fileNum} = oldPredErrorsEMD;
-    predErrorNewEMD{fileNum} = newPredErrorsEMD; 
-    predErrorNew2EMD{fileNum} = newPred2ErrorsEMD; 
+    predErrorOldMSE{j} = oldPredErrors;
+    predErrorNewMSE{j} = newPredErrors;
+    predErrorNew2MSE{j} = newPred2Errors;
+    predErrorOldEMD{j} = oldPredErrorsEMD;
+    predErrorNewEMD{j} = newPredErrorsEMD; 
+    predErrorNew2EMD{j} = newPred2ErrorsEMD; 
 end
 
 save('patches11-21_results.mat');

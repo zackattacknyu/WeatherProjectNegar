@@ -1,7 +1,7 @@
 dataFiles = dir('ccs_oldNew_compiledData_2/data*');
 
-%numDataFiles = length(dataFiles);
-numDataFiles=5;
+numDataFiles = length(dataFiles);
+%numDataFiles=5;
 
 patchesT = cell(1,numDataFiles);
 patchesOld = cell(1,numDataFiles);
@@ -24,7 +24,7 @@ for fileNum = 1:numDataFiles
     minDist = 15;
     patchSize = 20;
     maxTries = 2000;
-    maxNumPatches = 40;
+    maxNumPatches = 30;
 
     [ targetPatches, randPatchesCornerCoord, patchSum ] = ...
         getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries );
@@ -68,6 +68,7 @@ currentFile = 'patchesSet11-21.mat';
 save(currentFile,'patchesT','patchesOld','patchesNew','patchesNew2');
 
 clear all;
+currentFile = 'patchesSet11-21.mat';
 load(currentFile);
 
 NN = length(patchesT);
@@ -89,8 +90,8 @@ for j = 1:NN
     %indices = randperm(length(targetPatches));
     indices = 1:length(targetPatches);
     
-    numCalc=3;
-    %numCalc = length(targetPatches);
+    %numCalc=3;
+    numCalc = length(targetPatches);
     
     oldPredErrors = zeros(1,numCalc);
     newPredErrors = zeros(1,numCalc);
