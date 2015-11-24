@@ -61,16 +61,17 @@ end
 interestingPatchInds = interestingPatchInds(1:(patchInd-1));
 interestingEMDdiffs = maxEMDdiff(interestingPatchInds);
 interestingMSEdiffs = maxMSEdiff(interestingPatchInds);
-[sortedEMDdiffs,orderedExamples] = sort(interestingEMDdiffs,'descend');
-
-%%
+%[sortedEMDdiffs,orderedExamples] = sort(interestingEMDdiffs,'descend');
+[sortedEMDdiffs,orderedExamples] = sort(interestingMSEdiffs,'descend');
 
 patchIndsUse = interestingPatchInds(orderedExamples);
 
 %%
 
+%displays in multiple plots
+
 %numDisplay = length(patchIndsUse);
-numDisplay = 12;
+numDisplay = 8;
 numPerWindow = 4;
 %displayInds = randperm(numCalc);
 %displayInds = displayInds(randperm(length(displayInds)));
@@ -118,3 +119,73 @@ for j = 1:numDisplay
     imagesc(rightP,[0 maxPixel]);
     colorbar;
 end
+
+%%
+
+
+numDisplay = length(patchIndsUse);
+%numDisplay = 8;
+%displayInds = randperm(numCalc);
+%displayInds = displayInds(randperm(length(displayInds)));
+
+
+maxPixel = zeros(1,numDisplay);
+leftPatches = cell(1,numDisplay);
+middlePatches = cell(1,numDisplay);
+rightPatches = cell(1,numDisplay);
+indexOfNewest = zeros(1,numDisplay);
+
+for j = 1:numDisplay
+    
+    curInd = patchIndsUse(j);
+    
+    targetP = targetPatches{curInd};
+    maxPixel = max(targetP(:));
+    
+    curMSEerrors = predErrorMSE{curInd};
+    curEMDerrors = predErrorEMD{curInd};
+    [sortedMSE,mseOrder] = sort(curMSEerrors);
+    [sortedEMD,emdOrder] = sort(curEMDerrors);
+    
+    curPredPatches = predPatches{curInd};
+    
+    usedInds = [emdOrder(1) mseOrder(1)];
+    lastInd = setdiff(emdOrder,usedInds);
+    
+    locationOfNewest = find([emdOrder(1) mseOrder(1) lastInd]==3);
+    indexOfNewest(j) = locationOfNewest(1);
+    
+    leftP = curPredPatches{emdOrder(1)};
+    middleP = curPredPatches{mseOrder(1)};
+    rightP = curPredPatches{lastInd(1)};
+    
+    leftPatches{j} = leftP;
+    middlePatches{j} = middleP;
+    rightPatches{j} = rightP;
+    
+    
+end
+%%
+
+dispPatches = {targetPatches,leftPatches,middlePatches,rightPatches,indexOfNewest};
+
+
+predCol1 = dispPatches{2};
+numSlices = length(predCol1);
+slideStep = 1/(numSlices-1);
+
+hh = figure(1);
+panel1 = uipanel('Parent',1);
+panel2 = uipanel('Parent',panel1);
+set(panel1,'Position',[0 0 0.95 1]);
+set(panel2,'Position',[0 0 1 1]);
+set(gca,'Parent',panel2);
+fun1 = @(src,event) slider_patchesRow(src,event,dispPatches);
+s = uicontrol('Style','Slider','Parent',1,...
+    'Units','normalized','Position',[0.95 0 0.05 1],...
+    'Value',1,'Min',1,'Max',numSlices,...
+    'SliderStep',[slideStep slideStep],...
+    'Callback',fun1);
+fun2 = @(src,event) scrollWheel_patchesRow(src,event,dispPatches,s);
+set(hh,'WindowScrollWheelFcn',fun2);
+displayPatchesRow(dispPatches,1);
