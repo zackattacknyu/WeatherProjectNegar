@@ -65,7 +65,6 @@ interestingMSEdiffs = maxMSEdiff(interestingPatchInds);
 [sortedEMDdiffs,orderedExamples] = sort(interestingMSEdiffs,'descend');
 
 patchIndsUse = interestingPatchInds(orderedExamples);
-%%patchIndsUse = patchIndsUse(randperm(length(patchIndsUse)));
 
 numDisplay = length(patchIndsUse);
 
