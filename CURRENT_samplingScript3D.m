@@ -3,8 +3,11 @@ dataFiles = dir('data/compiledData11-23/data*');
 
 numT = length(dataFiles);
 
+samples = getSampledPoints(numT,50,15);
 
-  
+plot(sort(samples),'b.');
+
+%%  
 %{
 
 OLD CODE TO POSSIBLY USE:
