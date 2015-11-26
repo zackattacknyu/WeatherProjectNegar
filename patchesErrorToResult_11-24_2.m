@@ -61,8 +61,8 @@ end
 interestingPatchInds = interestingPatchInds(1:(patchInd-1));
 interestingEMDdiffs = maxEMDdiff(interestingPatchInds);
 interestingMSEdiffs = maxMSEdiff(interestingPatchInds);
-%[sortedEMDdiffs,orderedExamples] = sort(interestingEMDdiffs,'descend');
-[sortedEMDdiffs,orderedExamples] = sort(interestingMSEdiffs,'descend');
+[sortedEMDdiffs,orderedExamples] = sort(interestingEMDdiffs,'descend');
+%[sortedEMDdiffs,orderedExamples] = sort(interestingMSEdiffs,'descend');
 
 patchIndsUse = interestingPatchInds(orderedExamples);
 

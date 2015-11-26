@@ -1,4 +1,4 @@
-clear all;
+%clear all;
 load('patchesSet11-23Data_1.mat');
 
 numPatches = 0;
@@ -25,7 +25,7 @@ for i = 1:length(patchesT)
     end
     
 end
-%%
+
 numDisplay=100;
 %numDisplay = length(patchIndsUse);
 patchIndsUse = randperm(numPatches);
@@ -33,7 +33,7 @@ patchIndsUse = patchIndsUse(1:numDisplay);
 
 numPred=4;
 dispPatches = cell(numPred+1,numDisplay);
-%%
+
 for j = 1:numDisplay
     
     curInd = patchIndsUse(j);
@@ -50,7 +50,7 @@ for j = 1:numDisplay
     
 end
 
-%%
+
 
 numSlices = size(dispPatches,2);
 slideStep = 1/(numSlices-1);
