@@ -2,50 +2,106 @@ dataFiles = dir('data/compiledData11-23/data*');
 %load(['data/compiledData11-23/' dataFiles(fileNum).name]);
 
 numT = length(dataFiles);
+numSampleTimes = 30;
+minTimeDiff = 15;
+epsilon = 1e-5;
 
-samples = getSampledPoints(numT,50,15);
+timeStamps = getSampledPoints(numT,numSampleTimes,minTimeDiff);
 
-plot(sort(samples),'b.');
+numTimeStamps = length(timeStamps);
 
-%%  
-%{
+numPred = 4;
+patchesT = cell(1,numTimeStamps);
+patchesPred = cell(1,numTimeStamps);
 
-OLD CODE TO POSSIBLY USE:
+for tt = 1:numTimeStamps
+    
+    tt
+    
+    fileNum = timeStamps(tt);
+    
+    load(['data/compiledData11-23/' dataFiles(fileNum).name]);
 
+    curPredImages = cell(1,4);
+    curPredImages{1} = pred253Orig(251:875,5626:7375);
+    curPredImages{2} = pred253(1:625,:);
+    curPredImages{3} = pred260(1:625,:);
+    curPredImages{4} = pred280(1:625,:);
+    curImage = target(1:625,:);
+    
+    minDist = 15;
+    patchSize = 20;
+    maxTries = 2000;
+    maxNumPatches = 40;
 
-rr1 = rr1(251:875,5626:7375);
-rr2 = rr2(1:625,:);
-ir = ir(1:625,:);
-obs = obs(1:625,:); 
+    [ targetPatches, randPatchesCornerCoord, patchSum ] = ...
+        getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries );
 
-curImage = rr1;
-minDist = 15;
-patchSize = 20;
-maxTries = 1000;
-maxNumPatches = 50;
-
-[ randPatches, randPatchesCornerCoord, patchSum ] = ...
-    getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries );
-
-
-figure(1)
-imagesc(curImage)
-colormap([1 1 1;0.8 0.8 0.8;jet(20)])
-caxis([-1 20]) 
-drwvect([-135 25 -65 50],[625 1750],'us_states_outl_ug.tmp','k');
-colorbar('vertical')
-hold on
-for i = 1:length(randPatchesCornerCoord)
-   centerLoc = randPatchesCornerCoord{i};
-   centerLoc = centerLoc - [patchSize/2 patchSize/2];
-   rectangle('Position',[centerLoc(2) centerLoc(1) patchSize patchSize]);
+    curPredPatches = cell(numPred,length(targetPatches));
+    for j = 1:numPred
+        curPredPatches(j,:) = getPatchesFromCoords(curPredImages{j},randPatchesCornerCoord,patchSize);
+    end
+    
+    indicesToKeep = zeros(1,length(targetPatches));
+    newInd = 1;
+    for i = 1:length(targetPatches)
+       
+        curT = targetPatches{i};
+        if(sum(curT(:))<=epsilon)
+            continue;
+        end
+        
+        numBad=0;
+        for j = 1:numPred
+           curPred = curPredPatches{j,i}; 
+           if(sum(curPred(:))<=epsilon)
+              numBad=numBad+1; 
+           end
+        end
+        if(numBad>0)
+           continue; 
+        end
+        
+        indicesToKeep(newInd) = i;
+        newInd = newInd + 1;
+        
+    end
+    indicesToKeep = indicesToKeep(1:(newInd-1));
+    
+    patchesT{tt} = targetPatches(indicesToKeep);
+    patchesPred{tt} = curPredPatches(:,indicesToKeep);
+    
 end
-hold off
+
+%%
+%now find total number of patches found
+numPatches = 0;
+for i = 1:length(patchesT)
+    numPatches = numPatches + length(patchesT{i});
+end
 
 
-%}
+numPred=4;
+targetPatches = cell(1,numPatches);
+predPatches = cell(numPred,numPatches);
+index = 1;
+for i = 1:length(patchesT)
+    
+    curPatchesT = patchesT{i};
+    curPredPatches = patchesPred{i};
+    
+    for j = 1:length(curPatchesT);
+        
+        targetPatches{index} = curPatchesT{j};
+        predPatches(:,index) = curPredPatches(:,j);
+       
+        index = index+1;
+    end
+    
+end
 
-
+%%
+save('patchesSet11-23Data_1.mat','targetPatches','predPatches','patchesT','patchesPred');
 
 
 
