@@ -73,7 +73,7 @@ for tt = 1:numTimeStamps
     
 end
 
-%%
+
 %now find total number of patches found
 numPatches = 0;
 for i = 1:length(patchesT)
@@ -100,8 +100,8 @@ for i = 1:length(patchesT)
     
 end
 
-%%
-save('patchesSet11-23Data_1.mat','targetPatches','predPatches','patchesT','patchesPred');
+
+save('patchesSet11-23Data_2.mat','targetPatches','predPatches','patchesT','patchesPred');
 
 
 
