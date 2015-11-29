@@ -1,4 +1,4 @@
-load('patchesSet11-23Data_2.mat');
+load('patchesSet11-23Data_3.mat');
 
 numPred=4;
 NN = length(targetPatches);

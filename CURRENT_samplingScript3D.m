@@ -101,7 +101,7 @@ for i = 1:length(patchesT)
 end
 
 
-save('patchesSet11-23Data_2.mat','targetPatches','predPatches','patchesT','patchesPred');
+save('patchesSet11-23Data_3.mat','targetPatches','predPatches','patchesT','patchesPred');
 
 
 

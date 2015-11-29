@@ -79,13 +79,26 @@ emdOthers = otherEMDvals(interestingPatchInds);
 %{
 As an attempt to quantify performance of emd vs mse,
 I will compute the following comparison
+
+IMPORTANT. THERE ARE 4 I WANT TO CONSIDER:
+1) High EMD difference, low MSE difference
+2) High MSE difference, low EMD difference
+3) Both are low
+4) Both are high
+
+comparisonRaw is the variable that will be sorted by
 %}
 mseDiffs = mseOthers-mseBests;
 emdDiffs = emdOthers-emdBests;
-comparisonRaw = emdDiffs + mseDiffs;
+comparisonRaw = emdDiffs - mseDiffs;
+%comparisonRaw = mseDiffs - emdDiffs;
 
 [sortedCompare,displayInds] = sort(comparisonRaw,'descend');
-startInd = find(isnan(sortedCompare),1)+1;
+searchRes = find(isnan(sortedCompare),1,'last');
+if(isempty(searchRes))
+   searchRes = 0; 
+end
+startInd = searchRes+1;
 displayPatchInds = interestingPatchInds(displayInds(startInd:end)); %tells the patch numbers
 
 %display patches in Order
