@@ -1,5 +1,5 @@
-load('patchesSet11-23Data_1_results.mat');
-load('patchesSet11-23Data_1.mat');
+load('patchesSet11-23Data_3_results.mat');
+load('patchesSet11-23Data_3.mat');
 
 %%
 %{
@@ -90,8 +90,8 @@ comparisonRaw is the variable that will be sorted by
 %}
 mseDiffs = mseOthers-mseBests;
 emdDiffs = emdOthers-emdBests;
-comparisonRaw = emdDiffs - mseDiffs;
-%comparisonRaw = mseDiffs - emdDiffs;
+%comparisonRaw = emdDiffs - mseDiffs;
+comparisonRaw = mseDiffs - emdDiffs;
 
 [sortedCompare,displayInds] = sort(comparisonRaw,'descend');
 searchRes = find(isnan(sortedCompare),1,'last');
@@ -128,4 +128,10 @@ s = uicontrol('Style','Slider','Parent',1,...
 fun2 = @(src,event) scrollWheel_patchesRow(src,event,dispPatches,s);
 set(hh,'WindowScrollWheelFcn',fun2);
 displayPatchesRow(dispPatches,1);
+
+%%
+
+%figure out how many frequently each prediction was chosen
+tabulate(bestPredsEMD)
+tabulate(bestPredsMSE)
 
