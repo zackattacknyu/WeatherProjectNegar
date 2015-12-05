@@ -9,13 +9,17 @@ This showcases that the best and worst by EMD make more sense than
     the best and worst by MSE
 %}
 
-useEMD=false; %order by EMD if true. MSE if false
+useEMD=true; %order by EMD if true. MSE if false
 if(useEMD)
     [allPredErrors,patchIndices] = sort(predErrorsEMD(:));
     endPatchInd = find(isnan(allPredErrors),1)-1; %linear index of last valid patch
     linearPatchInds = patchIndices(1:endPatchInd);
+    allPredErrorsOther = predErrorsMSE(:);
+    allPredErrorsOther = allPredErrorsOther(linearPatchInds);
 else
     [allPredErrors,linearPatchInds] = sort(predErrorsMSE(:));
+    allPredErrorsOther = predErrorsEMD(:);
+    allPredErrorsOther = allPredErrorsOther(linearPatchInds);
 end
 
 %display patches in Order
