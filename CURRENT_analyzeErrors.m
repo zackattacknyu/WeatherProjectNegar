@@ -15,9 +15,10 @@ predPatches = predPatches(:,interestingInds);
 predErrorsEMD = predErrorsEMD(:,interestingInds);
 predErrorsMSE = predErrorsMSE(:,interestingInds);
 
-greatPatchesThreshold = 3; %if error is less than this, then error function thinks it nailed it
-otherErrorThreshold = 10; %error for other one must be more than this to be considered
-useEMD=true; %order by EMD if true. MSE if false
+%use 3 and 10 for EMD
+greatPatchesThreshold = 2; %if error is less than this, then error function thinks it nailed it
+otherErrorThreshold = 1; %error for other one must be more than this to be considered
+useEMD=false; %order by EMD if true. MSE if false
 if(useEMD)
     [allPredErrors,patchIndices] = sort(predErrorsEMD(:));
     endPatchInd = find(isnan(allPredErrors),1)-1; %linear index of last valid patch
