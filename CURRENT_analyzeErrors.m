@@ -16,14 +16,28 @@ predErrorsEMD = predErrorsEMD(:,interestingInds);
 predErrorsMSE = predErrorsMSE(:,interestingInds);
 %%
 %MSE parameters for good ones
-%greatPatchesThreshold = 2; %if error is less than this, then error function thinks it nailed it
+%primaryErrorThreshold = 2; %if error is less than this, then error function thinks it nailed it
 %otherErrorThreshold = 1; %error for other one must be more than this to be considered
 %useEMD=false; %order by EMD if true. MSE if false
+%goodPatches = true;
 
 %EMD parameters for good ones
-greatPatchesThreshold = 3; %if error is less than this, then error function thinks it nailed it
-otherErrorThreshold = 10; %error for other one must be more than this to be considered
-useEMD=true; %order by EMD if true. MSE if false
+%primaryErrorThreshold = 3; %if error is less than this, then error function thinks it nailed it
+%otherErrorThreshold = 10; %error for other one must be more than this to be considered
+%useEMD=true; %order by EMD if true. MSE if false
+%goodPatches = true;
+
+%MSE parameters for bad ones
+primaryErrorThreshold = 20; %if error is greater than this, error function says prediction is terrible
+otherErrorThreshold = 7; %error for other one must be less than this to be considered
+useEMD=false; %order by EMD if true. MSE if false
+goodPatches=false;
+
+%EMD parameters for bad ones
+%primaryErrorThreshold = 50; %if error is greater than this, error function says prediction is terrible
+%otherErrorThreshold = 20; %error for other one must be less than this to be considered
+%useEMD=true; %order by EMD if true. MSE if false
+%goodPatches=false;
 
 if(useEMD)
     [allPredErrors,patchIndices] = sort(predErrorsEMD(:));
@@ -37,14 +51,25 @@ else
     allPredErrorsOther = allPredErrorsOther(linearPatchInds);
 end
 
-greatInds = find(allPredErrors<greatPatchesThreshold);
-allPredErrors = allPredErrors(greatInds);
-allPredErrorsOther = allPredErrorsOther(greatInds);
-linearPatchInds = linearPatchInds(greatInds);
+if(goodPatches)
+    indsFromPrimary = find(allPredErrors<primaryErrorThreshold);
+else
+    indsFromPrimary = find(allPredErrors>primaryErrorThreshold);
+end
+    
+allPredErrors = allPredErrors(indsFromPrimary);
+allPredErrorsOther = allPredErrorsOther(indsFromPrimary);
+linearPatchInds = linearPatchInds(indsFromPrimary);
 
-[worstOtherError,~] = sort(allPredErrorsOther,'descend');
-worstInds = find(worstOtherError>otherErrorThreshold);
-linearPatchInds = linearPatchInds(worstInds);
+if(goodPatches)
+    [otherError,~] = sort(allPredErrorsOther,'descend');
+    indsFromOther = find(otherError>otherErrorThreshold);
+else
+    [otherError,~] = sort(allPredErrorsOther);
+    indsFromOther = find(otherError<otherErrorThreshold);
+end
+
+linearPatchInds = linearPatchInds(indsFromOther);
 
 %display patches in Order
 [predNumber,patchIndex] = ind2sub(size(predErrorsEMD),linearPatchInds);
