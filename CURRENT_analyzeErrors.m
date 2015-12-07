@@ -28,16 +28,16 @@ predErrorsMSE = predErrorsMSE(:,interestingInds);
 %goodPatches = true;
 
 %MSE parameters for bad ones
-primaryErrorThreshold = 20; %if error is greater than this, error function says prediction is terrible
-otherErrorThreshold = 7; %error for other one must be less than this to be considered
-useEMD=false; %order by EMD if true. MSE if false
-goodPatches=false;
+%primaryErrorThreshold = 20; %if error is greater than this, error function says prediction is terrible
+%otherErrorThreshold = 8; %error for other one must be less than this to be considered
+%useEMD=false; %order by EMD if true. MSE if false
+%goodPatches=false;
 
 %EMD parameters for bad ones
-%primaryErrorThreshold = 50; %if error is greater than this, error function says prediction is terrible
-%otherErrorThreshold = 20; %error for other one must be less than this to be considered
-%useEMD=true; %order by EMD if true. MSE if false
-%goodPatches=false;
+primaryErrorThreshold = 60; %if error is greater than this, error function says prediction is terrible
+otherErrorThreshold = 10; %error for other one must be less than this to be considered
+useEMD=true; %order by EMD if true. MSE if false
+goodPatches=false;
 
 if(useEMD)
     [allPredErrors,patchIndices] = sort(predErrorsEMD(:));
@@ -62,14 +62,15 @@ allPredErrorsOther = allPredErrorsOther(indsFromPrimary);
 linearPatchInds = linearPatchInds(indsFromPrimary);
 
 if(goodPatches)
-    [otherError,~] = sort(allPredErrorsOther,'descend');
+    [otherError,otherErrorInds] = sort(allPredErrorsOther,'descend');
     indsFromOther = find(otherError>otherErrorThreshold);
 else
-    [otherError,~] = sort(allPredErrorsOther);
+    [otherError,otherErrorInds] = sort(allPredErrorsOther);
     indsFromOther = find(otherError<otherErrorThreshold);
 end
 
 linearPatchInds = linearPatchInds(indsFromOther);
+otherErrorsSorted = allPredErrorsOther(otherErrorInds(indsFromOther))'
 
 %display patches in Order
 [predNumber,patchIndex] = ind2sub(size(predErrorsEMD),linearPatchInds);
@@ -81,7 +82,7 @@ dispPatches(2,:) = dispPredPatches(linearPatchInds);
 numSlices = length(linearPatchInds);
 slideStep = 1/(numSlices-1);
 
-hh = figure(1);
+hh = figure;
 panel1 = uipanel('Parent',1);
 panel2 = uipanel('Parent',panel1);
 set(panel1,'Position',[0 0 0.95 1]);
