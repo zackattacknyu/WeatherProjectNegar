@@ -6,7 +6,7 @@ ccs_predictions_filterErrors
 %%
 %MSE parameters for good ones
 primaryErrorThreshold = 2; %if error is less than this, then error function thinks it nailed it
-otherErrorThreshold = 1; %error for other one must be more than this to be considered
+otherErrorThreshold = 2; %error for other one must be more than this to be considered
 useEMD=false; %order by EMD if true. MSE if false
 goodPatches = true;
 ccs_predictions_analyzeErrors_12_11
