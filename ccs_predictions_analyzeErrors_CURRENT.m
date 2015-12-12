@@ -42,4 +42,19 @@ dispPatches(1,:) = targetPatches(patchIndex);
 dispPredPatches = predPatches(:);
 dispPatches(2,:) = dispPredPatches(linearPatchInds);
 
-CURRENT_displaySlider;
+numRow=5;
+figure
+for i = 1:numRow
+    
+    curTarget = dispPatches{1,i};
+    maxP = max(curTarget(:));
+    
+    for j = 1:2
+       subplot(numRow,2,2*(i-1) + j)
+       curPatch = dispPatches{j,i};
+       imagesc(curPatch,[0 maxP]);
+       colorbar;
+    end
+end
+
+%CURRENT_displaySlider;
