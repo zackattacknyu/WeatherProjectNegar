@@ -1,4 +1,4 @@
-dataSetNumber=3;
+dataSetNumber=2;
 
 numString = num2str(dataSetNumber);
 loadFileName = strcat('patchesSet11-23Data_',numString,'.mat');
@@ -6,10 +6,9 @@ loadResultsFileName = strcat('patchesSet11-23Data_',numString,'_results.mat');
 
 load(loadFileName);
 load(loadResultsFileName);
-%%
+
 ccs_predictions_filterErrors
 
-%%
 
 topRatio = 0.01;
 
@@ -23,6 +22,8 @@ otherMatrix = predErrorsEMD;
 [ dispPatches2 ] = ...
     getDisplayPatches_12_14Meeting( targetPatches,predPatches,errorMatrix,otherMatrix,topRatio );
 
+%TODO:
+% FILTER OUT EXAMPLES WITH SAME TARGET
 
 numRow=5;
 figure
