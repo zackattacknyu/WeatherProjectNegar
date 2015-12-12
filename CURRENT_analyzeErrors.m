@@ -10,21 +10,47 @@ load(loadResultsFileName);
 ccs_predictions_filterErrors
 
 %%
-%MSE parameters for good ones
-primaryErrorThreshold = 2; %if error is less than this, then error function thinks it nailed it
-otherErrorThreshold = 2; %error for other one must be more than this to be considered
-useEMD=false; %order by EMD if true. MSE if false
-goodPatches = true;
-ccs_predictions_analyzeErrors_CURRENT
 
-%%
+topRatio = 0.01;
 
-%EMD parameters for good ones
-primaryErrorThreshold = 3; %if error is less than this, then error function thinks it nailed it
-otherErrorThreshold = 12; %error for other one must be more than this to be considered
-useEMD=true; %order by EMD if true. MSE if false
-goodPatches = true;
-ccs_predictions_analyzeErrors_CURRENT
+errorMatrix = predErrorsEMD;
+otherMatrix = predErrorsMSE;
+[ dispPatches ] = ...
+    getDisplayPatches_12_14Meeting( targetPatches,predPatches,errorMatrix,otherMatrix,topRatio );
 
+errorMatrix = predErrorsMSE;
+otherMatrix = predErrorsEMD;
+[ dispPatches2 ] = ...
+    getDisplayPatches_12_14Meeting( targetPatches,predPatches,errorMatrix,otherMatrix,topRatio );
+
+
+numRow=5;
+figure
+for i = 1:numRow
+    
+    curTarget = dispPatches{1,i};
+    maxP = max(curTarget(:));
+    
+    for j = 1:2
+       subplot(numRow,4,4*(i-1) + j)
+       curPatch = dispPatches{j,i};
+       imagesc(curPatch,[0 maxP]);
+       colorbar;
+    end
+    
+    curTarget = dispPatches2{1,i};
+    maxP = max(curTarget(:));
+    
+    for j = 1:2
+       subplot(numRow,4,4*(i-1) + j + 2)
+       curPatch = dispPatches2{j,i};
+       imagesc(curPatch,[0 maxP]);
+       colorbar;
+    end
+    
+    
+end
+
+%CURRENT_displaySlider;
 
 
