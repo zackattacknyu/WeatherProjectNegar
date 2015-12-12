@@ -14,7 +14,7 @@ topRatio = 0.01;
 
 errorMatrix = predErrorsEMD;
 otherMatrix = predErrorsMSE;
-[ dispPatches ] = ...
+[ dispPatches,patchInd ] = ...
     getDisplayPatches_12_14Meeting( targetPatches,predPatches,errorMatrix,otherMatrix,topRatio );
 
 errorMatrix = predErrorsMSE;

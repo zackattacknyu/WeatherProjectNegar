@@ -1,4 +1,4 @@
-function [ dispPatches ] = getDisplayPatches_12_14Meeting(targetPatches,predPatches,errorMatrix,otherMatrix,topRatio)
+function [ dispPatches,patchIndex ] = getDisplayPatches_12_14Meeting(targetPatches,predPatches,errorMatrix,otherMatrix,topRatio)
 %GETDISPLAYPATCHESCELL Summary of this function goes here
 %   Detailed explanation goes here
 
