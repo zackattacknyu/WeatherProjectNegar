@@ -14,16 +14,13 @@ topRatio = 0.01;
 
 errorMatrix = predErrorsEMD;
 otherMatrix = predErrorsMSE;
-[ dispPatches,patchInd ] = ...
+[ dispPatches ] = ...
     getDisplayPatches_12_14Meeting( targetPatches,predPatches,errorMatrix,otherMatrix,topRatio );
 
 errorMatrix = predErrorsMSE;
 otherMatrix = predErrorsEMD;
 [ dispPatches2 ] = ...
     getDisplayPatches_12_14Meeting( targetPatches,predPatches,errorMatrix,otherMatrix,topRatio );
-
-%TODO:
-% FILTER OUT EXAMPLES WITH SAME TARGET
 
 numRow=5;
 figure

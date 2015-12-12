@@ -1,4 +1,4 @@
-function [ dispPatches,patchIndex ] = getDisplayPatches_12_14Meeting(targetPatches,predPatches,errorMatrix,otherMatrix,topRatio)
+function [ dispPatches ] = getDisplayPatches_12_14Meeting(targetPatches,predPatches,errorMatrix,otherMatrix,topRatio)
 %GETDISPLAYPATCHESCELL Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -38,6 +38,7 @@ dispPatches(1,:) = targetPatches(patchIndex);
 dispPredPatches = predPatches(:);
 dispPatches(2,:) = dispPredPatches(linearPatchInds);
 
-
+[~,uniqueInds] = unique(patchIndex,'first');
+dispPatches = dispPatches(:,sort(uniqueInds));
 end
 
