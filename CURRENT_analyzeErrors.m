@@ -9,7 +9,7 @@ load(loadResultsFileName);
 
 ccs_predictions_filterErrors
 
-
+%CHANGE THIS TO CHANGE PERCENTAGE
 topRatio = 0.01;
 
 errorMatrix = predErrorsEMD;
@@ -19,24 +19,13 @@ otherMatrix = predErrorsMSE;
     otherMatrix,topRatio );
 
 otherSortedArray = sort(predErrorsMSE(:));
-otherPercents = zeros(1,length(otherOnes));
-for k = 1:length(otherOnes)
-   curInd = find(otherOnes(k)==otherSortedArray,1);
-   otherPercents(k) = curInd/length(otherSortedArray);
-end
+titleA = 'MSE Percentile for top 1% EMD predictions';
+xlabelA = 'Patch Number sorted by EMD';
+xlabelB = 'Patch Number sorted by MSE';
+ylabelA = 'MSE Percentile';
+otherOnesA = otherOnes;
 
-figure
-subplot(121)
-plot(otherPercents);
-title('MSE Percentile for top one percent EMD predictions');
-xlabel('Patch Number sorted by EMD');
-ylabel('MSE Percentile');
-
-subplot(122)
-plot(sort(otherPercents));
-title('MSE Percentile for top one percent EMD predictions');
-xlabel('Patch Number sorted by MSE');
-ylabel('MSE Percentile');
+displayTopPredCorrelations;
 
 errorMatrix = predErrorsMSE;
 otherMatrix = predErrorsEMD;
@@ -44,33 +33,19 @@ otherMatrix = predErrorsEMD;
     getDisplayPatches_12_14Meeting( targetPatches,predPatches,errorMatrix,...
     otherMatrix,topRatio );
 
-numRow=5;
-figure
-for i = 1:numRow
-    
-    curTarget = dispPatches{1,i};
-    maxP = max(curTarget(:));
-    
-    for j = 1:2
-       subplot(numRow,4,4*(i-1) + j)
-       curPatch = dispPatches{j,i};
-       imagesc(curPatch,[0 maxP]);
-       colorbar;
-    end
-    
-    curTarget = dispPatches2{1,i};
-    maxP = max(curTarget(:));
-    
-    for j = 1:2
-       subplot(numRow,4,4*(i-1) + j + 2)
-       curPatch = dispPatches2{j,i};
-       imagesc(curPatch,[0 maxP]);
-       colorbar;
-    end
-    
-    
-end
+otherSortedArray = sort(predErrorsEMD(:));
+titleA = 'EMD Percentile for top 1% MSE predictions';
+xlabelA = 'Patch Number sorted by MSE';
+xlabelB = 'Patch Number sorted by EMD';
+ylabelA = 'EMD Percentile';
+otherOnesA = otherOnes2;
+
+displayTopPredCorrelations;
+
+display12_14Table;
+
 
 %CURRENT_displaySlider;
 
+%ccs_predictions_12_14_oldAttempt
 
