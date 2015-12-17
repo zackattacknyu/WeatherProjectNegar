@@ -30,8 +30,30 @@
 
 
 
-This is the explanation.
-
+In order to sort the prediction pairs, I will start with the question of what is the gap between the error function values for each function and how do they compare. \\
+\\
+Let $f$ be the first error function.\\
+Let $g$ be the second error function.\\
+Let $X$ be our first patch and $Y$ be our second patch.\\
+\\
+We will look at the pairs which disagree, so without loss of generality\\
+$f(X) < f(Y)$ and $g(X) > g(Y)$ \\
+\\
+In order to say that $f$ is good, we would want to minimize the following
+\[
+(f(Y)-f(X)) - \alpha(g(X)-g(Y))
+\]
+This way the lowest values occur when the gap between the $f$ values is small but the gap between the $g$ values is large.\\
+\\
+We also care more about the cases where the minimum $f$ value is small since if the above $f$ and $g$ values are large then they are just both saying they are bad and our function is not as conclusive. \\
+\\
+Along the same vain, we also care about cases where the minimum $g$ values is large.\\
+\\
+Our function now becomes the following:
+\[
+(f(Y)-f(X)) - \alpha(g(X)-g(Y)) + \beta f(X) - \gamma g(Y)
+\]
+I will try both raw values and percentile ranks.
 
 \end{document}
 
