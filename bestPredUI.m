@@ -78,6 +78,7 @@ function varargout = bestPredUI_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 % --- Executes on button press in pushbutton1.
+%   This is the one that says "right one is best"
 function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -85,19 +86,7 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 axes(handles.axes1);
 cla;
 
-popup_sel_index = get(handles.popupmenu1, 'Value');
-switch popup_sel_index
-    case 1
-        plot(rand(5));
-    case 2
-        plot(sin(1:0.01:25.99));
-    case 3
-        bar(1:.5:10);
-    case 4
-        plot(membrane);
-    case 5
-        surf(peaks);
-end
+imagesc(rand(20,20));
 
 
 % --------------------------------------------------------------------
