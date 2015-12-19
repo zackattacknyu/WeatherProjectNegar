@@ -84,25 +84,21 @@ emdOthers = otherEMDvals(interestingPatchInds);
 
 %{
 As an attempt to quantify performance of emd vs mse,
-I will compute the following comparison
-
-IMPORTANT. THERE ARE 4 I WANT TO CONSIDER:
-1) High EMD difference, low MSE difference
-2) High MSE difference, low EMD difference
-3) Both are low
-4) Both are high
+the following sorting will be done:
+1) H_1
+2) H_2
+3) H
+4) other H
 
 comparisonRaw is the variable that will be sorted by
 %}
 mseDiffs = mseOthers-mseBests;
 emdDiffs = emdOthers-emdBests;
 
-weightFactors = -1.*emdBests + max(emdBests);
-%weightFactors = -1.*mseBests + max(mseBests);
-%weightFactors = ones(size(mseDiffs));
-
-%comparisonRaw = (emdDiffs + mseDiffs).*weightFactors;
-comparisonRaw = (mseDiffs - emdDiffs ).*weightFactors;
+%comparisonRaw = emdDiffs;
+%comparisonRaw = mseDiffs;
+comparisonRaw = emdDiffs-mseDiffs;
+%comparisonRaw = mseDiffs-emdDiffs;
 
 [sortedCompare,displayInds] = sort(comparisonRaw,'descend');
 searchRes = find(isnan(sortedCompare),1,'last');
@@ -139,34 +135,3 @@ s = uicontrol('Style','Slider','Parent',1,...
 fun2 = @(src,event) scrollWheel_patchesRow(src,event,dispPatches,s);
 set(hh,'WindowScrollWheelFcn',fun2);
 displayPatchesRow(dispPatches,1);
-%%
-
-mseDiffsDisplay = (mseDiffs-min(mseDiffs))./(max(mseDiffs));
-emdDiffsDisplay = (emdDiffs-min(emdDiffs))./(max(emdDiffs));
-[dispArray,inds] = sort(mseDiffsDisplay);
-dispArray2 = emdDiffsDisplay(inds);
-figure
-hold on
-plot(dispArray,'r-');
-plot(dispArray2,'b-');
-legend('MSE diff','EMD diff');
-hold off
-
-%%
-
-[~,inds] = sort(mseBests);
-numDisplay = 40;
-otherInds = randperm(length(emdBests));
-otherInds = otherInds(1:numDisplay);
-inds = inds(sort(otherInds));
-
-emdBests(emdBests>30)=30;
-emdOthers(emdOthers>30)=30;
-
-figure
-hold on
-plot(mseBests(inds),'r-');
-plot(mseOthers(inds),'r--');
-plot(emdBests(inds),'g-');
-plot(emdOthers(inds),'g--');
-hold off
