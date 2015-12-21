@@ -195,7 +195,7 @@ function pushbutton5_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 data = guidata(hObject);
-data.buttonClicked = -2;
+data.buttonClicked = -1;
 guidata(hObject,data);
 bestPredUI_OutputFcn(hObject, eventdata, handles)
 close
@@ -208,7 +208,7 @@ function pushbutton6_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 data = guidata(hObject);
-data.buttonClicked = -1;
+data.buttonClicked = -2;
 guidata(hObject,data);
 bestPredUI_OutputFcn(hObject, eventdata, handles)
 close
