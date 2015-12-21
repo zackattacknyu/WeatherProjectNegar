@@ -22,7 +22,7 @@ function varargout = bestPredUI(varargin)
 
 % Edit the above text to modify the response to help bestPredUI
 
-% Last Modified by GUIDE v2.5 19-Dec-2015 00:34:47
+% Last Modified by GUIDE v2.5 20-Dec-2015 21:00:51
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -75,9 +75,13 @@ axes(handles.axes3);
 cla;
 imagesc(patchesDisplay{3},[0 maxPixel]);
 
+data = guidata(hObject);
+data.buttonClicked = 0;
+guidata(hObject,data);
+
 % UIWAIT makes bestPredUI wait for user response (see UIRESUME)
-%uiwait(handles.figure1);
-uiwait();
+uiwait(handles.figure1);
+%uiwait();
 
 
 % --- Outputs from this function are returned to the command line.
@@ -89,11 +93,7 @@ function varargout = bestPredUI_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 data = guidata(hObject);
-if(isfield(data,'buttonClicked'))
-    varargout{1} = data.buttonClicked;
-else
-    varargout{1} = 'none';
-end
+varargout{1} = data.buttonClicked;
 
 
 % --- Executes on button press in pushbutton1.
@@ -104,7 +104,7 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 data = guidata(hObject);
-data.buttonClicked = 'right';
+data.buttonClicked = 2;
 guidata(hObject,data);
 bestPredUI_OutputFcn(hObject, eventdata, handles)
 
@@ -197,3 +197,23 @@ function pushbutton6_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton6 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes when user attempts to close figure1.
+function figure1_CloseRequestFcn(hObject, eventdata, handles)
+% hObject    handle to figure1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: delete(hObject) closes the figure
+if isequal(get(hObject, 'waitstatus'), 'waiting')
+    % The GUI is still in UIWAIT, us UIRESUME
+    uiresume(hObject);
+else
+    % The GUI is no longer waiting, just close it
+    %data = guidata(hObject);
+    %data.buttonClicked = 'right';
+    %guidata(hObject,data);
+    delete(hObject);
+end
+%delete(hObject);
