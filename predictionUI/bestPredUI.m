@@ -57,14 +57,27 @@ handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
 
-% This sets up the initial plot - only do when we are invisible
-% so window can get raised using bestPredUI.
-if strcmp(get(hObject,'Visible'),'off')
-    plot(rand(5));
-end
+patchesDisplay = varargin{1};
+
+targetP = patchesDisplay{1};
+maxPixel = max(targetP(:));
+
+axes(handles.axes1);
+cla;
+imagesc(patchesDisplay{1},[0 maxPixel]);
+colorbar;
+
+axes(handles.axes2);
+cla;
+imagesc(patchesDisplay{2},[0 maxPixel]);
+
+axes(handles.axes3);
+cla;
+imagesc(patchesDisplay{3},[0 maxPixel]);
 
 % UIWAIT makes bestPredUI wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
+%uiwait(handles.figure1);
+uiwait();
 
 
 % --- Outputs from this function are returned to the command line.
@@ -75,7 +88,13 @@ function varargout = bestPredUI_OutputFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Get default command line output from handles structure
-varargout{1} = handles.output;
+data = guidata(hObject);
+if(isfield(data,'buttonClicked'))
+    varargout{1} = data.buttonClicked;
+else
+    varargout{1} = 'none';
+end
+
 
 % --- Executes on button press in pushbutton1.
 %   This is the one that says "right one is best"
@@ -83,10 +102,13 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-axes(handles.axes1);
-cla;
 
-imagesc(rand(20,20));
+data = guidata(hObject);
+data.buttonClicked = 'right';
+guidata(hObject,data);
+bestPredUI_OutputFcn(hObject, eventdata, handles)
+
+close;
 
 
 % --------------------------------------------------------------------
@@ -154,6 +176,7 @@ set(hObject, 'String', {'plot(rand(5))', 'plot(sin(1:0.01:25))', 'bar(1:.5:10)',
 
 
 % --- Executes on button press in pushbutton4.
+% one that says "Middle one is best"
 function pushbutton4_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -161,6 +184,7 @@ function pushbutton4_Callback(hObject, eventdata, handles)
 
 
 % --- Executes on button press in pushbutton5.
+% one that says "decide later"
 function pushbutton5_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -168,6 +192,7 @@ function pushbutton5_Callback(hObject, eventdata, handles)
 
 
 % --- Executes on button press in pushbutton6.
+% one that says "ambiguous"
 function pushbutton6_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton6 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
