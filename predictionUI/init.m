@@ -9,7 +9,6 @@ Codes to use for aa:
 %}
 
 for i = 1:30
-    i
     patchSet = dispPatches(:,i);
     aa = bestPredUI(patchSet)
     if(aa == 0)
