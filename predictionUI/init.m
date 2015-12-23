@@ -10,7 +10,15 @@ Codes to use for aa:
 -2 = ambiguous
 
 %}
-selections = zeros(1,size(dispPatches,2));
+%%
+
+dataSetNumber=1;
+
+numString = num2str(dataSetNumber);
+loadFileName = strcat('patchesSet11-23Data_',numString,'.mat');
+loadResultsFileName = strcat('patchesSet11-23Data_',numString,'_results.mat');
+
+getDispPatchesScript
 %%
 remainingPatches = find(selections==0); %-1 values are changed to zero so we don't need to care here
 
@@ -18,8 +26,8 @@ remainingPatches = remainingPatches(randperm(length(remainingPatches)));
 for i = 1:length(remainingPatches)
     j = remainingPatches(i);
     patchSet = dispPatches(:,j);
-    patchSet2 = {patchSet{1},patchSet{3},patchSet{2}};
     if(rand>0.5) %flip order of them
+        patchSet2 = {patchSet{1},patchSet{3},patchSet{2}};
         aa = bestPredUI(patchSet2);
         if(aa==1)
             aa=2;
@@ -37,5 +45,14 @@ for i = 1:length(remainingPatches)
 end
 close all force
 selections(selections==-1)=0;
+%%
+numEMD = length(find(selections==1));
+numMSE = length(find(selections==2));
+numAmbig = length(find(selections==-2));
+names = {'EMD' 'MSE' 'Ambiguous'};
+results = [numEMD numMSE numAmbig];
+results = results./sum(results);
+bar(results,names);
+
 
 

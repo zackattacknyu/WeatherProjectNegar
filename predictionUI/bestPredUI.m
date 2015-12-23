@@ -70,10 +70,12 @@ colorbar;
 axes(handles.axes2);
 cla;
 imagesc(patchesDisplay{2},[0 maxPixel]);
+colorbar;
 
 axes(handles.axes3);
 cla;
 imagesc(patchesDisplay{3},[0 maxPixel]);
+colorbar;
 
 data = guidata(hObject);
 data.buttonClicked = 0;
