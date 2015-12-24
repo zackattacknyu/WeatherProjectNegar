@@ -12,13 +12,15 @@ Codes to use for aa:
 %}
 %%
 
-dataSetNumber=1;
+dataSetNumber=2;
 
 numString = num2str(dataSetNumber);
 loadFileName = strcat('patchesSet11-23Data_',numString,'.mat');
 loadResultsFileName = strcat('patchesSet11-23Data_',numString,'_results.mat');
 
 getDispPatchesScript
+
+selections = zeros(1,size(dispPatches,2));
 %%
 remainingPatches = find(selections==0); %-1 values are changed to zero so we don't need to care here
 
@@ -49,10 +51,38 @@ selections(selections==-1)=0;
 numEMD = length(find(selections==1));
 numMSE = length(find(selections==2));
 numAmbig = length(find(selections==-2));
-names = {'EMD' 'MSE' 'Ambiguous'};
 results = [numEMD numMSE numAmbig];
 results = results./sum(results);
-bar(results,names);
+bar(results);
+%%
+resultEntries = find(selections~=0);
+resultVals = selections(resultEntries);
+
+binSize=15;
+numBins = floor(length(resultVals)/binSize);
+numInLastBin = length(resultVals)-numBins*binSize;
+resultValsBinned = mat2cell(resultVals,1,[binSize*ones(1,numBins) numInLastBin]);
+
+probEMD = zeros(1,length(resultValsBinned));
+probMSE = zeros(1,length(resultValsBinned));
+probAmb = zeros(1,length(resultValsBinned));
+for i = 1:length(resultValsBinned)
+   curBin = resultValsBinned{i};
+   probEMD(i) = length(find(curBin==1))/binSize;
+   probMSE(i) = length(find(curBin==2))/binSize;
+   probAmb(i) = length(find(curBin==-2))/binSize;
+end
+
+figure
+hold on
+plot(probEMD,'g-');
+plot(probMSE,'r-');
+plot(probAmb,'b-');
+legend('EMD Probablity','MSE Probability','Ambiguous Probability');
+hold off
+
+
+
 
 
 
