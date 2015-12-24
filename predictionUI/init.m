@@ -53,7 +53,11 @@ numMSE = length(find(selections==2));
 numAmbig = length(find(selections==-2));
 results = [numEMD numMSE numAmbig];
 results = results./sum(results);
+figure
 bar(results);
+title('Frequency of each patch choice option');
+xlabel('Option Chosen: 1-EMD 2-MSE 3-Ambiguous');
+ylabel('Fraction of Choices');
 %%
 resultEntries = find(selections~=0);
 resultVals = selections(resultEntries);
