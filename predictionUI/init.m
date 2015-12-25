@@ -26,10 +26,11 @@ catch
     selections = zeros(1,size(dispPatches,2));
 end
 
-remainingPatches = 1:size(dispPatches,2);
+remainingPatches = 1;
 
 while(~isempty(remainingPatches))
 
+    remainingPatches = find(selections==0); %-1 values are changed to zero so we don't need to care here
     remainingPatches = remainingPatches(randperm(length(remainingPatches)));
     for i = 1:length(remainingPatches)
         j = remainingPatches(i);
@@ -53,7 +54,7 @@ while(~isempty(remainingPatches))
     end
     
     selections(selections==-1)=0;
-    remainingPatches = find(selections==0); %-1 values are changed to zero so we don't need to care here
+    
     
     if(aa==0)
        break; 
