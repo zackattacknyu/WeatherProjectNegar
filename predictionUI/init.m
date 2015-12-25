@@ -20,8 +20,11 @@ loadResultsFileName = strcat('patchesSet11-23Data_',numString,'_results.mat');
 
 getDispPatchesScript
 %%
-selections = zeros(1,size(dispPatches,2));
-
+try
+    load('currentResultData.mat');
+catch
+    selections = zeros(1,size(dispPatches,2));
+end
 
 remainingPatches = 1:size(dispPatches,2);
 
@@ -58,6 +61,14 @@ while(~isempty(remainingPatches))
     
 end
 close all force
+
+if(isempty(remainingPatches))
+    saveFileName = strcat('resultData_',num2str(floor(now)),'_',num2str(floor(rem(now,1)*10000)));
+else
+    saveFileName = 'currentResultData.mat';
+end
+
+save(saveFileName,'selections');
 
 %%
 numEMD = length(find(selections==1));
