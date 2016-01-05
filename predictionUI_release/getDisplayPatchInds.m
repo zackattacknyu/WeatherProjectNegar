@@ -39,6 +39,7 @@ comparisonRaw is the variable that will be sorted by
 %}
 mseDiffs = mseOthers-mseBests;
 emdDiffs = emdOthers-emdBests;
+mseDiffs(isnan(emdDiffs))=NaN;
 
 if(compareMethod==1)
     comparisonRaw = emdDiffs;
