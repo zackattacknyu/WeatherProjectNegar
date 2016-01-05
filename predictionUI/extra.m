@@ -11,7 +11,7 @@ probsGreater = [1 1-cumsum(probs)];
 probsGreater = probsGreater(1:end-1);
 
 %expected value for each entry
-expectedValue = rolls.*probsGreater;
+expectedValue = rolls.*probsGreater + 2.*(1-probsGreater);
 
 figure
 plot(rolls,expectedValue)
@@ -52,7 +52,7 @@ probsGreater = [1 1-cumsum(probs')];
 probsGreater = probsGreater(1:end-1);
 
 %expected value for each entry
-expectedValue = (rolls').*probsGreater;
+expectedValue = (rolls').*probsGreater + 2.*(1-probsGreater);
 
 figure
 plot(rolls,expectedValue)

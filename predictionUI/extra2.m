@@ -12,13 +12,6 @@ for i = 1:length(mVals)
     
     
 end
-%%
-figure 
-hold on
-plot(mVals,prob,'g-');
 
-mu = expfit(prob);
-xx = mVals;
-yy = (1/mu).*exp(xx./(-mu));
-plot(xx+min(mVals),yy,'r-');
-hold off
+figure 
+plot(mVals,prob,'g-');
