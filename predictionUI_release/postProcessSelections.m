@@ -13,7 +13,7 @@ load('currentResultData.mat');
 selectionsSortedOrder = selections(patchIndsOrderOld);
 
 %THIS WILL CHANGE DEPENDING ON WHICH METHOD WE CARE ABOUT
-compareMethod=3;
+compareMethod=1;
 
 getDisplayPatchInds;
 
