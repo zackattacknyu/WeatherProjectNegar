@@ -77,17 +77,21 @@ ambResults = resultVals;
 ambResults(ambResults~=-2)=0;
 ambResults = ambResults./-2;
 
-windowWidth = 20;
+windowWidth = 80;
 kernal = ones(1,windowWidth)./windowWidth;
 movingEMD = conv(emdResults,kernal,'same');
 movingMSE = conv(mseResults,kernal,'same');
 movingAmb = conv(ambResults,kernal,'same');
 
+movingEMD2 = conv(movingEMD,kernal,'same');
+movingMSE2 = conv(movingMSE,kernal,'same');
+movingAmb2 = conv(movingAmb,kernal,'same');
+
 figure
 hold on
-plot(movingEMD,'r-');
-plot(movingMSE,'g-');
-plot(movingAmb,'b-');
+plot(movingEMD2,'r-');
+plot(movingMSE2,'g-');
+plot(movingAmb2,'b-');
 hold off
 xlabel('Ranking in List');
 ylabel('Probability Of Selection in Window');
