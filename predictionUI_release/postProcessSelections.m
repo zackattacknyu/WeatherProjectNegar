@@ -7,7 +7,8 @@ load('patchesSetData.mat');
 compareMethod=3;
 getDisplayPatchInds;
 displayPatchIndsOld = displayPatchInds;
-load('currentResultData.mat');
+%load('currentResultData.mat');
+load('sendThisToZach_736336_4323.mat');
 
 [~,patchIndsOrderOld] = sort(displayPatchIndsOld);
 selectionsSortedOrder = selections(patchIndsOrderOld);
@@ -24,28 +25,70 @@ selections = selectionsNewOrder;
 
 resultEntries = find(selections~=0);
 resultVals = selections(resultEntries);
+%%
 
-binSize=30;
-numBins = floor(length(resultVals)/binSize);
-numInLastBin = length(resultVals)-numBins*binSize;
-resultValsBinned = mat2cell(resultVals,1,[binSize*ones(1,numBins) numInLastBin]);
+%{
+If I plot sortedCompare vs index, there is an exponential plot
+    as many of the values are at the low end
+Thus I need to do the ranking of probabilities by 
+    sortedCompare index instead of sortedCompare value itself
+This is due to the fact that there is a density
+    of sortedCompare values at the low end but we really
+    care about the patch's ranking in a list when
+    deciding the probability that EMD is best
+%}
 
-probEMD = zeros(1,length(resultValsBinned));
-probMSE = zeros(1,length(resultValsBinned));
-probAmb = zeros(1,length(resultValsBinned));
-for i = 1:length(resultValsBinned)
-   curBin = resultValsBinned{i};
-   probEMD(i) = length(find(curBin==1))/length(curBin);
-   probMSE(i) = length(find(curBin==2))/length(curBin);
-   probAmb(i) = length(find(curBin==-2))/length(curBin);
-end
+
+%{
+NOTE: 
+NOT SURE IF KSDENSITY REALLY TELLS US ANYTHING
+WORK ON IT LATER AFTER CONV HAS BEEN DONE BETTER
+
+emdIndices = find(resultVals==1);
+%mseIndices = find(resultVals==2);
+%ambIndices = find(resultVals==-2);
+
+[emdF,emdXi] = ksdensity(emdIndices);
+%[mseF,mseXi] = ksdensity(mseIndices);
+%[ambF,ambXi] = ksdensity(ambIndices);
+
+emdIndsToShowA = find(emdXi>=1);
+emdIndsToShowB = find(emdXi<=length(resultVals));
+emdIndsToShow = intersect(emdIndsToShowA,emdIndsToShowB);
+
+xVals = emdXi(emdIndsToShow);
+pVals = emdF(emdIndsToShow);
+pVals = pVals./max(pVals);
+
+figure
+plot(xVals,pVals);
+xlabel('Ranking in List');
+ylabel('Probability of Selecting EMD');
+%}
+
+emdResults = resultVals;
+emdResults(emdResults~=1)=0;
+
+mseResults = resultVals;
+mseResults(mseResults~=2)=0;
+mseResults = mseResults./2;
+
+ambResults = resultVals;
+ambResults(ambResults~=-2)=0;
+ambResults = ambResults./-2;
+
+windowWidth = 20;
+kernal = ones(1,windowWidth)./windowWidth;
+movingEMD = conv(emdResults,kernal,'same');
+movingMSE = conv(mseResults,kernal,'same');
+movingAmb = conv(ambResults,kernal,'same');
 
 figure
 hold on
-plot(probEMD,'g-');
-plot(probMSE,'r-');
-plot(probAmb,'b-');
-legend('EMD Probablity','MSE Probability','Ambiguous Probability',...
-    'location','eastoutside');
+plot(movingEMD,'r-');
+plot(movingMSE,'g-');
+plot(movingAmb,'b-');
 hold off
-
+xlabel('Ranking in List');
+ylabel('Probability Of Selection in Window');
+legend('EMD Prob','MSE Prob','Amb Prob');

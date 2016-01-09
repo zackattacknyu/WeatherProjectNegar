@@ -58,3 +58,4 @@ if(isempty(searchRes))
 end
 startInd = searchRes+1;
 displayPatchInds = interestingPatchInds(displayInds(startInd:end)); %tells the patch numbers
+sortedCompare = sortedCompare(startInd:end);
