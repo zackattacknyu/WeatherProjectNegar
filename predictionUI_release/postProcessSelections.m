@@ -4,7 +4,7 @@
 %this gets the current result data
 %   using the compare method of 3
 load('patchesSetData.mat');
-compareMethod=3;
+compareMethod=4;
 getDisplayPatchInds;
 displayPatchIndsOld = displayPatchInds;
 %load('currentResultData.mat');
@@ -14,7 +14,7 @@ load('sendThisToZach_736336_4323.mat');
 selectionsSortedOrder = selections(patchIndsOrderOld);
 
 %THIS WILL CHANGE DEPENDING ON WHICH METHOD WE CARE ABOUT
-compareMethod=1;
+compareMethod=3;
 
 getDisplayPatchInds;
 
@@ -25,7 +25,7 @@ selections = selectionsNewOrder;
 
 resultEntries = find(selections~=0);
 resultVals = selections(resultEntries);
-%%
+
 
 %{
 If I plot sortedCompare vs index, there is an exponential plot
@@ -36,34 +36,6 @@ This is due to the fact that there is a density
     of sortedCompare values at the low end but we really
     care about the patch's ranking in a list when
     deciding the probability that EMD is best
-%}
-
-
-%{
-NOTE: 
-NOT SURE IF KSDENSITY REALLY TELLS US ANYTHING
-WORK ON IT LATER AFTER CONV HAS BEEN DONE BETTER
-
-emdIndices = find(resultVals==1);
-%mseIndices = find(resultVals==2);
-%ambIndices = find(resultVals==-2);
-
-[emdF,emdXi] = ksdensity(emdIndices);
-%[mseF,mseXi] = ksdensity(mseIndices);
-%[ambF,ambXi] = ksdensity(ambIndices);
-
-emdIndsToShowA = find(emdXi>=1);
-emdIndsToShowB = find(emdXi<=length(resultVals));
-emdIndsToShow = intersect(emdIndsToShowA,emdIndsToShowB);
-
-xVals = emdXi(emdIndsToShow);
-pVals = emdF(emdIndsToShow);
-pVals = pVals./max(pVals);
-
-figure
-plot(xVals,pVals);
-xlabel('Ranking in List');
-ylabel('Probability of Selecting EMD');
 %}
 
 emdResults = resultVals;
@@ -79,13 +51,13 @@ ambResults = ambResults./-2;
 
 windowWidth = 80;
 kernal = ones(1,windowWidth)./windowWidth;
-movingEMD = conv(emdResults,kernal,'same');
-movingMSE = conv(mseResults,kernal,'same');
-movingAmb = conv(ambResults,kernal,'same');
+movingEMD = conv(emdResults,kernal,'valid');
+movingMSE = conv(mseResults,kernal,'valid');
+movingAmb = conv(ambResults,kernal,'valid');
 
-movingEMD2 = conv(movingEMD,kernal,'same');
-movingMSE2 = conv(movingMSE,kernal,'same');
-movingAmb2 = conv(movingAmb,kernal,'same');
+movingEMD2 = conv(movingEMD,kernal,'valid');
+movingMSE2 = conv(movingMSE,kernal,'valid');
+movingAmb2 = conv(movingAmb,kernal,'valid');
 
 figure
 hold on

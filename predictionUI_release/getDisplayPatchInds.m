@@ -46,6 +46,12 @@ if(compareMethod==1)
 elseif(compareMethod==2)
     comparisonRaw = mseDiffs;
 elseif(compareMethod==3)
+    %comparisonRaw = emdDiffs-mseDiffs;
+    %emdDiffs(emdDiffs>20)=20;
+    comparisonRaw = emdDiffs./max(emdDiffs)+mseDiffs./max(mseDiffs);
+elseif(compareMethod==4)
+    %DO NOT MODIFY DURING TESTING
+    %USED FOR INITIAL SORTING METHOD
     comparisonRaw = emdDiffs-mseDiffs;
 else
     comparisonRaw = mseDiffs-emdDiffs;
