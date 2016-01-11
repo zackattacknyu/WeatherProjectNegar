@@ -2,7 +2,7 @@
 %   each index corresponds to what's in displayPatchInds
 
 %this gets the current result data
-%   using the compare method of 3
+%   using the compare method of 4
 load('patchesSetData.mat');
 compareMethod=4;
 getDisplayPatchInds;
@@ -14,7 +14,7 @@ load('sendThisToZach_736336_4323.mat');
 selectionsSortedOrder = selections(patchIndsOrderOld);
 
 %THIS WILL CHANGE DEPENDING ON WHICH METHOD WE CARE ABOUT
-compareMethod=3;
+compareMethod=2;
 
 getDisplayPatchInds;
 
@@ -49,22 +49,36 @@ ambResults = resultVals;
 ambResults(ambResults~=-2)=0;
 ambResults = ambResults./-2;
 
-windowWidth = 80;
-kernal = ones(1,windowWidth)./windowWidth;
+
+windowWidth = 150;
+kernal = gausswin(windowWidth);
+kernal = kernal./sum(kernal);
+
 movingEMD = conv(emdResults,kernal,'valid');
 movingMSE = conv(mseResults,kernal,'valid');
 movingAmb = conv(ambResults,kernal,'valid');
 
-movingEMD2 = conv(movingEMD,kernal,'valid');
-movingMSE2 = conv(movingMSE,kernal,'valid');
-movingAmb2 = conv(movingAmb,kernal,'valid');
+totalValues = length(emdResults);
+totalEMD = length(find(emdResults==1));
+totalMSE = length(find(mseResults==1));
+totalAmb = length(find(ambResults==1));
+
+indexValues = (windowWidth/2):(length(movingEMD)+windowWidth/2-1);
+
+emdAvgArray = (totalEMD/totalValues).*ones(1,length(indexValues));
+mseAvgArray = (totalMSE/totalValues).*ones(1,length(indexValues));
+ambAvgArray = (totalAmb/totalValues).*ones(1,length(indexValues));
 
 figure
 hold on
-plot(movingEMD2,'r-');
-plot(movingMSE2,'g-');
-plot(movingAmb2,'b-');
+plot(indexValues,movingEMD,'r-');
+plot(indexValues,emdAvgArray,'r--');
+plot(indexValues,movingMSE,'g-');
+plot(indexValues,mseAvgArray,'g--');
+plot(indexValues,movingAmb,'b-');
+plot(indexValues,ambAvgArray,'b--');
 hold off
 xlabel('Ranking in List');
 ylabel('Probability Of Selection in Window');
-legend('EMD Prob','MSE Prob','Amb Prob');
+legend('EMD Prob','Avg EMD Prob','MSE Prob','Avg MSE Prob',...
+    'Amb Prob','Avg Amb Prob','Location','eastoutside');
