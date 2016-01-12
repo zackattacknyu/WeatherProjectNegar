@@ -63,6 +63,9 @@ elseif(compareMethod==5)
     comparisonRaw = emdDiffs.*mseDiffs;
 elseif(compareMethod==6)
     comparisonRaw = emdQuots.*mseQuots;
+elseif(compareMethod==7)
+    comparisonRaw = rand(size(emdDiffs));
+    comparisonRaw(isnan(emdDiffs))=NaN;
 else
     comparisonRaw = mseDiffs-emdDiffs;
 end
