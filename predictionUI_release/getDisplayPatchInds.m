@@ -41,6 +41,10 @@ mseDiffs = mseOthers-mseBests;
 emdDiffs = emdOthers-emdBests;
 mseDiffs(isnan(emdDiffs))=NaN;
 
+mseQuots = mseOthers./mseBests;
+emdQuots = emdOthers./emdBests;
+mseQuots(isnan(mseQuots))=NaN;
+
 if(compareMethod==1)
     comparisonRaw = emdDiffs;
 elseif(compareMethod==2)
@@ -55,6 +59,10 @@ elseif(compareMethod==4)
     %DO NOT MODIFY DURING TESTING
     %USED FOR INITIAL SORTING METHOD
     comparisonRaw = emdDiffs-mseDiffs;
+elseif(compareMethod==5)
+    comparisonRaw = emdDiffs.*mseDiffs;
+elseif(compareMethod==6)
+    comparisonRaw = emdDiffs.*mseDiffs;
 else
     comparisonRaw = mseDiffs-emdDiffs;
 end

@@ -14,7 +14,7 @@ load('sendThisToZach_736336_4323.mat');
 selectionsSortedOrder = selections(patchIndsOrderOld);
 
 %THIS WILL CHANGE DEPENDING ON WHICH METHOD WE CARE ABOUT
-compareMethod=2;
+compareMethod=5;
 
 getDisplayPatchInds;
 
