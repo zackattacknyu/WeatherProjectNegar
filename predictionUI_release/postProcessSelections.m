@@ -14,7 +14,7 @@ load('sendThisToZach_736336_4323.mat');
 selectionsSortedOrder = selections(patchIndsOrderOld);
 
 %THIS WILL CHANGE DEPENDING ON WHICH METHOD WE CARE ABOUT
-compareMethod=5;
+compareMethod=6;
 
 getDisplayPatchInds;
 
@@ -53,6 +53,8 @@ ambResults = ambResults./-2;
 windowWidth = 150;
 kernal = gausswin(windowWidth);
 kernal = kernal./sum(kernal);
+
+%kernal2 = ones(1,windowWidth)./windowWidth;
 
 movingEMD = conv(emdResults,kernal,'valid');
 movingMSE = conv(mseResults,kernal,'valid');

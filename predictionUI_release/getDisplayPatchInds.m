@@ -62,7 +62,7 @@ elseif(compareMethod==4)
 elseif(compareMethod==5)
     comparisonRaw = emdDiffs.*mseDiffs;
 elseif(compareMethod==6)
-    comparisonRaw = emdDiffs.*mseDiffs;
+    comparisonRaw = emdQuots.*mseQuots;
 else
     comparisonRaw = mseDiffs-emdDiffs;
 end
