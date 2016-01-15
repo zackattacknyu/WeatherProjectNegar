@@ -45,6 +45,14 @@ mseQuots = mseOthers./mseBests;
 emdQuots = emdOthers./emdBests;
 mseQuots(isnan(mseQuots))=NaN;
 
+emdDiffsNoNan = emdDiffs(~isnan(emdDiffs));
+mseDiffsNoNan = mseDiffs(~isnan(mseDiffs));
+
+emdDiffsNorm = (emdDiffs-mean(emdDiffsNoNan))./std(emdDiffsNoNan);
+emdDiffsNorm = emdDiffsNorm-min(emdDiffsNorm);
+mseDiffsNorm = (mseDiffs-mean(mseDiffsNoNan))./std(mseDiffsNoNan);
+mseDiffsNorm = mseDiffsNorm-min(mseDiffsNorm);
+
 if(compareMethod==1)
     comparisonRaw = emdDiffs;
 elseif(compareMethod==2)
@@ -67,6 +75,10 @@ elseif(compareMethod==7)
     %comparisonRaw = rand(size(emdDiffs));
     comparisonRaw = randperm(length(emdDiffs));
     comparisonRaw(isnan(emdDiffs))=NaN;
+elseif(compareMethod==8)
+    comparisonRaw = emdDiffsNorm+mseDiffsNorm;
+elseif(compareMethod==9)
+    comparisonRaw = emdDiffsNorm-mseDiffsNorm;
 else
     comparisonRaw = mseDiffs-emdDiffs;
 end
