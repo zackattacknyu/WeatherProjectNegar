@@ -29,7 +29,7 @@ plot(comparisonRaw3(inds3)./max(comparisonRaw3),'r-')
 plot(comparisonRaw5(inds3)./max(comparisonRaw5),'b-')
 legend('H values','H prime values')
 hold off
-%%
+
 
 
 
