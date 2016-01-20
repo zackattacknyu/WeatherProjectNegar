@@ -1,3 +1,12 @@
+%{
+THIS INCLUDES ALL THE FILTERED PATCH SETS WITH RESULTS
+THAT COME FROM THE 11-23 MAT FILES
+
+I thus have two options moving forward:
+1) Generate a new patch set with same data (though results will likely be
+similar
+2) Generate a new patch set with the new data set provided by Negar
+%}
 load('patchesSetData.mat');
 
 getDispPatchesScript
