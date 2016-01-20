@@ -1,4 +1,4 @@
-useEMD=true;
+useEMD=false;
 
 [x,i1] = sort(emdDiffs,'descend');
 [y,i2] = sort(mseDiffs,'descend');

@@ -8,9 +8,23 @@ for i = 1:length(selectionsSortedOrder)
    row = i1(i);
    col = i2(i);
    resultsBase(row,col)=1;
-   resultsEMD(row,col)=(selectionsSortedOrder(i)==1);
-   resultsMSE(row,col)=(selectionsSortedOrder(i)==2);
-   resultsAmb(row,col)=(selectionsSortedOrder(i)==-2);
+   if(selectionsSortedOrder(i)==1)
+       resultsEMD(row,col)=1;
+   else
+       resultsEMD(row,col)=-1;
+   end
+   
+   if(selectionsSortedOrder(i)==2)
+       resultsMSE(row,col)=1;
+   else
+       resultsMSE(row,col)=-1;
+   end
+   
+   if(selectionsSortedOrder(i)==-2)
+       resultsAmb(row,col)=1;
+   else
+       resultsAmb(row,col)=-1;
+   end
 end
 
 size = 300;
@@ -23,21 +37,21 @@ resultsAvgAmb = conv2(resultsAmb,kernal,'valid');
 resultsAvgBase = conv2(resultsBase,kernal,'valid');
 
 figure
-imagesc(resultsAvgEMD-resultsAvgBase);
+imagesc(resultsAvgEMD);
 title('EMD result density compared with normal density');
 xlabel('MSE difference value');
 ylabel('EMD difference value');
 colorbar;
 
 figure
-imagesc(resultsAvgMSE-resultsAvgBase);
+imagesc(resultsAvgMSE);
 title('MSE result density compared with normal density');
 xlabel('MSE difference value');
 ylabel('EMD difference value');
 colorbar;
 
 figure
-imagesc(resultsAvgAmb-resultsAvgBase);
+imagesc(resultsAvgAmb);
 title('Amb result density compared with normal density');
 xlabel('MSE difference value');
 ylabel('EMD difference value');
