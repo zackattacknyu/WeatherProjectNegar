@@ -31,7 +31,24 @@ legend('H values','H prime values')
 hold off
 
 
+%%
 
+[~,ii] = sort(mseBests);
+figure
+hold on
+plot(mseBests(ii),'r-');
+plot(mseOthers(ii),'b-');
+hold off
+legend('Best MSE','Other MSE');
 
+%%
+
+[~,jj] = sort(emdBests);
+figure
+hold on
+plot(emdBests(jj),'r-');
+plot(emdOthers(jj),'b-');
+hold off
+legend('Best EMD','Other EMD');
 
 

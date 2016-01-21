@@ -1,5 +1,12 @@
 [x,i1] = sort(emdDiffs);
 [y,i2] = sort(mseDiffs);
+
+%[x,i1] = sort(emdBests);
+%[y,i2] = sort(emdOthers);
+
+%[x,i1] = sort(mseBests);
+%[y,i2] = sort(mseOthers);
+
 resultsEMD = zeros(length(i1),length(i1));
 resultsMSE = zeros(length(i1),length(i1));
 resultsAmb = zeros(length(i1),length(i1));
