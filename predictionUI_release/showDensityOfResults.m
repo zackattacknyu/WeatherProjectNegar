@@ -1,14 +1,27 @@
-%[x,i1] = sort(emdDiffs);
-%[y,i2] = sort(mseDiffs);
+option=1;
 
-[x,i1] = sort(emdQuots);
-[y,i2] = sort(mseQuots);
+if(option==1)
+    [x,i1] = sort(emdDiffs);
+    [y,i2] = sort(mseDiffs);
+    yName = 'Rank of EMD Difference Value';
+    xName = 'Rank of MSE Difference Value';
+elseif(option==2)
+    [x,i1] = sort(emdBests);
+    [y,i2] = sort(emdOthers);
+    yName = 'Rank of EMD Best Value';
+    xName = 'Rank of EMD Other Value';
+elseif(option==3)
+    [x,i1] = sort(mseBests);
+    [y,i2] = sort(mseOthers);
+    yName = 'Rank of MSE Best Value';
+    xName = 'Rank of MSE Other Value';
+else
+    [x,i1] = sort(emdQuots);
+    [y,i2] = sort(mseQuots);
+    yName = 'Rank of EMD Quotient Value';
+    xName = 'Rank of MSE Quotient Value';
+end
 
-%[x,i1] = sort(emdBests);
-%[y,i2] = sort(emdOthers);
-
-%[x,i1] = sort(mseBests);
-%[y,i2] = sort(mseOthers);
 
 resultsEMD = zeros(length(i1),length(i1));
 resultsMSE = zeros(length(i1),length(i1));
@@ -20,20 +33,14 @@ for i = 1:length(selectionsSortedOrder)
    resultsBase(row,col)=1;
    if(selectionsSortedOrder(i)==1)
        resultsEMD(row,col)=1;
-   else
-       %resultsEMD(row,col)=-1;
    end
    
    if(selectionsSortedOrder(i)==2)
        resultsMSE(row,col)=1;
-   else
-       %resultsMSE(row,col)=-1;
    end
    
    if(selectionsSortedOrder(i)==-2)
        resultsAmb(row,col)=1;
-   else
-       %resultsAmb(row,col)=-1;
    end
 end
 
@@ -54,21 +61,21 @@ resultsAvgBase(resultsAvgBase<1e-5)=1e-5;
 
 figure
 imagesc(resultsAvgEMD./resultsAvgBase);
-title('EMD result density compared with normal density');
-xlabel('MSE difference value');
-ylabel('EMD difference value');
+title('EMD Patch Chosen Probability in Neighborhood');
+xlabel(xName);
+ylabel(yName);
 colorbar;
 
 figure
 imagesc(resultsAvgMSE./resultsAvgBase);
-title('MSE result density compared with normal density');
-xlabel('MSE difference value');
-ylabel('EMD difference value');
+title('MSE Patch Chosen Probability in Neighborhood');
+xlabel(xName);
+ylabel(yName);
 colorbar;
 
 figure
 imagesc(resultsAvgAmb./resultsAvgBase);
-title('Amb result density compared with normal density');
-xlabel('MSE difference value');
-ylabel('EMD difference value');
+title('Amb Chosen Probability in Neighborhood');
+xlabel(xName);
+ylabel(yName);
 colorbar;
