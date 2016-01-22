@@ -1,4 +1,4 @@
-option=1;
+option=3;
 
 if(option==1)
     [x,i1] = sort(emdDiffs);
@@ -15,6 +15,16 @@ elseif(option==3)
     [y,i2] = sort(mseOthers);
     yName = 'Rank of MSE Best Value';
     xName = 'Rank of MSE Other Value';
+elseif(option==4)
+    [x,i1] = sort(emdBests);
+    [y,i2] = sort(mseOthers);
+    yName = 'Rank of EMD Best Value';
+    xName = 'Rank of MSE Other Value';
+elseif(option==5)
+    [x,i1] = sort(emdOthers);
+    [y,i2] = sort(mseBests);
+    yName = 'Rank of EMD Other Value';
+    xName = 'Rank of MSE Best Value';
 else
     [x,i1] = sort(emdQuots);
     [y,i2] = sort(mseQuots);

@@ -79,6 +79,12 @@ elseif(compareMethod==8)
     comparisonRaw = emdDiffsNorm+mseDiffsNorm;
 elseif(compareMethod==9)
     comparisonRaw = emdDiffsNorm-mseDiffsNorm;
+elseif(compareMethod==10)
+    comparisonRaw = emdBests;
+    comparisonRaw(isnan(emdDiffs))=NaN;
+elseif(compareMethod==11)
+    comparisonRaw = mseBests;
+    comparisonRaw(isnan(emdDiffs))=NaN;
 else
     comparisonRaw = mseDiffs-emdDiffs;
 end

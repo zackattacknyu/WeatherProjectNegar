@@ -14,7 +14,7 @@ load('sendThisToZach_736336_4323.mat');
 selectionsSortedOrder = selections(patchIndsOrderOld);
 
 %THIS WILL CHANGE DEPENDING ON WHICH METHOD WE CARE ABOUT
-compareMethod=8;
+compareMethod=11;
 
 getDisplayPatchInds;
 
@@ -67,9 +67,13 @@ totalAmb = length(find(ambResults==1));
 
 indexValues = (windowWidth/2):(length(movingEMD)+windowWidth/2-1);
 
-emdAvgArray = (totalEMD/totalValues).*ones(1,length(indexValues));
-mseAvgArray = (totalMSE/totalValues).*ones(1,length(indexValues));
-ambAvgArray = (totalAmb/totalValues).*ones(1,length(indexValues));
+emdAvg = totalEMD/totalValues;
+mseAvg = totalMSE/totalValues;
+ambAvg = totalAmb/totalValues;
+
+emdAvgArray = emdAvg.*ones(1,length(indexValues));
+mseAvgArray = mseAvg.*ones(1,length(indexValues));
+ambAvgArray = ambAvg.*ones(1,length(indexValues));
 
 figure
 hold on
@@ -84,3 +88,10 @@ xlabel('Ranking in List');
 ylabel('Probability Of Selection in Window');
 legend('EMD Prob','Avg EMD Prob','MSE Prob','Avg MSE Prob',...
     'Amb Prob','Avg Amb Prob','Location','eastoutside');
+%%
+results = [emdAvg mseAvg ambAvg];
+figure
+bar(results);
+title('Global Probability of each Option Chosen');
+xlabel('Option Chosen: 1-EMD 2-MSE 3-Ambiguous');
+ylabel('Probability');
