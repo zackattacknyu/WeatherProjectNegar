@@ -35,34 +35,21 @@ and $Y$ be patch chosen by MSE\\
 \\
 We thus know that $f(X)<f(Y)$ and $g(Y)<g(X)$\\
 \\
-Let $H_1=f(Y)-f(X)$ and $H_2=g(X)-g(Y)$\\
+Let $h_1=f(Y)-f(X)$ and $h_2=g(X)-g(Y)$\\
 \\
-Assumption: 
-Let $H=H_1 \cdot H_2$
+$h_1$ and $h_2$ are attempts at Goal 1\\
+\\
+Let 
+\[
+H^*=H_1 \cdot H_2
+\]
+and 
+\[
+H^+ = \frac{H_1}{std(H_1)} + \frac{H_2}{std(H_2)}
+\]
+$H^*$ and $H^+$ are attempts at Goal 2
 
-\newpage
 
-Let $f$ be the error function which we are trying to prove is the best one.\\
-Let $g$ be the other error function.\\
-Let $p(A,B)$ be the probability of choosing patch A over patch B.\\
-Let $X$ and $Y$ be our two patches.\\
-\\
-We will focus on examples where $f$ and $g$ predict different patches, \\
-thus without loss of generality,\\
-$f(X) < f(Y)$ and $g(X) > g(Y)$\\
-\\
-Let $H_1 = f(Y)-f(X)$ and $H_2 = g(X)-g(Y)$\\
-Let $H = H_1 + \alpha H_2$ ($\alpha$ will be chosen so that $H_1$ and $\alpha H_2$ have the same range)\\
-\\
-Assumption 1: If $f$ is a good error function, then the $H_1$ value is correlated with our confidence that $X$ is a better patch than $Y$.\\
-\\
-Using assumption 1, I will sort the examples by $H_1$ in descending order. The probability of choosing $X$ over $Y$ should be very high in the initial examples and decrease as you progress through the examples. Thus $H_1$ and $p(X,Y)$ should be well correlated.\\
-\\
-I will then sort by $H_2$ in descending order and show the examples. If $f$ outperforms $g$ then we should find that $p(Y,X)$ and $H_2$ are not as well correlated as $p(X,Y)$ and $H_1$.  \\
-\\
-Assumption 2: If $f$ is a better error function than $g$, then $X$ should be better than $Y$ for the examples where they disagree the most.\\
-\\
-To formalize assumption 2, I will sort the examples by descending order of $H$ value. For the first $m$ examples, there should be a very high probability of choosing $X$ over $Y$. I will then flip the definition of $f$ and $g$ and show examples in descending order of $H$ value. The average probability of choosing $X$ over $Y$ for these first $m$ examples should be lower than previously.
 
 \end{document}
 

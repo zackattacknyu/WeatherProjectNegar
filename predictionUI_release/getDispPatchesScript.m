@@ -1,4 +1,4 @@
-compareMethod=3;
+compareMethod=4;
 getDisplayPatchInds;
 
 %display patches in Order
