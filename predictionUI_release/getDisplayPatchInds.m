@@ -85,6 +85,12 @@ elseif(compareMethod==10)
 elseif(compareMethod==11)
     comparisonRaw = mseBests;
     comparisonRaw(isnan(emdDiffs))=NaN;
+elseif(compareMethod==12)
+    comparisonRaw = emdOthers;
+    comparisonRaw(isnan(emdDiffs))=NaN;
+elseif(compareMethod==13)
+    comparisonRaw = mseOthers;
+    comparisonRaw(isnan(emdDiffs))=NaN;
 else
     comparisonRaw = mseDiffs-emdDiffs;
 end

@@ -1,4 +1,4 @@
-option=3;
+option=1;
 
 if(option==1)
     [x,i1] = sort(emdDiffs);
