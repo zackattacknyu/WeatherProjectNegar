@@ -27,6 +27,14 @@ mseOthers = otherMSEvals(interestingPatchInds);
 emdBests = bestEMDvals(interestingPatchInds);
 emdOthers = otherEMDvals(interestingPatchInds);
 
+targetPatches2 = targetPatches(interestingPatchInds);
+
+patchesSum = zeros(1,length(targetPatches2));
+for i = 1:length(targetPatches2)
+    curPatch = targetPatches2{i};
+    patchesSum(i) = sum(curPatch(:));
+end
+
 %{
 As an attempt to quantify performance of emd vs mse,
 the following sorting will be done:
@@ -90,6 +98,9 @@ elseif(compareMethod==12)
     comparisonRaw(isnan(emdDiffs))=NaN;
 elseif(compareMethod==13)
     comparisonRaw = mseOthers;
+    comparisonRaw(isnan(emdDiffs))=NaN;
+elseif(compareMethod==14)
+    comparisonRaw = patchesSum;
     comparisonRaw(isnan(emdDiffs))=NaN;
 else
     comparisonRaw = mseDiffs-emdDiffs;
