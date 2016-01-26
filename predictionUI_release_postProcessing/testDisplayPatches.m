@@ -2,7 +2,9 @@ load('patchesSetData.mat');
 
 getDispPatchesScript;
 
-load('sendThisToZach_736336_4323.mat');
+
+%load('sendThisToZach_736336_4323.mat');
+load('sendThisToZach_736354_8829.mat');
 
 [~,patchIndsOrder] = sort(displayPatchInds);
 selectionsSortedOrder = selections(patchIndsOrder);
@@ -41,15 +43,15 @@ for i = 1:size(dispPatches,2)
    
 end
 
-mean(emdCorrectProb);
-mean(mseCorrectProb);
-mean(selectedCorrectProb);
+mean(emdCorrectProb)
+mean(mseCorrectProb)
+mean(selectedCorrectProb)
 
 [~,emdOrder] = sort(emdCorrectProb);
 [~,mseOrder] = sort(mseCorrectProb);
 [~,selectedOrder]=sort(selectedCorrectProb);
 
-curOrder = selectedOrder;
+curOrder = emdOrder;
 
 figure
 hold on
