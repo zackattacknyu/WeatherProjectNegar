@@ -24,8 +24,8 @@ for i = 1:size(dispPatches,2)
    curEMDrain = (curEMDpred(:)<precipCutoff);
    curTargetRain = (curTarget(:)<precipCutoff);
    
-   mseCorrectProb(i) = sum(curMSErain==curTargetRain)/numPixels;
-   emdCorrectProb(i) = sum(curEMDrain==curTargetRain)/numPixels;
+   mseCorrectProb(i) = getMeasure(curTargetRain,curMSErain);
+   emdCorrectProb(i) = getMeasure(curTargetRain,curEMDrain);
    
    if(selectionsSortedOrder(i)==1)
        selectedCorrectProb(i) = emdCorrectProb(i);
@@ -47,12 +47,14 @@ mean(selectedCorrectProb);
 
 [~,emdOrder] = sort(emdCorrectProb);
 [~,mseOrder] = sort(mseCorrectProb);
+[~,selectedOrder]=sort(selectedCorrectProb);
 
-curOrder = mseOrder;
+curOrder = selectedOrder;
 
 figure
 hold on
 plot(emdCorrectProb(curOrder),'r-');
 plot(mseCorrectProb(curOrder),'b-');
+plot(selectedCorrectProb(curOrder),'g-');
 hold off
-legend('EMD','MSE');
+legend('EMD','MSE','Selected','Location','eastoutside');
