@@ -9,8 +9,8 @@ numTrueNeg = sum((predBinary==0)&(trainBinary==0));
 numFalsePos = sum((predBinary==1)&(trainBinary==0));
 numFalseNeg = sum((predBinary==0)&(trainBinary==1));
 
-%prob = (numTruePos+numTrueNeg)/numPixels;
-prob = (numFalsePos)/(numFalsePos+numTrueNeg);
+prob = (numTruePos+numTrueNeg)/numPixels;
+%prob = (numFalsePos)/(numFalsePos+numTrueNeg);
 
 end
 

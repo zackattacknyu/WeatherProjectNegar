@@ -31,9 +31,11 @@ emdOthers = otherEMDvals(interestingPatchInds);
 targetPatches2 = targetPatches(interestingPatchInds);
 
 patchesSum = zeros(1,length(targetPatches2));
+patchesMax = zeros(1,length(targetPatches2));
 for i = 1:length(targetPatches2)
     curPatch = targetPatches2{i};
     patchesSum(i) = sum(curPatch(:));
+    patchesMax(i) = max(curPatch(:));
 end
 
 %{
@@ -102,6 +104,9 @@ elseif(compareMethod==13)
     comparisonRaw(isnan(emdDiffs))=NaN;
 elseif(compareMethod==14)
     comparisonRaw = patchesSum;
+    comparisonRaw(isnan(emdDiffs))=NaN;
+elseif(compareMethod==15)
+    comparisonRaw = patchesMax;
     comparisonRaw(isnan(emdDiffs))=NaN;
 else
     comparisonRaw = mseDiffs-emdDiffs;

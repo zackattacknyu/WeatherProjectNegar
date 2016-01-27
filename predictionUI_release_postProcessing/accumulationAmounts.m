@@ -3,7 +3,7 @@
 %   MAKE THE COMPAREMETHOD=14
 
 %the sum of accumulation
-patchesSum = sortedCompare;
+patchesSum = log(sortedCompare);
 
 emdAccumArray = patchesSum.*emdResults;
 mseAccumArray = patchesSum.*mseResults;
@@ -12,6 +12,9 @@ ambAccumArray = patchesSum.*ambResults;
 totalEMDaccum = sum(emdAccumArray);
 totalMSEaccum = sum(mseAccumArray);
 totalAmbAccum = sum(ambAccumArray);
+
+totalEMDaccum/sum(patchesSum)
+totalMSEaccum/sum(patchesSum)
 
 figure
 hold on
