@@ -5,5 +5,7 @@ function [ coeff ] = getCoeff( targetArray,predArray )
 rMatrix = corrcoef([targetArray predArray]);
 coeff = rMatrix(1,2);
 
+%coeff = sum(predArray-targetArray)/sum(targetArray);
+
 end
 
