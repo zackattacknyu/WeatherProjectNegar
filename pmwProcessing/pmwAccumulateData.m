@@ -1,4 +1,5 @@
-files = dir(['./data/data_hrly1201*']);
+%files = dir(['./data/data_hrly1201*']);
+files = dir(['./data/data_hrly1207*']);
 l = length(files);
 
 fileStr = strcat('data/',files(1).name);
@@ -20,6 +21,5 @@ for i =1:l
      
 end  
 
-%%
-
-save('data_monthly1201.mat','ccs_s','ccsadj_s','pmw_s');
+%save('data_monthly1201.mat','ccs_s','ccsadj_s','pmw_s');
+save('data_monthly1207.mat','ccs_s','ccsadj_s','pmw_s');
