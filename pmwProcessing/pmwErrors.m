@@ -9,21 +9,29 @@ CCS Adj RMSE - 10.4060
 %}
 
 load('mask_US.mat');
-%load('data_monthly1207.mat');
 
-files = dir('./daily/data_daily*');
+%load('data_monthly1207.mat');
+%files = dir('./daily/data_daily*');
+files = dir('./data/data_hrly*');
+
 l = length(files);
 
 ccsErrors = zeros(1,l);
 ccsAdjErrors = zeros(1,l);
 
 for i = 1:l
+    i
     
-    load(strcat('daily/',files(i).name));
+    %load(strcat('daily/',files(i).name));
+    load(strcat('data/',files(i).name));
 
-    ccsUS = ccs_s(45:140,941:1172).*mask_US;
-    ccsAdjUS = ccsadj_s(45:140,941:1172).*mask_US;
-    pmwUS = pmw_s(45:140,941:1172).*mask_US;
+    %ccsUS = ccs_s(45:140,941:1172).*mask_US;
+    %ccsAdjUS = ccsadj_s(45:140,941:1172).*mask_US;
+    %pmwUS = pmw_s(45:140,941:1172).*mask_US;
+    
+    ccsUS = ccs(45:140,941:1172).*mask_US;
+    ccsAdjUS = ccsadj(45:140,941:1172).*mask_US;
+    pmwUS = pmw(45:140,941:1172).*mask_US;
 
     ccsErrorArray = abs(ccsUS(:)-pmwUS(:));
     ccsErrorArray(isnan(ccsErrorArray))=0;
