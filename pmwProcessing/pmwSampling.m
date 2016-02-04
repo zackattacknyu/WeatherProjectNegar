@@ -1,15 +1,17 @@
-dataFiles = dir('daily/data_daily1207*');
+%dataFiles = dir('daily/data_daily1207*');
 %dataFiles = dir('data_monthly*');
+dataFiles = dir('data/data_hrly1201*');
+
 load('mask_US.mat');
 
 numT = length(dataFiles);
-numSampleTimes = 30;
-minTimeDiff = 15;
+numSampleTimes = 100;
+minTimeDiff = 5;
 epsilon = 1e-5;
 
-%timeStamps = getSampledPoints(numT,numSampleTimes,minTimeDiff);
-%numTimeStamps = length(timeStamps);
-numTimeStamps = length(dataFiles);
+timeStamps = getSampledPoints(numT,numSampleTimes,minTimeDiff);
+numTimeStamps = length(timeStamps);
+%numTimeStamps = length(dataFiles);
 
 numPred = 2;
 patchesT = cell(1,numTimeStamps);
@@ -19,10 +21,11 @@ for tt = 1:numTimeStamps
     
     tt
     
-    %fileNum = timeStamps(tt);
-    fileNum=tt;
+    fileNum = timeStamps(tt);
+    %fileNum=tt;
     
-    load(['daily/' dataFiles(fileNum).name]);
+    %load(['daily/' dataFiles(fileNum).name]);
+    load(['data/' dataFiles(fileNum).name]);
     %load(dataFiles(fileNum).name);
 
     mask_US(isnan(mask_US))=0;
@@ -101,7 +104,7 @@ for i = 1:length(patchesT)
 end
 
 
-save('daily1207patches_3.mat','targetPatches','predPatches','patchesT','patchesPred');
+save('hrly1201patches_3.mat','targetPatches','predPatches','patchesT','patchesPred');
 
 
 
