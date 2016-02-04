@@ -29,10 +29,19 @@ for tt = 1:numTimeStamps
     %load(dataFiles(fileNum).name);
 
     mask_US(isnan(mask_US))=0;
+    ccs(isnan(ccs))=0;
+    ccsadj(isnan(ccsadj))=0;
+    pmw(isnan(pmw))=0;
+    
     curPredImages = cell(1,2);
-    curPredImages{1} = ccs_s(45:140,941:1172).*mask_US;
-    curPredImages{2} = ccsadj_s(45:140,941:1172).*mask_US;
-    curImage = pmw_s(45:140,941:1172).*mask_US;
+    
+    curPredImages{1} = ccs(45:140,941:1172).*mask_US;
+    curPredImages{2} = ccsadj(45:140,941:1172).*mask_US;
+    curImage = pmw(45:140,941:1172).*mask_US;
+    
+    %curPredImages{1} = ccs_s(45:140,941:1172).*mask_US;
+    %curPredImages{2} = ccsadj_s(45:140,941:1172).*mask_US;
+    %curImage = pmw_s(45:140,941:1172).*mask_US;
     
     minDist = 10;
     patchSize = 20;
@@ -104,7 +113,7 @@ for i = 1:length(patchesT)
 end
 
 
-save('hrly1201patches_3.mat','targetPatches','predPatches','patchesT','patchesPred');
+save('hrly1201patches_1.mat','targetPatches','predPatches','patchesT','patchesPred');
 
 
 

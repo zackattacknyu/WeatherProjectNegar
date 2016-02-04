@@ -1,6 +1,6 @@
 %clear all;
 load('daily1201patches_1.mat');
-
+%%
 numPatches = 0;
 for i = 1:length(patchesT)
     numPatches = numPatches + length(patchesT{i});
