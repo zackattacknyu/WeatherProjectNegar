@@ -8,8 +8,9 @@ compareMethod=4;
 getDisplayPatchInds;
 displayPatchIndsOld = displayPatchInds;
 %load('currentResultData.mat');
-load('sendThisToZach_736336_4323.mat');
+%load('sendThisToZach_736336_4323.mat');
 %load('sendThisToZach_736354_8829.mat');
+load('sendThisToZach_736363_7316.mat');
 
 [~,patchIndsOrderOld] = sort(displayPatchIndsOld);
 selectionsSortedOrder = selections(patchIndsOrderOld);
