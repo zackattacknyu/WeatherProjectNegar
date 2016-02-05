@@ -26,12 +26,14 @@ for jj = 1:length(patchFiles)
             curPred = predPatches{predJ,patchI};
             predErrorsMSE(predJ,patchI) = rmsePatches(curTarget,curPred);
 
+            %predErrorsEMD(predJ,patchI) = getEMDwQP(curTarget,curPred);
+            
             try
                 predErrorsEMD(predJ,patchI) = getEMDwQP(curTarget,curPred);
             catch
                 predErrorsEMD(predJ,patchI) = NaN;
             end
-
+            
         end
 
         if(mod(patchI,saveInterval)==0)
