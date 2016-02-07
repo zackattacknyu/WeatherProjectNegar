@@ -70,3 +70,24 @@ plot(ccsErrors(ccsAdjInds),'g-');
 plot(ccsAdjErrors(ccsAdjInds),'r-');
 legend('CCS Errors','CCS Adj Errors');
 hold off
+%%
+
+
+ccsEMDerrors = predErrorsEMD(1,:);
+ccsAdjEMDerrors = predErrorsEMD(2,:);
+ccsMSEerrors = predErrorsMSE(1,:);
+ccsAdjMSEerrors = predErrorsMSE(2,:);
+
+figure
+hold on
+plot(log(sort(ccsEMDerrors)));
+plot(log(sort(ccsAdjEMDerrors)));
+hold off
+legend('CCS EMD','CCS Adj EMD');
+
+figure
+hold on
+plot(log(sort(ccsMSEerrors)));
+plot(log(sort(ccsAdjMSEerrors)));
+hold off
+legend('CCS MSE','CCS Adj MSE');
