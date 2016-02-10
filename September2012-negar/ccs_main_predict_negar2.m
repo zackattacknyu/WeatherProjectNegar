@@ -77,16 +77,20 @@ end_of_loop = 0
     imagesc(precip)
     colormap([1 1 1;0.8 0.8 0.8;jet(20)])
     caxis([-1 20]) 
-    drwvect([-130 25 -100 45],[500 750],'/home/dank/t3_vects/us_states_outl_ug.tmp','k')
+    drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
     colorbar('vertical')
     title(fn)
     
     precip = fix(precip*100);
+    save(['ccs/precip' files(i,1).name(7:end-7) '.mat'],precip);
+    
+    %{
     cd('/mnt/t/disk4/nkarbala/research/ccs_tree/ccs/')
     savebfn_l(['rgo',files(i,1).name(7:16),'.bin'], precip, 'short');
     gzip(['rgo',files(i,1).name(7:16),'.bin']);
     delete(['rgo',files(i,1).name(7:16),'.bin']);
     cd('/mnt/t/disk4/nkarbala/research/ccs_tree/')
+    %}
     
 end
 
