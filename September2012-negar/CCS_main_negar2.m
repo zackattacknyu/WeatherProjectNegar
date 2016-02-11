@@ -17,7 +17,8 @@ DistV=maxV-minV;  NBIN=10;
 dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 
 %files = dir('../ccs_sep_event/t300/goes/bghrus12*');
-files = dir('./goes/bghrus12*');
+%files = dir('./goes/bghrus12*');
+files = dir('matFiles/data1209*');
 n = length(files);
 
 full_FF = []
@@ -25,9 +26,12 @@ full_FF = []
 for i = 1:n
     i
    
-    fn =['./goes/', files(i,1).name];
+    %fn =['./goes/', files(i,1).name];
+    fn =['matFiles/', files(i,1).name];
     
-    ir = loadbfn_bgz(fn, DIM, 'short')/100;
+    %ir = loadbfn_bgz(fn, DIM, 'short')/100;
+    
+    load(fn);
     ir = ir(126:625,126:875);
     
     L=ccs_sub_seqsegment(ir,DIM2,THDH,MergeThd, S); %segmentation
