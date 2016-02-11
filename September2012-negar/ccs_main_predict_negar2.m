@@ -16,21 +16,25 @@ DistV=maxV-minV;  NBIN=10;
 %%%%%% Parameters, Recommend use the default value%%%%%%%%%
 dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 
-files = dir('goes/bghrus1209*');
+%files = dir('goes/bghrus1209*');
+files = dir('matFiles/data1209*');
+load('tc.mat');
 n = length(files);
 
 precip = zeros(500,750);
 
-for i = 1 %:n
+for i = 1:5 %:n
     i
    
-    fn =['goes/', files(i,1).name];
+    %fn =['goes/', files(i,1).name];
+    fn =['matFiles/', files(i,1).name];
     
     if ~exist(fn,'file')
                 continue;
     end
    
-    ir = loadbfn_bgz(fn, DIM, 'short')/100;
+    %ir = loadbfn_bgz(fn, DIM, 'short')/100;
+    load(fn);
     
     % area for training and testing over the US
     ir = ir(126:625,126:875);
@@ -82,7 +86,7 @@ end_of_loop = 0
     title(fn)
     
     precip = fix(precip*100);
-    save(['ccs/precip' files(i,1).name(7:end-7) '.mat'],precip);
+    save(['ccs/precip' files(i,1).name(5:end-4) '.mat'],'precip');
     
     %{
     cd('/mnt/t/disk4/nkarbala/research/ccs_tree/ccs/')
