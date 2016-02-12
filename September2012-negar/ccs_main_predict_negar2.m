@@ -23,7 +23,7 @@ n = length(files);
 
 precip = zeros(500,750);
 
-for i = 1:5 %:n
+for i = 1 %:n
     i
    
     %fn =['goes/', files(i,1).name];
