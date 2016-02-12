@@ -1,4 +1,4 @@
-function F = ccs_patchpixel_Feature(IR,l,maxl,ff)
+function [F,nn] = ccs_patchpixel_Feature(IR,l,maxl,ff)
 
 FDATAcell = cell(1,maxl);
 numRows = 0;
