@@ -1,3 +1,11 @@
+%{
+NOTE ABOUT TC.MAT
+It was trained over every 4th timestep (every 2 hours)
+    with the radar and ir data
+    for Sep 2012
+Every 4th timestep was used, they were NOT accumulated
+%}
+
 % PERSIANN-CCS decision tree added
 % Negar Karbalaee
 % February 2016
