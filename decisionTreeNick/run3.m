@@ -9,3 +9,7 @@ boostArgs.v = 0.1;
 boostArgs.funargs = {rf J};
 [perfTrain,perfTest,boostStruct] = ...
     BoostLS(XTrPct, Ytr, XTePct, Yte, @boostTreeFun, boostArgs, [], []);
+
+%%
+
+Yte2 = boostTreeVal2(boostStruct,1000,XTePct,0.1);

@@ -76,14 +76,14 @@ end_of_loop = 0
     
     cd('./@treeRegress/')
     
-     rr = predict(tc,Xte);  
+     rr2 = predict(tc,Xte);  
         
     cd('../') 
      
     
     precip(ir<0) = -1;
     precip(L==0) = 0;
-    precip(ir>0 & L>0) = rr;
+    precip(ir>0 & L>0) = rr2;
     
     figure(1)
     imagesc(precip)
