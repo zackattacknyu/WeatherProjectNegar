@@ -12,8 +12,8 @@ boostArgs.funargs = {rf J};
     BoostLS(XTrPct, Ytr, XTePct, Yte, @boostTreeFun, boostArgs, [], []);
 
 %%
-
-Yte2 = boostTreeVal2(boostStruct,1000,XTePct,0.1);
+trainF = boostStruct.F;
+funF = boostTreeVal2(boostStruct,boostArgs.nIter,XTrPct,boostArgs.v);
 
 %%
 
@@ -62,6 +62,15 @@ for jj = 1:length(vVals)
         BoostLS(XTrPct, Ytr, XTePct, Yte, @boostTreeFun, boostArgs, [], []);
     testRMSEv(jj) = boostStruct.perfTest(end).rmse;
 end
+%%
+
+figure 
+plot(rfVals,testRMSErf);
+
+figure
+plot(vVals,testRMSEv);
+
+
 
 
 
