@@ -46,3 +46,12 @@ caxis([-1 20])
 drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
 colorbar('vertical')
 title(fn)
+
+%%
+
+figure(3)
+imagesc(L)
+colorbar;
+drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
+colorbar('vertical')
+title(fn)
