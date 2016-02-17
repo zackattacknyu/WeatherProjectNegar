@@ -1,5 +1,14 @@
 
-predYnickTree = boostTreeVal2(boostStruct,inf,uint8(Xte),0.1);
+predYnickTree = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(Xte),boostArgs.v);
+%%
+
+%TO BE LOADED AFTER A RUN IN CCS_MAIN_PREDICT_NEGAR...
+
+rr3 = rr(126:625,126:875);
+rr3 = rr3(ir>0 & L>0);
+validInds = (rr3>=0);
+rmseNegar = sqrt(mean((rr3(validInds)-rr2(validInds)).^2));
+maeNegar = mean(abs(rr3(validInds)-rr2(validInds)));
 
 %%
 precip = zeros(500,750);
@@ -12,7 +21,7 @@ precip3 = precip;
 
 precip1(ir>0 & L>0) = predYnickTree;
 precip2(ir>0 & L>0) = rr2;
-%precip3(ir>0 & L>0) = rr;
+precip3(ir>0 & L>0) = rr3;
 
 figure(1)
 imagesc(precip1)
