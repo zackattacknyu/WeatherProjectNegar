@@ -55,3 +55,14 @@ colorbar;
 drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
 colorbar('vertical')
 title(fn)
+
+%%
+
+figure(2)
+aa = max(max(L)); 
+aa1 = rand(aa,3); aa1(1,:) = [1 1 1];
+imagesc(L,[0 aa]);
+colormap(aa1);
+drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k');
+xlim([0 750]);
+ylim([0 500]);
