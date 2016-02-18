@@ -18,13 +18,13 @@ funF = boostTreeVal2(boostStruct,boostArgs.nIter,XTrPct,boostArgs.v);
 %%
 
 Jvals = 2.^(1:15);
-testRMSEj = zeros(1,length(Jvals));
-totalRuntimes = zeros(1,length(Jvals));
+%testRMSEj = zeros(1,length(Jvals));
+%totalRuntimes = zeros(1,length(Jvals));
 rf = 0.4;
 boostArgs.nIter = 800;  
 boostArgs.evaliter = unique([1:10:boostArgs.nIter boostArgs.nIter]);
 boostArgs.v = 0.5;     
-for jj = 1:length(Jvals)
+for jj = 11:length(Jvals)
     t1 = clock;
     J = Jvals(jj);
     J
@@ -35,6 +35,7 @@ for jj = 1:length(Jvals)
     t2 = clock;
     numSeconds = etime(t2,t1)
     totalRuntimes(jj) = numSeconds;
+    save('tc_jValsTimeTest_current.mat')
 end
 
 save('tc_jValsTimeTest.mat');
