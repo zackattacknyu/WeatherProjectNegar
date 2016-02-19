@@ -25,7 +25,7 @@ DistV=maxV-minV;  NBIN=10;
 dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 
 %files = dir('goes/bghrus1209*');
-files = dir('matFiles/data1209*');
+files = dir('matFiles/data1210*');
 load('tc.mat');
 load('tc_J128result.mat');
 NN = length(files);
@@ -102,6 +102,9 @@ end_of_loop = 0
     
     negarTreeRMSE = sqrt(mean((rr2(indicesToUse)-rrTestUse(indicesToUse)).^2))
     nickTreeRMSE = sqrt(mean((rr3(indicesToUse)-rrTestUse(indicesToUse)).^2))
+    
+    negarBias = getBiasMeasure((rr2(indicesToUse)<1),(rrTestUse(indicesToUse)<1))
+    nickBias = getBiasMeasure((rr3(indicesToUse)<1),(rrTestUse(indicesToUse)<1))
     
     negarRMSE(i) = negarTreeRMSE;
     nickRMSE(i) = nickTreeRMSE; 
