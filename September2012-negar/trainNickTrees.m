@@ -2,12 +2,12 @@ load('tc.mat');
 feaToUse = 1:size(Xtr,2);
 [XTrPct,XTePct,binLocs] = XToPct(Xtr(:,feaToUse),Xte(:,feaToUse), 256);
 XTrPct = uint8(XTrPct); XTePct = uint8(XTePct);
-boostArgs.nIter = 1000;  
+boostArgs.nIter = 600;  
 boostArgs.evaliter = unique([1:10:boostArgs.nIter boostArgs.nIter]);
 boostArgs.v = 0.5; 
-%%
-Jvals = 2.^(7:9);
-rfVals = [0.8 0.9 1];
+
+Jvals = 2.^(4:6);
+rfVals = [0.6 0.7 0.8];
 [jj,rff] = meshgrid(Jvals,rfVals);
 jUse = jj(:); rfUse = rff(:);
 
