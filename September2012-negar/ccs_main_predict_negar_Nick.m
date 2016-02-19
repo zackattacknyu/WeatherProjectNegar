@@ -25,7 +25,7 @@ DistV=maxV-minV;  NBIN=10;
 dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 
 %files = dir('goes/bghrus1209*');
-files = dir('matFiles/data1209*');
+files = dir('matFiles/data1210*');
 load('tc.mat');
 load('tc_J128result.mat');
 NN = length(files);
@@ -64,12 +64,12 @@ for i = 1:NN
        NUM_FEATURE=12; WDSIZE=2;  MAXL=max(max(L));
         
             F=zeros(MAXL,NUM_FEATURE);
-beginning_of_loop = MAXL
+beginning_of_loop = MAXL;
             for gg=1:MAXL
                F(gg,1:(NUM_FEATURE) )=ccs_getFeature(ir,L,gg,NUM_FEATURE,WDSIZE,DIM2(1),DIM2(2));
                FF(gg,:) = ( F(gg,:) - minV(1,:) )./ DistV(1,:);  %% Normalized the features
             end
-end_of_loop = 0
+end_of_loop = 0;
             % post process features, avoid extremes
              n=find(FF>2); FF(n)=2; n=find(FF<0); FF(n)=0;  
              
@@ -100,8 +100,14 @@ end_of_loop = 0
     rrTestUse = rrTest(ir>0 & L>0);
     indicesToUse = (rrTestUse>=0);
     
-    negarTreeRMSE = sqrt(mean((rr2(indicesToUse)-rrTestUse(indicesToUse)).^2))
-    nickTreeRMSE = sqrt(mean((rr3(indicesToUse)-rrTestUse(indicesToUse)).^2))
+    negarTreeRMSE = sqrt(mean((rr2(indicesToUse)-rrTestUse(indicesToUse)).^2));
+    nickTreeRMSE = sqrt(mean((rr3(indicesToUse)-rrTestUse(indicesToUse)).^2));
+    
+    negarBias = getBiasMeasure((rr2(indicesToUse)<1),(rrTestUse(indicesToUse)<1));
+    nickBias = getBiasMeasure((rr3(indicesToUse)<1),(rrTestUse(indicesToUse)<1));
+    
+    negarBiasCoeff = getBiasCoefficient(rrTestUse(indicesToUse),rr2(indicesToUse))
+    nickBiasCoeff = getBiasCoefficient(rrTestUse(indicesToUse),rr3(indicesToUse))
     
     negarRMSE(i) = negarTreeRMSE;
     nickRMSE(i) = nickTreeRMSE; 
