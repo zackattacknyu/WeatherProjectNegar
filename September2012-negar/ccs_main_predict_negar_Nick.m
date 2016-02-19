@@ -27,12 +27,14 @@ dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 %files = dir('goes/bghrus1209*');
 files = dir('matFiles/data1210*');
 load('tc.mat');
-load('tc_J128result.mat');
+load('tc_NickDecTreeResult_J128rf8.mat');
 NN = length(files);
 
 precip = zeros(500,750);
 precipNick = zeros(500,750);
 %%
+
+%CHECK TIME 2 IN THE OCT 2012 SET WHEN I GET A CHANCE
 negarRMSE = zeros(1,NN);
 nickRMSE = zeros(1,NN);
 for i = 1:NN
@@ -100,11 +102,11 @@ end_of_loop = 0;
     rrTestUse = rrTest(ir>0 & L>0);
     indicesToUse = (rrTestUse>=0);
     
-    negarTreeRMSE = sqrt(mean((rr2(indicesToUse)-rrTestUse(indicesToUse)).^2));
-    nickTreeRMSE = sqrt(mean((rr3(indicesToUse)-rrTestUse(indicesToUse)).^2));
+    negarTreeRMSE = sqrt(mean((rr2(indicesToUse)-rrTestUse(indicesToUse)).^2))
+    nickTreeRMSE = sqrt(mean((rr3(indicesToUse)-rrTestUse(indicesToUse)).^2))
     
-    negarBias = getBiasMeasure((rr2(indicesToUse)<1),(rrTestUse(indicesToUse)<1));
-    nickBias = getBiasMeasure((rr3(indicesToUse)<1),(rrTestUse(indicesToUse)<1));
+    negarBias = getBiasMeasure((rr2(indicesToUse)<1),(rrTestUse(indicesToUse)<1))
+    nickBias = getBiasMeasure((rr3(indicesToUse)<1),(rrTestUse(indicesToUse)<1))
     
     negarBiasCoeff = getBiasCoefficient(rrTestUse(indicesToUse),rr2(indicesToUse))
     nickBiasCoeff = getBiasCoefficient(rrTestUse(indicesToUse),rr3(indicesToUse))
@@ -112,7 +114,7 @@ end_of_loop = 0;
     negarRMSE(i) = negarTreeRMSE;
     nickRMSE(i) = nickTreeRMSE; 
     
-    %{
+    
     figure(1)
     imagesc(precip)
     colormap([1 1 1;0.8 0.8 0.8;jet(20)])
@@ -120,11 +122,11 @@ end_of_loop = 0;
     drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
     colorbar('vertical')
     title(fn)
-    %}
+    
     precip = fix(precip*100);
     save(['ccs/precip' files(i,1).name(5:end-4) '.mat'],'precip');
     
-    %{
+    
     figure(2)
     imagesc(precipNick)
     colormap([1 1 1;0.8 0.8 0.8;jet(20)])
@@ -132,20 +134,20 @@ end_of_loop = 0;
     drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
     colorbar('vertical')
     title(fn)
-    %}
+    
     precipNick = fix(precipNick*100);
     save(['ccs/precipNick' files(i,1).name(5:end-4) '.mat'],'precipNick');
     
-    %{
+    
     figure(3)
-    imagesc(rrTestUse)
+    imagesc(rrTest)
     colormap([1 1 1;0.8 0.8 0.8;jet(20)])
     caxis([-1 20]) 
     drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
     colorbar('vertical')
     title(fn)
-    %}
-    rrTestUse = fix(rrTestUse*100);
+    
+    rrTest = fix(rrTest*100);
     save(['ccs/rrTestUse' files(i,1).name(5:end-4) '.mat'],'rrTestUse');
     
     %{
