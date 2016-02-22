@@ -27,7 +27,7 @@ dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 %files = dir('goes/bghrus1209*');
 files = dir('matFiles/data1210*');
 load('tc.mat');
-load('tc_NickDecTreeResult_J128rf8.mat');
+load('tc_NickJ128rf8_iter130.mat');
 NN = length(files);
 
 precip = zeros(500,750);
@@ -37,7 +37,7 @@ precipNick = zeros(500,750);
 %CHECK TIME 2 IN THE OCT 2012 SET WHEN I GET A CHANCE
 negarRMSE = zeros(1,NN);
 nickRMSE = zeros(1,NN);
-for i = 1:NN
+for i = 50%:NN
     i
    
     %fn =['goes/', files(i,1).name];
