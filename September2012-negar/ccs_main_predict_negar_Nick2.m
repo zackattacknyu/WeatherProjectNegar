@@ -117,9 +117,9 @@ end
 
 %save('oct2012predictions_iter130.mat','negarPredictionArray',...
 %    'nickPredictionArray','targetArray');
-
+%%
 %load('oct2012predictions_iter130.mat');
-%load('oct2012predictions.mat');
+load('oct2012predictions.mat');
 
 totalNumEntries = 0;
 for i = 1:length(targetArray)
@@ -148,7 +148,7 @@ nickBias = getBiasMeasure((nickPredictions<1),(targetEntries<1))
 
 negarBiasCoeff = getBiasCoefficient(targetEntries,negarPredictions)
 nickBiasCoeff = getBiasCoefficient(targetEntries,nickPredictions)
-
-save('oct2012predictions_iter133_allInfo.mat','negarPredictionArray',...
+%%
+save('oct2012predictions_iter130_allInfo.mat','negarPredictionArray',...
     'nickPredictionArray','targetArray','negarTreeRMSE','nickTreeRMSE',...
     'negarBias','nickBias','negarBiasCoeff','nickBiasCoeff');
