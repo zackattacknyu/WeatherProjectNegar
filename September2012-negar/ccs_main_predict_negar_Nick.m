@@ -27,7 +27,7 @@ dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 %files = dir('goes/bghrus1209*');
 files = dir('matFiles/data1210*');
 load('tc.mat');
-load('tc_NickJ128rf8_iter130.mat');
+load('tc_NickDecTreeResult_J128rf8.mat');
 NN = length(files);
 
 precip = zeros(500,750);
@@ -37,7 +37,7 @@ precipNick = zeros(500,750);
 %CHECK TIME 2 IN THE OCT 2012 SET WHEN I GET A CHANCE
 negarRMSE = zeros(1,NN);
 nickRMSE = zeros(1,NN);
-for i = 50%:NN
+for i = [5,50]%:NN
     i
    
     %fn =['goes/', files(i,1).name];
@@ -88,7 +88,9 @@ end_of_loop = 0;
         
     cd('../') 
     
-    rr3 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(Xte),boostArgs.v);
+    [~,XtePct,~] = XToPct(Xte,Xte,256);
+    
+    rr3 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(XtePct),boostArgs.v);
      
     
     precip(ir<0) = -1;
@@ -123,8 +125,8 @@ end_of_loop = 0;
     colorbar('vertical')
     title(fn)
     
-    precip = fix(precip*100);
-    save(['ccs/precip' files(i,1).name(5:end-4) '.mat'],'precip');
+    %precip = fix(precip*100);
+    %save(['ccs/precip' files(i,1).name(5:end-4) '.mat'],'precip');
     
     
     figure(2)
@@ -135,8 +137,8 @@ end_of_loop = 0;
     colorbar('vertical')
     title(fn)
     
-    precipNick = fix(precipNick*100);
-    save(['ccs/precipNick' files(i,1).name(5:end-4) '.mat'],'precipNick');
+    %precipNick = fix(precipNick*100);
+    %save(['ccs/precipNick' files(i,1).name(5:end-4) '.mat'],'precipNick');
     
     
     figure(3)
@@ -147,8 +149,8 @@ end_of_loop = 0;
     colorbar('vertical')
     title(fn)
     
-    rrTest = fix(rrTest*100);
-    save(['ccs/rrTestUse' files(i,1).name(5:end-4) '.mat'],'rrTestUse');
+    %rrTest = fix(rrTest*100);
+    %save(['ccs/rrTestUse' files(i,1).name(5:end-4) '.mat'],'rrTestUse');
     
     %{
     cd('/mnt/t/disk4/nkarbala/research/ccs_tree/ccs/')

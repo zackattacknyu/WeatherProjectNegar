@@ -31,5 +31,13 @@ end
 
 save('tc_NickDecTreeTestResults.mat','totalRuntimes','testRMSEvals','jUse','rfUse');
 
+%%
 
+load('tc_NickJ128rf8_iter133.mat');
 
+[~,XtePct,~] = XToPct(Xte,Xte,256);
+[~,XtePct2,~] = XToPct(X,Xte,256);
+yhat1 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(XtePct),boostArgs.v);
+yhat2 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(XtePct2),boostArgs.v);
+yhat3 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(Xte),boostArgs.v);
+     
