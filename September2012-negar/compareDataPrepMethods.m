@@ -1,15 +1,22 @@
-
+fprintf('Loading...\n');
 load('tc_NickJ128rf8_iter5.mat');
 
-[~,XtePct,~] = XToPct(Xte,Xte,256);
-[~,XtePct2,~] = XToPct(X,Xte,256);
+fprintf('Converting Data...\n');
+[~,XtePct,~] = XToPct(X,Xte,256);
+[~,XtePct2,~] = XToPct(Xtr,Xte,256);
+
+fprintf('evaluating Tree with Data binned by whole set...\n');
 yhat1 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(XtePct),boostArgs.v);
+fprintf('Done evaluating\n');
+rmse1 = sqrt(mean((yhat1-boostStruct.FTest).^2))
+mae1 = mean(abs(yhat1-boostStruct.FTest))
+
+fprintf('evaluating Tree with Data binned by training set...\n');
 yhat2 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(XtePct2),boostArgs.v);
-yhat3 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(Xte),boostArgs.v);
+fprintf('Done evaluating\n');
+rmse2 = sqrt(mean((yhat2-boostStruct.FTest).^2))
+mae2 = mean(abs(yhat2-boostStruct.FTest))
 
-diff12 = sum(abs(yhat1-yhat2))
-diff13 = sum(abs(yhat1-yhat3))
-diff23 = sum(abs(yhat2-yhat3))
-
-save('compareDataPrepRes.mat','yhat1','yhat2','yhat3','diff12','diff13','diff23');
+%MUST USE TRAINING SET FOR BINNING
      
+fprintf('all evaluating done\n');

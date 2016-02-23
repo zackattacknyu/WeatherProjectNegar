@@ -26,7 +26,9 @@ dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 
 %files = dir('goes/bghrus1209*');
 files = dir('matFiles/data1210*');
-load('tc_NickJ128rf8_iter133.mat');
+%load('tc_NickJ128rf8_iter133.mat');
+load('tc_NickDecTreeResult_J128rf8.mat');
+XtrSet = Xtr;
 NN = length(files);
 
 precip = zeros(500,750);
@@ -90,7 +92,9 @@ end_of_loop = 0;
         
     cd('../') 
     
-    rr3 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(Xte),boostArgs.v);
+    [~,XtePct,~] = XToPct(XtrSet,Xte,256);
+    
+    rr3 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(XtePct),boostArgs.v);
      
     
     precip(ir<0) = -1;
@@ -119,7 +123,7 @@ end
 %    'nickPredictionArray','targetArray');
 %%
 %load('oct2012predictions_iter130.mat');
-load('oct2012predictions.mat');
+%load('oct2012predictions.mat');
 
 totalNumEntries = 0;
 for i = 1:length(targetArray)
@@ -149,6 +153,6 @@ nickBias = getBiasMeasure((nickPredictions<1),(targetEntries<1))
 negarBiasCoeff = getBiasCoefficient(targetEntries,negarPredictions)
 nickBiasCoeff = getBiasCoefficient(targetEntries,nickPredictions)
 %%
-save('oct2012predictions_iter130_allInfo.mat','negarPredictionArray',...
+save('oct2012predictions_iter600_allInfo.mat','negarPredictionArray',...
     'nickPredictionArray','targetArray','negarTreeRMSE','nickTreeRMSE',...
     'negarBias','nickBias','negarBiasCoeff','nickBiasCoeff');
