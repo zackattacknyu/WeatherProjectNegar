@@ -24,38 +24,6 @@ DistV=maxV-minV;  NBIN=10;
 %%%%%% Parameters, Recommend use the default value%%%%%%%%%
 dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 
-%files = dir('goes/bghrus1209*');
-files = dir('matFiles/data1210*');
-load('tc_NickJ128rf8_iter10.mat');
-ccs_main_predict_negar_Nick_script;
-save('oct2012predictions_iter10_allInfo.mat','negarPredictionArray',...
-    'nickPredictionArray','targetArray','negarTreeRMSE','nickTreeRMSE',...
-    'negarBias','nickBias','negarBiasCoeff','nickBiasCoeff');
-
-
-
-files = dir('matFiles/data1210*');
-load('tc_NickJ128rf8_iter20.mat');
-ccs_main_predict_negar_Nick_script;
-save('oct2012predictions_iter20_allInfo.mat','negarPredictionArray',...
-    'nickPredictionArray','targetArray','negarTreeRMSE','nickTreeRMSE',...
-    'negarBias','nickBias','negarBiasCoeff','nickBiasCoeff');
-
-
-
-files = dir('matFiles/data1210*');
-load('tc_NickJ128rf8_iter50.mat');
-ccs_main_predict_negar_Nick_script;
-save('oct2012predictions_iter50_allInfo.mat','negarPredictionArray',...
-    'nickPredictionArray','targetArray','negarTreeRMSE','nickTreeRMSE',...
-    'negarBias','nickBias','negarBiasCoeff','nickBiasCoeff');
-
-ccs_main_predict_negar_Nick_script;
-
-
-
-
-%%
 files = dir('matFiles/data1210*');
 load('tc_NickJ128rf8_iter1.mat');
 ccs_main_predict_negar_Nick_script;
@@ -81,4 +49,33 @@ save('oct2012predictions_iter5_allInfo.mat','negarPredictionArray',...
     'nickPredictionArray','targetArray','negarTreeRMSE','nickTreeRMSE',...
     'negarBias','nickBias','negarBiasCoeff','nickBiasCoeff');
 
+
+files = dir('matFiles/data1210*');
+load('tc_NickJ128rf8_iter20.mat');
 ccs_main_predict_negar_Nick_script;
+save('oct2012predictions_iter20_allInfo.mat','negarPredictionArray',...
+    'nickPredictionArray','targetArray','negarTreeRMSE','nickTreeRMSE',...
+    'negarBias','nickBias','negarBiasCoeff','nickBiasCoeff');
+
+
+files = dir('matFiles/data1210*');
+load('tc_NickJ128rf8_iter50.mat');
+ccs_main_predict_negar_Nick_script;
+save('oct2012predictions_iter50_allInfo.mat','negarPredictionArray',...
+    'nickPredictionArray','targetArray','negarTreeRMSE','nickTreeRMSE',...
+    'negarBias','nickBias','negarBiasCoeff','nickBiasCoeff');
+
+files = dir('matFiles/data1210*');
+load('tc_NickJ128rf8_iter133.mat');
+ccs_main_predict_negar_Nick_script;
+save('oct2012predictions_iter133_allInfo.mat','negarPredictionArray',...
+    'nickPredictionArray','targetArray','negarTreeRMSE','nickTreeRMSE',...
+    'negarBias','nickBias','negarBiasCoeff','nickBiasCoeff');
+	
+files = dir('matFiles/data1210*');
+load('tc_NickDecTreeResult_J128rf8.mat');
+ccs_main_predict_negar_Nick_script;
+save('oct2012predictions_iter600_allInfo.mat','negarPredictionArray',...
+    'nickPredictionArray','targetArray','negarTreeRMSE','nickTreeRMSE',...
+    'negarBias','nickBias','negarBiasCoeff','nickBiasCoeff');
+

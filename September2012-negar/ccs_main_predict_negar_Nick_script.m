@@ -7,6 +7,8 @@ negarPredictionArray = cell(1,NN);
 nickPredictionArray = cell(1,NN);
 targetArray = cell(1,NN);
 
+XtrSet = Xtr;
+
 %CHECK TIME 2 IN THE OCT 2012 SET WHEN I GET A CHANCE
 negarRMSE = zeros(1,NN);
 nickRMSE = zeros(1,NN);
@@ -61,7 +63,9 @@ end_of_loop = 0;
         
     cd('../') 
     
-    rr3 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(Xte),boostArgs.v);
+    [~,XtePct,~] = XToPct(XtrSet,Xte,256);
+    
+    rr3 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(XtePct),boostArgs.v);
      
     
     precip(ir<0) = -1;
