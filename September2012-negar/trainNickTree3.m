@@ -9,7 +9,7 @@ boostArgs.v = 0.5;
 rf = 0.8; J = 128;
 boostArgs.funargs = {rf J};
 
-boostArgs.nIter = 1000;
+boostArgs.nIter = 2000;
 boostArgs.evaliter = 1:boostArgs.nIter;
 
 [perfTrain,perfTest,boostStruct] = ...
