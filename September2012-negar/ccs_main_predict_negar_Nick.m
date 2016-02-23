@@ -37,9 +37,9 @@ precipNick = zeros(500,750);
 
 
 %CHECK TIME 2 IN THE OCT 2012 SET WHEN I GET A CHANCE
-%negarRMSE = zeros(1,NN);
-%nickRMSE = zeros(1,NN);
-for i = 1:NN
+negarRMSE = zeros(1,NN);
+nickRMSE = zeros(1,NN);
+for i = [5,50]%1:NN
     i
    
     %fn =['goes/', files(i,1).name];
@@ -114,7 +114,7 @@ end_of_loop = 0;
     
     negarBiasCoeff = getBiasCoefficient(rrTestUse(indicesToUse),rr2(indicesToUse))
     nickBiasCoeff = getBiasCoefficient(rrTestUse(indicesToUse),rr3(indicesToUse))
-    %{
+    
     negarRMSE(i) = negarTreeRMSE;
     nickRMSE(i) = nickTreeRMSE; 
     
@@ -126,11 +126,11 @@ end_of_loop = 0;
     drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
     colorbar('vertical')
     title(fn)
-    %}
+    
     %precip = fix(precip*100);
     %save(['ccs/precip' files(i,1).name(5:end-4) '.mat'],'precip');
     
-    %{
+    
     figure(2)
     imagesc(precipNick)
     colormap([1 1 1;0.8 0.8 0.8;jet(20)])
@@ -138,11 +138,11 @@ end_of_loop = 0;
     drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
     colorbar('vertical')
     title(fn)
-    %}
+    
     %precipNick = fix(precipNick*100);
     %save(['ccs/precipNick' files(i,1).name(5:end-4) '.mat'],'precipNick');
     
-    %{
+    
     figure(3)
     imagesc(rrTest)
     colormap([1 1 1;0.8 0.8 0.8;jet(20)])
@@ -150,7 +150,7 @@ end_of_loop = 0;
     drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
     colorbar('vertical')
     title(fn)
-    %}
+    
     %rrTest = fix(rrTest*100);
     %save(['ccs/rrTestUse' files(i,1).name(5:end-4) '.mat'],'rrTestUse');
     
