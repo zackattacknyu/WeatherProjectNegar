@@ -61,5 +61,32 @@ for i = 1:NN
     
 end
  
+%%
 
+files = dir('zach_ccs/rgo*');
+NN = length(files);
+
+for i = 1:NN
+    %i
+   
+    curName = files(i).name;
+    fn =['zach_ccs/' curName];
+    
+    
+    if ~exist(fn,'file')
+                continue;
+    end
+    
+    
+    load(fn,'ir');
+    
+    ir2 = ir; ir2(ir<0)=0;
+    figure(1)
+    imagesc(ir2);
+    drawnow
+    
+    pause(1)
+    
+    
+end
 
