@@ -34,12 +34,12 @@ NN = length(files);
 
 precip = zeros(500,750);
 precipNick = zeros(500,750);
-
+precipCCS = zeros(500,750);
 
 %CHECK TIME 2 IN THE OCT 2012 SET WHEN I GET A CHANCE
 negarRMSE = zeros(1,NN);
 nickRMSE = zeros(1,NN);
-for i = [1,2,5,10,50,100]%1:NN
+for i = 5%1:NN
     i
    
     %fn =['goes/', files(i,1).name];
@@ -100,6 +100,7 @@ end_of_loop = 0;
     
     [~,XtePct,~] = XToPct(XtrSet,Xte,256);
     
+    %boostArgs.nIter = 10;
     rr3 = boostTreeVal2(boostStruct,boostArgs.nIter,uint8(XtePct),boostArgs.v);
      
     
@@ -111,9 +112,14 @@ end_of_loop = 0;
     precipNick(L==0) = 0;
     precipNick(ir>0 & L>0) = rr3;
     
+      
     rrTestUse = rrTest(ir>0 & L>0);
     ccsUSuse = ccsOverUS(ir>0 & L>0);
     indicesToUse = (rrTestUse>=0);
+    
+    precipCCS(ir<0) = -1;
+    precipCCS(L==0) = 0;
+    precipCCS(ir>0 & L>0) = ccsUSuse;
     
     negarTreeRMSE = sqrt(mean((rr2(indicesToUse)-rrTestUse(indicesToUse)).^2))
     nickTreeRMSE = sqrt(mean((rr3(indicesToUse)-rrTestUse(indicesToUse)).^2))
@@ -130,7 +136,7 @@ end_of_loop = 0;
     negarRMSE(i) = negarTreeRMSE;
     nickRMSE(i) = nickTreeRMSE; 
     
-    %{
+    
     figure(1)
     imagesc(precip)
     colormap([1 1 1;0.8 0.8 0.8;jet(20)])
@@ -163,6 +169,14 @@ end_of_loop = 0;
     colorbar('vertical')
     title(fn)
     
+    figure(4)
+    imagesc(precipCCS)
+    colormap([1 1 1;0.8 0.8 0.8;jet(20)])
+    caxis([-1 20]) 
+    drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
+    colorbar('vertical')
+    title(fn)
+    
     %rrTest = fix(rrTest*100);
     %save(['ccs/rrTestUse' files(i,1).name(5:end-4) '.mat'],'rrTestUse');
     
@@ -173,7 +187,7 @@ end_of_loop = 0;
     delete(['rgo',files(i,1).name(7:16),'.bin']);
     cd('/mnt/t/disk4/nkarbala/research/ccs_tree/')
     %}
-    %}
+    
 end
  
 
