@@ -39,13 +39,18 @@ precipNick = zeros(500,750);
 %CHECK TIME 2 IN THE OCT 2012 SET WHEN I GET A CHANCE
 negarRMSE = zeros(1,NN);
 nickRMSE = zeros(1,NN);
-for i = [5,50]%1:NN
+for i = [1,2,5,10,50,100]%1:NN
     i
    
     %fn =['goes/', files(i,1).name];
     fn =['matFiles/', files(i,1).name];
+    fn2 = ['zach_ccs/rgo' files(i,1).name(5:end)];
     
     if ~exist(fn,'file')
+                continue;
+    end
+    
+    if ~exist(fn2,'file')
                 continue;
     end
    
@@ -56,6 +61,9 @@ for i = [5,50]%1:NN
     ir = ir(126:625,126:875);
     
     rrTest = rr(126:625,126:875);
+    
+    ccsData = load(fn2); ccsIR = ccsData.ir;
+    ccsOverUS = ccsIR(376:875,5751:6500);
     
     L=ccs_sub_seqsegment(ir,DIM2,THDH,MergeThd, S); %segmentation
     
@@ -104,21 +112,25 @@ end_of_loop = 0;
     precipNick(ir>0 & L>0) = rr3;
     
     rrTestUse = rrTest(ir>0 & L>0);
+    ccsUSuse = ccsOverUS(ir>0 & L>0);
     indicesToUse = (rrTestUse>=0);
     
     negarTreeRMSE = sqrt(mean((rr2(indicesToUse)-rrTestUse(indicesToUse)).^2))
     nickTreeRMSE = sqrt(mean((rr3(indicesToUse)-rrTestUse(indicesToUse)).^2))
+    ccsRMSE = sqrt(mean((ccsUSuse(indicesToUse)-rrTestUse(indicesToUse)).^2))
     
     negarBias = getBiasMeasure((rr2(indicesToUse)<1),(rrTestUse(indicesToUse)<1))
     nickBias = getBiasMeasure((rr3(indicesToUse)<1),(rrTestUse(indicesToUse)<1))
+    ccsBias = getBiasMeasure((ccsUSuse(indicesToUse)<1),(rrTestUse(indicesToUse)<1))
     
     negarBiasCoeff = getBiasCoefficient(rrTestUse(indicesToUse),rr2(indicesToUse))
     nickBiasCoeff = getBiasCoefficient(rrTestUse(indicesToUse),rr3(indicesToUse))
+    ccsBiasCoeff = getBiasCoefficient(rrTestUse(indicesToUse),ccsUSuse(indicesToUse))
     
     negarRMSE(i) = negarTreeRMSE;
     nickRMSE(i) = nickTreeRMSE; 
     
-    
+    %{
     figure(1)
     imagesc(precip)
     colormap([1 1 1;0.8 0.8 0.8;jet(20)])
@@ -161,7 +173,7 @@ end_of_loop = 0;
     delete(['rgo',files(i,1).name(7:16),'.bin']);
     cd('/mnt/t/disk4/nkarbala/research/ccs_tree/')
     %}
-    
+    %}
 end
  
 

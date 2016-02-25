@@ -66,7 +66,7 @@ end
 files = dir('zach_ccs/rgo*');
 NN = length(files);
 
-for i = 1:NN
+for i = 1%:NN
     %i
    
     curName = files(i).name;
@@ -81,9 +81,15 @@ for i = 1:NN
     load(fn,'ir');
     
     ir2 = ir; ir2(ir<0)=0;
+    irUS = ir2(376:875,5751:6500);
     figure(1)
-    imagesc(ir2);
-    drawnow
+    imagesc(irUS)
+    colormap([1 1 1;0.8 0.8 0.8;jet(20)])
+    caxis([-1 20]) 
+    drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
+    colorbar('vertical')
+    title(fn)
+    drawnow;
     
     pause(1)
     
