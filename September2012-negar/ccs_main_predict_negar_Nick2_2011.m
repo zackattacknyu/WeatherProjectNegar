@@ -25,10 +25,11 @@ DistV=maxV-minV;  NBIN=10;
 dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 
 %files = dir('goes/bghrus1209*');
-files = dir('matFiles/data1210*');
+files = dir('zach_IR2/bghrus1109*');
+%files = dir('zach_RR2/q2hrus1109*');
 %load('tc.mat');
-
-load('tc_NickDecTreeResult_J128rf8.mat');
+%%
+%load('tc_NickDecTreeResult_J128rf8.mat');
 XtrSet = Xtr;
 NN = length(files);
 
@@ -36,15 +37,13 @@ precip = zeros(500,750);
 precipNick = zeros(500,750);
 precipCCS = zeros(500,750);
 
-%CHECK TIME 2 IN THE OCT 2012 SET WHEN I GET A CHANCE
-negarRMSE = zeros(1,NN);
-nickRMSE = zeros(1,NN);
 for i = 1%1:NN
     i
    
     %fn =['goes/', files(i,1).name];
-    fn =['matFiles/', files(i,1).name];
-    fn2 = ['zach_ccs/rgo' files(i,1).name(5:end)];
+    fn =['zach_IR2/', files(i,1).name];
+    fn3 = ['zach_RR2/q2hrus', files(i,1).name(7:end)];
+    fn2 = ['zach_ccs2/rgo' files(i,1).name(7:end)];
     
     if ~exist(fn,'file')
                 continue;
@@ -54,17 +53,22 @@ for i = 1%1:NN
                 continue;
     end
    
+    if ~exist(fn2,'file')
+                continue;
+    end
+    
     %ir = loadbfn_bgz(fn, DIM, 'short')/100;
     load(fn);
+    load(fn3);
     
     % area for training and testing over the US
     ir = ir(126:625,126:875);
     
     rrTest = rr(126:625,126:875);
     
-    ccsData = load(fn2); ccsIR = ccsData.ir;
+    ccsData = load(fn2); ccsIR = ccsData.ccs;
     ccsOverUS = ccsIR(376:875,5751:6500);
-    
+    %%
     L=ccs_sub_seqsegment(ir,DIM2,THDH,MergeThd, S); %segmentation
     
    % Lrgb = label2rgb(L, 'jet', [0.8 0.8 0.8] ,'shuffle');
@@ -133,8 +137,6 @@ end_of_loop = 0;
     nickBiasCoeff = getBiasCoefficient(rrTestUse(indicesToUse),rr3(indicesToUse))
     ccsBiasCoeff = getBiasCoefficient(rrTestUse(indicesToUse),ccsUSuse(indicesToUse))
     
-    negarRMSE(i) = negarTreeRMSE;
-    nickRMSE(i) = nickTreeRMSE; 
     
     
     figure(1)
