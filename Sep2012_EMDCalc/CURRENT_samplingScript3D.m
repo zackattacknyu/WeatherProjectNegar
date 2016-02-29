@@ -1,10 +1,16 @@
-dataFiles = dir('zach_RR/q2hrus1210*');
+%dataFiles = dir('zach_RR/q2hrus1210*');
+%dataFiles2 = dir('zach_ccs/rgo1210*');
+%dataFiles3 = dir('negarPredMaps/decTreePred1210*');
 
-numT = length(dataFiles);
-numSampleTimes = 1200;
-minTimeDiff = 20;
-epsilon = 20;
-precipThresh = 2000;
+dataFiles = dir('zach_RR2/q2hrus1109*');
+dataFiles2 = dir('zach_ccs2/rgo1109*');
+dataFiles3 = dir('negarPredMaps2/decTreePred1109*');
+%%
+numT = min([length(dataFiles) length(dataFiles2) length(dataFiles3)]);
+numSampleTimes = 400;
+minTimeDiff = 4;
+epsilon = 1e-2;
+precipThresh = 1000;
 
 timeStamps = getSampledPoints(numT,numSampleTimes,minTimeDiff);
 %timeStamps = 1:numT;
@@ -17,7 +23,19 @@ for tt = 1:length(timeStamps)
     
     fileNum = timeStamps(tt);
     
-    load(['zach_RR/' dataFiles(fileNum).name],'ir');
+    fn = ['zach_RR2/q2hrus' dataFiles3(1).name(12:end)];
+    
+    if ~exist(fn,'file')
+                continue;
+    end
+    
+   
+    curData = load(fn);
+    try
+       ir = curData.ir; 
+    catch
+       ir = curData.rr;
+    end
 
     curImage = ir(126:625,126:875);
     
@@ -38,7 +56,7 @@ timeStamps2 = sort(timeStamps2);
 %%
 numTimeStamps = length(timeStamps2);
 
-%numPred = 4;
+numPred = 2;
 patchesT = cell(1,numTimeStamps);
 patchesPred = cell(1,numTimeStamps);
 
@@ -50,16 +68,50 @@ for tt = 1:numTimeStamps
     
     fileNum
     
-    load(['zach_RR/' dataFiles(fileNum).name],'ir');
-
-    %{
-    curPredImages = cell(1,4);
-    curPredImages{1} = pred253Orig(251:875,5626:7375);
-    curPredImages{2} = pred253(1:625,:);
-    curPredImages{3} = pred260(1:625,:);
-    curPredImages{4} = pred280(1:625,:);
-    %}
+    fn = ['zach_RR2/q2hrus' dataFiles3(fileNum).name(12:end)];
+    fn2 = ['zach_ccs2/rgo' dataFiles3(fileNum,1).name(12:end)];
+    fn3 = ['negarPredMaps2/decTreePred' dataFiles3(fileNum,1).name(12:end)];
+    
+    if ~exist(fn,'file')
+                continue;
+    end
+    if ~exist(fn2,'file')
+                continue;
+    end
+    if ~exist(fn3,'file')
+                continue;
+    end
+    
+    curData = load(fn);
+    try
+       ir = curData.ir; 
+    catch
+       ir = curData.rr;
+    end
     curImage = ir(126:625,126:875);
+    curImage(curImage<0)=0;
+    if(sum(curImage(:))<=epsilon)
+       continue; 
+    end
+    
+    ccsData = load(fn2); 
+    try
+        ccsIR = ccsData.ir;
+    catch
+        ccsIR = ccsData.ccs;
+    end
+    ccsOverUS = ccsIR(376:875,5751:6500);
+    
+    negarPred = load(fn3); precipMap = negarPred.precip;
+
+    ccsOverUS(ccsOverUS<0)=0;
+    precipMap(precipMap<0)=0;
+    
+    curPredImages = cell(1,numPred);
+    curPredImages{1} = precipMap;
+    curPredImages{2} = ccsOverUS;
+    
+    
     
     minDist = 18;
     patchSize = 20;
@@ -69,12 +121,12 @@ for tt = 1:numTimeStamps
     [ targetPatches, randPatchesCornerCoord, patchSum ] = ...
         getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries );
 
-    %{
+    
     curPredPatches = cell(numPred,length(targetPatches));
     for j = 1:numPred
         curPredPatches(j,:) = getPatchesFromCoords(curPredImages{j},randPatchesCornerCoord,patchSize);
     end
-    %}
+    
     indicesToKeep = zeros(1,length(targetPatches));
     newInd = 1;
     for i = 1:length(targetPatches)
@@ -84,7 +136,7 @@ for tt = 1:numTimeStamps
             continue;
         end
         
-        %{
+        
         numBad=0;
         for j = 1:numPred
            curPred = curPredPatches{j,i}; 
@@ -95,7 +147,7 @@ for tt = 1:numTimeStamps
         if(numBad>0)
            continue; 
         end
-        %}
+        
         indicesToKeep(newInd) = i;
         newInd = newInd + 1;
         
@@ -103,11 +155,11 @@ for tt = 1:numTimeStamps
     indicesToKeep = indicesToKeep(1:(newInd-1));
     
     patchesT{tt} = targetPatches(indicesToKeep);
-    %patchesPred{tt} = curPredPatches(:,indicesToKeep);
+    patchesPred{tt} = curPredPatches(:,indicesToKeep);
     
-    %figure(1)
-    %drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
-    %pause(5);
+    figure(1)
+    drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
+    pause(5);
     
 end
 
@@ -119,7 +171,6 @@ for i = 1:length(patchesT)
 end
 
 %%
-numPred=4;
 targetPatches = cell(1,numPatches);
 predPatches = cell(numPred,numPatches);
 index = 1;
@@ -137,9 +188,9 @@ for i = 1:length(patchesT)
     end
     
 end
+%%
 
-
-%save('patchesSet11-23Data_3.mat','targetPatches','predPatches','patchesT','patchesPred');
+save('patchesSep2011Data.mat','targetPatches','predPatches','patchesT','patchesPred');
 
 
 

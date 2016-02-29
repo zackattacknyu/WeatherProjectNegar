@@ -24,10 +24,11 @@ DistV=maxV-minV;  NBIN=10;
 %%%%%% Parameters, Recommend use the default value%%%%%%%%%
 dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 
-
+fprintf('Loading Tree...\n');
 load('tc_NickJ128rf8_iter1000_treeOnly.mat');
+fprintf('Finished Loading Tree...\n');
 ccs_main_predict_negar_Nick_script_2011_v2;
-save('sep2011predictions_iter1000_allInfo.mat','negarPredictionArray',...
+save('sep2011predictions_iter1000_allInfo2.mat','negarPredictionArray',...
     'nickPredictionArray','targetArray','negarTreeRMSE','nickTreeRMSE',...
     'negarBias','nickBias','negarBiasCoeff','nickBiasCoeff');
 

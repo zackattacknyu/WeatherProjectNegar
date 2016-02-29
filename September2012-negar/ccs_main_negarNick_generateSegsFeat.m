@@ -13,7 +13,7 @@ files = dir('zach_IR2/bghrus*');
 
 NN = length(files);
 
-for i = 1:NN
+for i = 2652:NN
     i
    
     fn =['zach_IR2/', files(i,1).name];
@@ -31,7 +31,12 @@ for i = 1:NN
     irFileData = load(fn);
     rrFileData = load(fn3);
 	ir = irFileData.ir;
-	rr = rrFileData.rr;
+    
+    try
+        rr = rrFileData.rr;
+    catch
+        rr = rrFileData.ir;
+    end
     
     % area for training and testing over the US
     ir = ir(126:625,126:875);

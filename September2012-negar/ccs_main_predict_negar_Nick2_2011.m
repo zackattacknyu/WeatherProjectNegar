@@ -30,6 +30,8 @@ files = dir('zach_IR2/bghrus1109*');
 %load('tc.mat');
 %%
 %load('tc_NickDecTreeResult_J128rf8.mat');
+load('tc_NickJ128rf8_iter200_treeOnly.mat');
+load('tc.mat');
 XtrSet = Xtr;
 NN = length(files);
 
@@ -37,7 +39,7 @@ precip = zeros(500,750);
 precipNick = zeros(500,750);
 precipCCS = zeros(500,750);
 
-for i = 1%1:NN
+for i = 46%1:NN
     i
    
     %fn =['goes/', files(i,1).name];
@@ -68,7 +70,7 @@ for i = 1%1:NN
     
     ccsData = load(fn2); ccsIR = ccsData.ccs;
     ccsOverUS = ccsIR(376:875,5751:6500);
-    %%
+    
     L=ccs_sub_seqsegment(ir,DIM2,THDH,MergeThd, S); %segmentation
     
    % Lrgb = label2rgb(L, 'jet', [0.8 0.8 0.8] ,'shuffle');
@@ -189,7 +191,7 @@ end_of_loop = 0;
     delete(['rgo',files(i,1).name(7:16),'.bin']);
     cd('/mnt/t/disk4/nkarbala/research/ccs_tree/')
     %}
-    
+    pause(3)
 end
  
 
