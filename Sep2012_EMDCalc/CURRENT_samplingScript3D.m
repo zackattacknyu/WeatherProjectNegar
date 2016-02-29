@@ -54,6 +54,9 @@ end
 timeStamps2 = timeStamps2(1:(curInd-1));
 timeStamps2 = sort(timeStamps2);
 %%
+
+%timeStamps2 = [7 46];
+timeStamps2 = [46];
 numTimeStamps = length(timeStamps2);
 
 numPred = 2;
@@ -116,7 +119,7 @@ for tt = 1:numTimeStamps
     minDist = 18;
     patchSize = 20;
     maxTries = 2000;
-    maxNumPatches = 20;
+    maxNumPatches = 500;
 
     [ targetPatches, randPatchesCornerCoord, patchSum ] = ...
         getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries );
@@ -170,7 +173,7 @@ for i = 1:length(patchesT)
     numPatches = numPatches + length(patchesT{i});
 end
 
-%%
+
 targetPatches = cell(1,numPatches);
 predPatches = cell(numPred,numPatches);
 index = 1;
@@ -188,9 +191,9 @@ for i = 1:length(patchesT)
     end
     
 end
-%%
 
-save('patchesSep2011Data.mat','targetPatches','predPatches','patchesT','patchesPred');
+
+save('patchesSep2011Data_time46.mat','targetPatches','predPatches','patchesT','patchesPred');
 
 
 
