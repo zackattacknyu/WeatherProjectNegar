@@ -1,13 +1,21 @@
 function f = treeValFAST(X,tree)
 [N,p] = size(X);
-try     muLR = tree.muLR;
-catch   muLR = tree.class;
+try     
+    muLR = tree.muLR;
+catch
+    muLR = tree.class;
 end
-try     cutvar = tree.cutvar;
-catch   cutvar = tree.var;
+
+try     
+    cutvar = tree.cutvar;
+catch
+    cutvar = tree.var;
 end
-try     cutval = tree.cutval;
-catch   cutval = tree.cut;
+
+try     
+    cutval = tree.cutval;
+catch
+    cutval = tree.cut;
 end
 children = tree.children;
 if size(children,1)~=2
