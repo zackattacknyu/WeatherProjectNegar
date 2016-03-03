@@ -1,13 +1,16 @@
 load('tc.mat');
+%%
 load('oct2012TestDataSetAll.mat');
+%%
+%XteAll = [Xte;XteOct];
+%YteAll = [Yte;YteOct];
 
-XteAll = [Xte;XteOct];
-YteAll = [Yte;YteOct];
+
 
 feaToUse = 1:size(Xtr,2);
-[XTrPct,XTeAllPct,binLocs] = XToPct(Xtr(:,feaToUse),XteAll(:,feaToUse), 256);
-[XTrPct,XTePct,binLocs] = XToPct(Xtr(:,feaToUse),Xte(:,feaToUse), 256);
-XTrPct = uint8(XTrPct); XTeAllPct = uint8(XTeAllPct);
+[~,XTeOctPct,~] = XToPct(Xtr(:,feaToUse),XteOct(:,feaToUse), 256);
+[XTrPct,XTePct,~] = XToPct(Xtr(:,feaToUse),Xte(:,feaToUse), 256);
+XTrPct = uint8(XTrPct); XTeOctPct = uint8(XTeOctPct);
 XTePct = uint8(XTePct);
  
 %boostArgs.evaliter = unique([1:10:boostArgs.nIter boostArgs.nIter]);
@@ -37,8 +40,20 @@ plot(boostRMSEvals)
   
 [~,XtePct,~] = XToPct(Xtr,XteOct,256);
 
-YteOther = boostTreeVal2(boostStruct2,boostArgs.nIter,uint8(XtePct),boostArgs.v);
+YteOther = boostTreeVal2(boostStruct2,boostArgs.nIter,uint8(XTeOctPct),boostArgs.v);
 %YteOther2 = boostTreeVal2(boostStruct2,boostArgs.nIter,uint8(XtePct),boostArgs.v);
 
 rmseTest2 = sqrt(mean((YteOther-YteOct).^2))
+%%
+
+nn = 500;
+rmseTestVals = zeros(1,nn);
+for ii = 1:nn
+    curYhat = preds{ii};
+    rmseTestVals(ii) = sqrt(mean((curYhat-Yte).^2));
+end
+
+%%
+
+save('boostValTest1_predsVars.mat','preds','-v7.3');
 
