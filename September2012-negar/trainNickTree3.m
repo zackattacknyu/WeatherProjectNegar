@@ -46,9 +46,14 @@ YteOther = boostTreeVal2(boostStruct2,boostArgs.nIter,uint8(XTeOctPct),boostArgs
 rmseTest2 = sqrt(mean((YteOther-YteOct).^2))
 %%
 
-nn = 500;
+[~,XtePct,~] = XToPct(Xtr,Xte,256);
+%%
+preds = boostTreeVal3(boostStruct,boostArgs.nIter,uint8(XtePct),boostArgs.v);
+
+%%
+
 rmseTestVals = zeros(1,nn);
-for ii = 1:nn
+for ii = 1:length(preds)
     curYhat = preds{ii};
     rmseTestVals(ii) = sqrt(mean((curYhat-Yte).^2));
 end
