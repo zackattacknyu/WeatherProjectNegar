@@ -78,10 +78,15 @@ end_of_loop = 0;
     XteCurrent = ccs_patchpixel_Feature(ir,L,MAXL,FF);
     
     YteCurrent = rrTest(ir>0 & L>0);
+	
+	indicesToUse = (YteCurrent>=0);
+	
+	XteCurrentUse = XteCurrent(indicesToUse,:);
+	YteCurrentUse = YteCurrent(indicesToUse);
     
     
-    XteArray{i} = XteCurrent;
-    YteArray{i} = YteCurrent;
+    XteArray{i} = XteCurrentUse;
+    YteArray{i} = YteCurrentUse;
   
     
 end
