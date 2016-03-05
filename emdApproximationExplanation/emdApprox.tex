@@ -1,0 +1,75 @@
+%%
+%% Class homework & solution template for latex
+%% Alex Ihler
+%%
+\documentclass[twoside,11pt]{article}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{graphicx,color}
+\usepackage{verbatim,url}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{upquote}
+\usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+\usepackage[scaled]{beramono}
+%\usepackage{textcomp}
+
+% Directories for other source files and images
+\newcommand{\bibtexdir}{../bib}
+\newcommand{\figdir}{fig}
+
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\matlab}{{\sc Matlab}\ }
+
+\setlength{\textheight}{9in} \setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{-.25in}  % Centers text.
+\setlength{\evensidemargin}{-.25in} %
+\setlength{\topmargin}{0in} %
+\setlength{\headheight}{0in} %
+\setlength{\headsep}{0in} %
+
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+
+\theoremstyle{definition}
+\newtheorem{MatEx}{M{\scriptsize{ATLAB}} Usage Example}
+
+\definecolor{comments}{rgb}{0,.5,0}
+\definecolor{backgnd}{rgb}{.95,.95,.95}
+\definecolor{string}{rgb}{.2,.2,.2}
+\lstset{language=Matlab}
+\lstset{basicstyle=\small\ttfamily,
+        mathescape=true,
+        emptylines=1, showlines=true,
+        backgroundcolor=\color{backgnd},
+        commentstyle=\color{comments}\ttfamily, %\rmfamily,
+        stringstyle=\color{string}\ttfamily,
+        keywordstyle=\ttfamily, %\normalfont,
+        showstringspaces=false}
+\newcommand{\matp}{\mathbf{\gg}}
+
+
+
+
+\begin{document}
+
+I will begin with a sampling of patches that covers as many areas with precipitation as possible in the target set\\
+\\
+The target patches will be denoted $\{q_i\}$ and the corresponding prediction patches will be $\{\hat{q}_i\}$\\
+\\
+Due to the evidence $\href{http://www.ariel.ac.il/sites/ofirpele/publications/ICCV2009.pdf}{here}$ which says that thresholding distance provides an accurate and fast approximation, I am making the assumption that EMD, denoted as $g$, can be approximated as follows:
+\[
+\frac{1}{N} \sum_{i=1}^N{g(q_i,\hat{q}_i)}
+\]
+To set this up as an expectation, I will organize the patches by their sum. I will then organize the sum values into K bins. Let $p(q_i)$ be the probability that patch $q_i$ is in its current bin. Thus the above sum will be
+\[
+\frac{\sum_{i=1}^N{p(q_i) g(q_i,\hat{q}_i)}}{\sum_{i=1}^N{p(q_i)}} 
+\]
+I will then subsample $M$ patches out of the total $N$ that exist and compute the following
+\[
+\frac{\sum_{j=1}^M{p(q_j) g(q_j,\hat{q}_j)}}{\sum_{j=1}^M{p(q_j)}} 
+\]
+
+\end{document}
