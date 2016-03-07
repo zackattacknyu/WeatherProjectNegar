@@ -28,7 +28,7 @@ dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 files = dir('zach_IR2/bghrus1109*');
 %files = dir('zach_RR2/q2hrus1109*');
 %load('tc.mat');
-%%
+
 %load('tc_NickDecTreeResult_J128rf8.mat');
 load('tc_NickJ128rf8_iter200_treeOnly.mat');
 load('tc.mat');
