@@ -1,38 +1,41 @@
 
-
 clear all;
 close all;
 
 DIM=[1000,1750]; 
 
-files = dir('../ccs_sep_event/t300/goes/bghrus1209*');
+files = dir('irData/bghrus1209*');
 l = length(files);
 
-path_ir = '/mnt/t/disk4/nkarbala/research/ccs_sep_event/t300/goes/';
-path_rr = '/mnt/t/disk4/nkarbala/research/CCS_warmclouds/radar/';
+path_ir = 'irData/';
+path_rr = 'rrData/';
 
-FDATA = [];
+arrayDATA = cell(1,l);
 
-for i= 1:l
+for i= 1:4:l
     i
     
     
   fn1 = ([path_ir files(i).name]);
   fn2 = ([path_rr  'q2hrus' files(i).name(7:end)]);
+  fn3 = ['patchesData/segs_feat',files(i).name(7:16),'.mat'];
   
-  load(['./patches/segs_feat_',files(i).name(7:16),'.mat']);
+  
   
   if ~exist(fn1,'file'); continue; end
   if ~exist(fn2,'file'); continue; end
-  %if ~exist(fn3,'file'); continue; end
+  if ~exist(fn3,'file'); continue; end
   
+  load(fn3,'L','FF');
   MAXL = max(max(L));
   
-  ir = loadbfn_bgz(fn1, DIM, 'short')/100;
+  load(fn1,'ir');
   ir = ir(126:625,126:875);
   
-  rr = loadbfn_lgz(fn2, DIM, 'short')/10;
+  load(fn2,'rr');
   rr = rr(126:625,126:875);
+  
+  currentPatchData = cell(1,MAXL);
   
   for j = 1:MAXL
       
@@ -42,18 +45,46 @@ for i= 1:l
       rain = rr(kk);
       feat = FF(j,:);
       
+      DATA = zeros(length(temp),14);
       DATA(:,1) = temp;
       DATA(:,2:13) = repmat(feat,length(kk),1);
       DATA(:,14) = rain;
       
-      FDATA = [FDATA;DATA];
+      currentPatchData{j} = DATA;
+      
+      %FDATA = [FDATA;DATA];
       
       clear DATA
       clear temp
       clear rain
       
   end
+  
+  arrayDATA{i} = currentPatchData;
     
+end
+%%
+numDataPoints=0;
+for ii = 1:length(arrayDATA)
+   currentDATA = arrayDATA{ii};
+   for jj = 1:length(currentDATA)
+      numDataPoints = numDataPoints + size(currentDATA{jj},1); 
+   end
+end
+%%
+FDATA = zeros(numDataPoints,14);
+curStartInd = 1;
+for ii = 1:length(arrayDATA)
+   currentDATA = arrayDATA{ii};
+   for jj = 1:length(currentDATA)
+       DATA = currentDATA{jj};
+       numPoints = size(DATA,1); 
+       curEndInd = curStartInd + numPoints - 1;
+       
+       FDATA(curStartInd:curEndInd,:)=DATA;
+       
+       curStartInd = curEndInd+1;
+   end
 end
 
 
