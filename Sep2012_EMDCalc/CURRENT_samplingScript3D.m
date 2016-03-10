@@ -1,16 +1,16 @@
-dataFiles = dir('zach_RR/q2hrus1210*');
-dataFiles2 = dir('zach_ccs/rgo1210*');
-dataFiles3 = dir('negarPredMaps/decTreePred1210*');
+%dataFiles = dir('zach_RR/q2hrus1210*');
+%dataFiles2 = dir('zach_ccs/rgo1210*');
+%dataFiles3 = dir('negarPredMaps/decTreePred1210*');
 
-%dataFiles = dir('zach_RR2/q2hrus1109*');
-%dataFiles2 = dir('zach_ccs2/rgo1109*');
-%dataFiles3 = dir('negarPredMaps2/decTreePred1109*');
+dataFiles = dir('zach_RR2/q2hrus1109*');
+dataFiles2 = dir('zach_ccs2/rgo1109*');
+dataFiles3 = dir('negarPredMaps2/decTreePred1109*');
 %%
 numT = min([length(dataFiles) length(dataFiles2) length(dataFiles3)]);
 numSampleTimes = 400;
-minTimeDiff = 4;
+minTimeDiff = 1;
 epsilon = 1e-2;
-precipThresh = 1000;
+precipThresh = 100;
 
 timeStamps = getSampledPoints(numT,numSampleTimes,minTimeDiff);
 %timeStamps = 1:numT;
@@ -23,7 +23,8 @@ for tt = 1:length(timeStamps)
     
     fileNum = timeStamps(tt);
     
-    fn = ['zach_RR/q2hrus' dataFiles3(i).name(12:end)];
+    %fn = ['zach_RR/q2hrus' dataFiles3(fileNum).name(12:end)];
+    fn = ['zach_RR2/q2hrus' dataFiles3(fileNum).name(12:end)];
     
     if ~exist(fn,'file')
                 continue;
@@ -53,7 +54,7 @@ end
 
 timeStamps2 = timeStamps2(1:(curInd-1));
 timeStamps2 = sort(timeStamps2);
-%%
+
 
 
 numTimeStamps = length(timeStamps2);
@@ -70,9 +71,13 @@ for tt = 1:numTimeStamps
     
     fileNum
     
-    fn = ['zach_RR/q2hrus' dataFiles3(fileNum).name(12:end)];
-    fn2 = ['zach_ccs/rgo' dataFiles3(fileNum,1).name(12:end)];
-    fn3 = ['negarPredMaps/decTreePred' dataFiles3(fileNum,1).name(12:end)];
+    %fn = ['zach_RR/q2hrus' dataFiles3(fileNum).name(12:end)];
+    %fn2 = ['zach_ccs/rgo' dataFiles3(fileNum,1).name(12:end)];
+    %fn3 = ['negarPredMaps/decTreePred' dataFiles3(fileNum,1).name(12:end)];
+    
+    fn = ['zach_RR2/q2hrus' dataFiles3(fileNum).name(12:end)];
+    fn2 = ['zach_ccs2/rgo' dataFiles3(fileNum,1).name(12:end)];
+    fn3 = ['negarPredMaps2/decTreePred' dataFiles3(fileNum,1).name(12:end)];
     
     if ~exist(fn,'file')
                 continue;
@@ -115,7 +120,7 @@ for tt = 1:numTimeStamps
     
     
     
-    minDist = 18;
+    minDist = 20;
     patchSize = 20;
     maxTries = 2000;
     maxNumPatches = 500;
@@ -159,13 +164,13 @@ for tt = 1:numTimeStamps
     patchesT{tt} = targetPatches(indicesToKeep);
     patchesPred{tt} = curPredPatches(:,indicesToKeep);
     
-    figure(1)
-    drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
-    pause(5);
+    %figure(1)
+    %drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
+    %pause(5);
     
 end
 
-%%
+
 %now find total number of patches found
 numPatches = 0;
 for i = 1:length(patchesT)
@@ -192,7 +197,7 @@ for i = 1:length(patchesT)
 end
 
 
-save('patchesOct2012Data_time5.mat','targetPatches','predPatches','patchesT','patchesPred');
+save('patchesSep2011Data_all4.mat','targetPatches','predPatches','patchesT','patchesPred');
 
 
 
