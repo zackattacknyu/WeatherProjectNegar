@@ -1,5 +1,5 @@
 inputDataFile = 'patchesOct2012Data_time4.mat';
-outputFile = 'patchesOct2012Data_results_time4.mat';
+outputFile = 'patchesOct2012Data_results_time4_multi.mat';
 
 inData = load(inputDataFile);
 targetPatches = inData.targetPatches;
@@ -17,7 +17,9 @@ To approx EMD for whole set, we will add all numerators and all
 totalWorkEMD = zeros(numPred,NN); %numerator of last step in EMD
 totalFlowEMD = zeros(numPred,NN); %denominator of last step in EMD
 
-saveInterval = 10;
+predEMD = cell(1,NN);
+workEMD = cell(1,NN);
+flowEMD = cell(1,NN);
 parfor patchI = 1:NN
     
     patchI
@@ -44,14 +46,14 @@ parfor patchI = 1:NN
         
     end
     
-    predEMD(patchI) = predErrorsEMD;
-    workEMD(patchI) = totalWorkEMD;
-    flowEMD(patchI) = totalFlowEMD;
+    predEMD{patchI} = predErrorsEMD;
+    workEMD{patchI} = totalWorkEMD;
+    flowEMD{patchI} = totalFlowEMD;
     
     
 
 end
 
-save(outputFile,'predErrorsEMD','totalFlowEMD','totalWorkEMD');
+save(outputFile,'predEMD','workEMD','flowEMD');
 
 
