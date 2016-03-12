@@ -23,7 +23,7 @@ randPatches = cell(1,maxTotalPatches);
 randPatchesCornerCoord = cell(1,maxTotalPatches);
 
 %gets indices using precip map as PDF
-imageValues = curImage(:);
+imageValues = (curImage(:)).^2;
 
 %makes the CDF so we can sample from the precip map
 cdfX = cumsum(imageValues./sum(imageValues));

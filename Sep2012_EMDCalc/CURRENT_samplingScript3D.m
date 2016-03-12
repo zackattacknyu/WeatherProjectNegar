@@ -8,9 +8,9 @@ dataFiles3 = dir('negarPredMaps2/decTreePred1109*');
 %%
 numT = min([length(dataFiles) length(dataFiles2) length(dataFiles3)]);
 numSampleTimes = 400;
-minTimeDiff = 1;
+minTimeDiff = 2;
 epsilon = 1e-2;
-precipThresh = 100;
+precipThresh = 1000;
 
 timeStamps = getSampledPoints(numT,numSampleTimes,minTimeDiff);
 %timeStamps = 1:numT;
@@ -55,7 +55,7 @@ end
 timeStamps2 = timeStamps2(1:(curInd-1));
 timeStamps2 = sort(timeStamps2);
 
-
+%%
 
 numTimeStamps = length(timeStamps2);
 
@@ -120,7 +120,7 @@ for tt = 1:numTimeStamps
     
     
     
-    minDist = 20;
+    minDist = 18;
     patchSize = 20;
     maxTries = 2000;
     maxNumPatches = 500;
@@ -164,9 +164,9 @@ for tt = 1:numTimeStamps
     patchesT{tt} = targetPatches(indicesToKeep);
     patchesPred{tt} = curPredPatches(:,indicesToKeep);
     
-    %figure(1)
-    %drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
-    %pause(5);
+    figure(1)
+    drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
+    pause(5);
     
 end
 
