@@ -1,5 +1,5 @@
 function [ randPatches, randPatchesCornerCoord, patchSum ] = ...
-    getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries )
+    getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries,minPatchSum )
 %GETSAMPLEDPATCHES gets patches
 %   This samples patches from an image
 %
@@ -23,9 +23,9 @@ randPatches = cell(1,maxTotalPatches);
 randPatchesCornerCoord = cell(1,maxTotalPatches);
 
 %gets indices using precip map as PDF
-imageValues = (curImage(:)).^2;
-
 %makes the CDF so we can sample from the precip map
+curImageCDF = curImage;
+imageValues = (curImageCDF(:)).^2;
 cdfX = cumsum(imageValues./sum(imageValues));
 
 imgIndex=1;
@@ -81,17 +81,24 @@ for k = 1:maxTries %try to obtain the sample patches
    slots(slotX,slotY)=1;
 
    %obtains the patch
-   randPatch = curImage(...
-       (randStartRow-patchSize/2):(randStartRow+patchSize/2-1),...
-       (randStartCol-patchSize/2):(randStartCol+patchSize/2-1));
+   startRow = (randStartRow-patchSize/2);
+   endRow = (randStartRow+patchSize/2-1);
+   startCol = (randStartCol-patchSize/2);
+   endCol = (randStartCol+patchSize/2-1);
+   randPatch = curImage(startRow:endRow,startCol:endCol);
 
    %add the patch as long as there is some precip in it
    curPatchSum = sum(randPatch(:));
-   if(curPatchSum > 0)
+   curPatchMax = max(randPatch(:));
+   if(curPatchMax > 1 && curPatchSum > minPatchSum)
         patchSum(imgIndex) = curPatchSum;
         randPatches{imgIndex} = randPatch;
         randPatchesCornerCoord{imgIndex} = curLocation;
         imgIndex = imgIndex+1;
+        
+        curImageCDF(startRow:endRow,startCol:endCol)=0;
+        imageValues = (curImageCDF(:)).^2;
+        cdfX = cumsum(imageValues./sum(imageValues));
    end
 
 

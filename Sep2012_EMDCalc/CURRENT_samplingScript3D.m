@@ -14,7 +14,7 @@ precipThresh = 1000;
 
 timeStamps = getSampledPoints(numT,numSampleTimes,minTimeDiff);
 %timeStamps = 1:numT;
-
+%%
 timeStamps2 = zeros(1,length(timeStamps));
 curInd = 1;
 for tt = 1:length(timeStamps)
@@ -118,15 +118,18 @@ for tt = 1:numTimeStamps
     curPredImages{1} = precipMap;
     curPredImages{2} = ccsOverUS;
     
-    
+    indicesUse = find(curImage>0);
+    decTreeRMSE = sqrt(mean((curImage(indicesUse)-precipMap(indicesUse)).^2))
+    ccsRMSE = sqrt(mean((curImage(indicesUse)-ccsOverUS(indicesUse)).^2))
     
     minDist = 18;
     patchSize = 20;
     maxTries = 2000;
     maxNumPatches = 500;
+    minPatchSum = 3;
 
     [ targetPatches, randPatchesCornerCoord, patchSum ] = ...
-        getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries );
+        getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries, minPatchSum );
 
     
     curPredPatches = cell(numPred,length(targetPatches));
@@ -164,8 +167,16 @@ for tt = 1:numTimeStamps
     patchesT{tt} = targetPatches(indicesToKeep);
     patchesPred{tt} = curPredPatches(:,indicesToKeep);
     
-    figure(1)
+    figure
+    subplot(2,2,1)
     drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
+    
+    subplot(2,2,2)
+    drawMapWithPatches(precipMap,randPatchesCornerCoord(indicesToKeep),patchSize);
+    
+    subplot(2,2,4)
+    drawMapWithPatches(ccsOverUS,randPatchesCornerCoord(indicesToKeep),patchSize);
+    
     pause(5);
     
 end
@@ -197,7 +208,8 @@ for i = 1:length(patchesT)
 end
 
 
-save('patchesSep2011Data_all4.mat','targetPatches','predPatches','patchesT','patchesPred');
-
+%save('patchesSep2011Data_allT_new3.mat','targetPatches','predPatches','patchesT','patchesPred');
+%%
+save('patchesSep2011DataNew_time9.mat','targetPatches','predPatches');
 
 
