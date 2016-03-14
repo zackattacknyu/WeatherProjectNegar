@@ -34,8 +34,8 @@ precipNick = zeros(500,750);
 
 XteArray = cell(1,NN);
 YteArray = cell(1,NN);
-
-for i = 1:NN
+%%
+for i = 1:4:NN
     i
    
     fn =['zach_IR2/', files(i,1).name];
@@ -85,7 +85,7 @@ for i = 1:NN
     
 end
 
-save('sep2011TestDataSet.mat','XteArray','YteArray');
+save('sep2011TestDataSet2.mat','XteArray','YteArray');
 
 
 totalNumEntries = 0;
@@ -104,4 +104,4 @@ for i = 1:length(YteArray)
    curStart = curStart + curLen;
 end
 
-save('sep2011TestDataSetAll.mat','XteArray','YteArray','XteOct','YteOct');
+save('sep2011TestDataSetAll2.mat','XteArray','YteArray','XteOct','YteOct');
