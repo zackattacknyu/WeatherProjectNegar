@@ -4,7 +4,7 @@ close all;
 
 DIM=[1000,1750]; 
 
-files = dir('irData/bghrus1209*');
+files = dir('irData/bghrus12*');
 l = length(files);
 
 path_ir = 'irData/';
@@ -32,7 +32,12 @@ for i= 1:4:l
   load(fn1,'ir');
   ir = ir(126:625,126:875);
   
-  load(fn2,'rr');
+  rrFileData = load(fn2);
+  try
+     rr = rrFileData.rr; 
+  catch
+     rr = rrFileData.ir; 
+  end
   rr = rr(126:625,126:875);
   
   currentPatchData = cell(1,MAXL);
@@ -92,3 +97,7 @@ end
  nn = find(FDATA(:,14) >= 0);
 % 
  FDATA = FDATA(nn,:);
+ 
+ %%
+ 
+ save('SepOct2012PrepData.mat','FDATA');
