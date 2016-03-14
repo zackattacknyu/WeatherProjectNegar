@@ -3,7 +3,8 @@
 clear all
 close all
 
-load('prepdata.mat')
+%load('prepdata.mat')
+load('SepOct2012PrepData.mat');
 
 X = FDATA(:,1:13);
 Y = FDATA(:,14);
