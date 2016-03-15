@@ -35,9 +35,9 @@ for i = 3:totalTreesToTrain
         save(fileStr,'perfTrain','perfTest','boostStruct','boostArgs')
     end
 end
-%{
 
-Jvals = [4 8 16 32 64 128];
+%%
+Jvals = [4 8 16 32 64];
 testErrors = cell(1,length(Jvals));
 trainErrors = cell(1,length(Jvals));
 ii=1;
@@ -57,20 +57,19 @@ end
 
 figure
 hold on
-for ii = 1:6
+for ii = 1:5
     plot(testErrors{ii});
 end
-legend('J=4','J=8','J=16','J=32','J=64','J=128');
+legend('J=4','J=8','J=16','J=32','J=64');
 title('Validation Error vs. Number of Iterations');
 hold off
 
 figure
 hold on
-for ii = 1:6
+for ii = 1:5
     plot(trainErrors{ii});
 end
-legend('J=4','J=8','J=16','J=32','J=64','J=128');
+legend('J=4','J=8','J=16','J=32','J=64');
 title('Training Error vs. Number of Iterations');
 hold off
 
-%}

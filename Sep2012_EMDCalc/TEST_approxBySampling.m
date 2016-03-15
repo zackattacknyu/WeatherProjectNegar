@@ -1,8 +1,18 @@
-load('patchesSep2011Data_results_new1.mat');
-%load('patchesSep2011Data_results_allT_new1.mat');
+%load('patchesSep2011Data_results_new1.mat');
+%load('patchesSep2011Data_new1.mat');
+load('patchesSep2011Data_results_allT_new1.mat');
+load('patchesSep2011Data_allT_new1.mat');
 
 numPatches = size(predErrorsEMD,2);
 randPatches = randperm(numPatches);
+
+
+patchSum = zeros(1,numPatches);
+for k = 1:numPatches
+   curPatch = targetPatches{k};
+   patchSum(k) = sum(curPatch(:));
+end
+
 %%
 %numRandPatches = floor(numPatches*0.6);
 emd1Array = zeros(1,numPatches);
@@ -13,17 +23,19 @@ varemd1 = ones(1,numPatches);
 varemd2 = ones(1,numPatches);
 varemdOther = ones(1,numPatches);
 varemd2Other = ones(1,numPatches);
-numCompare = 100;
+numCompare = 400;
 minFlow = min(totalFlowEMD(:));
 for ii = 1:numPatches
     randPatchesUse = randPatches(1:ii);
     predErrorsSampled = predErrorsEMD(:,randPatchesUse);
     workSampled = totalWorkEMD(:,randPatchesUse);
     flowSampled = totalFlowEMD(:,randPatchesUse);
+    patchSumSampled = [patchSum(randPatchesUse);patchSum(randPatchesUse)];
     res = mean(predErrorsSampled,2);
-    res2 = mean(workSampled,2)./mean(flowSampled,2);
+    res2 = sum(workSampled,2)./sum(flowSampled,2);
     %res2 = sum(predErrorsSampled.*log(flowSampled/minFlow),2)./sum(log(flowSampled/minFlow),2);
-    
+    %res2 = sum(workSampled.*patchSumSampled,2)./sum(patchSumSampled,2);
+    %res2 = sum(workSampled.*flowSampled,2)./sum(patchSumSampled,2);
     emd1Array(ii) = res(1);
     emdOtherArray(ii) = res2(1);
     
