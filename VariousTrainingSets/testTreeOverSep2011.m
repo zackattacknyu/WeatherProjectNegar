@@ -59,18 +59,25 @@ J16dataOther = load('rmseValidationSep2011_J16rf8_other.mat');
 J32dataOther = load('rmseValidationSep2011_J32rf8_other.mat');
 J64dataOther = load('rmseValidationSep2011_J64rf8_other.mat');
 
+indsToSee = 1:20;
 figure
 hold on
-plot(J4dataAvg.rmseTestVals,'LineWidth',2);
-plot(J4data.rmseTestVals);
-plot(J8dataAvg.rmseTestVals,'LineWidth',2);
-plot(J8data.rmseTestVals);
-plot(J16data.rmseTestVals);
-plot(J16dataOther.rmseTestVals,'LineWidth',3);
-plot(J32data.rmseTestVals);
-plot(J32dataOther.rmseTestVals,'LineWidth',3);
-plot(J64data.rmseTestVals);
-plot(J64dataOther.rmseTestVals,'LineWidth',3);
+plot(J4dataAvg.rmseTestVals(indsToSee),'LineWidth',2);
+plot(J4data.rmseTestVals(indsToSee));
+plot(J8dataAvg.rmseTestVals(indsToSee),'LineWidth',2);
+plot(J8data.rmseTestVals(indsToSee));
+plot(J16data.rmseTestVals(indsToSee));
+%plot(J16dataOther.rmseTestVals(indsToSee),'LineWidth',3);
+plot(J32data.rmseTestVals(indsToSee));
+%plot(J32dataOther.rmseTestVals(indsToSee),'LineWidth',3);
+%plot(J64data.rmseTestVals(indsToSee));
+%plot(J64dataOther.rmseTestVals(indsToSee),'LineWidth',3);
+legend('4 leaf nodes avg','4 leaf nodes','8 leaf nodes avg',...
+    '8 leaf nodes',...
+    '16 leaf nodes',...
+    '32 leaf nodes',...
+    'Location','eastoutside');
+%{
 legend('4 leaf nodes avg','4 leaf nodes','8 leaf nodes avg',...
     '8 leaf nodes',...
     '16 leaf nodes',...
@@ -80,6 +87,7 @@ legend('4 leaf nodes avg','4 leaf nodes','8 leaf nodes avg',...
     '64 leaf nodes',...
     '64 leaf nodes previous set',...
     'Location','eastoutside');
+    %}
 title('Test RMSE for Sep 2011 data');
 hold off
 
