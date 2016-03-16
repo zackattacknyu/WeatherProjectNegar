@@ -157,7 +157,7 @@ end_of_loop = 0;
     end
 
     rmseTestValsNewFunc = boostTreeVal5(boostStructArray,totalIterTry,...
-        uint8(XtePct),boostArgs.v,targetVals);
+        uint8(XtePct),boostArgs.v,rrTestUse,indicesToUse);
 
 
     pause(3)
