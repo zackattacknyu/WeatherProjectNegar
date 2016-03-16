@@ -18,8 +18,3 @@ Y = FDATA(:,14);
     d = 23
 
 tc = treeRegress(Xtr,Ytr,0,d,-1,inf);
-
-err(d) = mse(tc,Xte,Yte);
-
-
-%end

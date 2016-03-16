@@ -23,6 +23,8 @@ end
 
 for n=1:nIter
     
+    n
+    
     curYhat = zeros(N,1);
     for treeNum = 1:numTrees
         
