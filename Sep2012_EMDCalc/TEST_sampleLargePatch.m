@@ -189,7 +189,7 @@ colorbar('vertical')
 %THIS IS USED TO SUBSAMPLE THE LARGE PATCH
 load('TEST_largeSamplePatchInfo1.mat');
 %%
-pNum=1;
+pNum=2;
 curImage = targetPatches{pNum};
 precipMap = predPatches{1,pNum};
 ccsOverUS = predPatches{2,pNum};
@@ -253,4 +253,39 @@ drawMapWithPatchesNoOutline(precipMap,randPatchesCornerCoord(indicesToKeep),patc
 subplot(2,2,4)
 drawMapWithPatchesNoOutline(ccsOverUS,randPatchesCornerCoord(indicesToKeep),patchSize);
 
+save('patchesSize200Sep2011_time7_subsampledFrom2.mat','patchesT','patchesPred');
 
+%%
+
+save('patchesSize200Sep2011_time7.mat','targetPatches','predPatches');
+
+%%
+
+data1 = load('patchesSize200Sep2011_time7_subsampledFrom1.mat');
+data2 = load('patchesSize200Sep2011_time7_subsampledFrom2.mat');
+
+targetPatches = data1.patchesT;
+predPatches = data1.patchesPred;
+
+save('patchesSize200Sep2011_time7_sub1.mat','targetPatches','predPatches');
+
+targetPatches = data2.patchesT;
+predPatches = data2.patchesPred;
+
+save('patchesSize200Sep2011_time7_sub2.mat','targetPatches','predPatches');
+
+%%
+
+target1 = targetPatches{1};
+predA1 = predPatches{1,1};
+predB1 = predPatches{2,1};
+
+figure
+subplot(1,3,1)
+drawMapWithPatchesNoOutline(target1,[],0);
+
+subplot(1,3,2)
+drawMapWithPatchesNoOutline(predA1,[],0);
+
+subplot(1,3,3)
+drawMapWithPatchesNoOutline(predB1,[],0);
