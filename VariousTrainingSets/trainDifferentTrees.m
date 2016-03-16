@@ -5,7 +5,7 @@ XTrPct = uint8(XTrPct); XTePct = uint8(XTePct);
 
 
 boostArgs.v = 0.5; 
-rf = 0.9; J = 32;
+rf = 0.5; J = 32;
 boostArgs.funargs = {rf J};
 
 boostArgs.nIter = 1000;
@@ -14,9 +14,9 @@ totalTreesToTrain = 15;
 
 %Jvals = [4 8 16 32 64 128];
 
-Jvals = [4 8];
-
-for i = 3:totalTreesToTrain
+Jvals = [4 8 16];
+dirStr = 'C:/Users/Zach/Google Drive/WeatherProject/computed/';
+for i = 1:totalTreesToTrain
     
     i
     
@@ -26,17 +26,23 @@ for i = 3:totalTreesToTrain
         boostArgs.funargs = {rf curJ};
         
 
-       fileStr = ['SepOct2012Training_J' num2str(curJ) 'rf9_tree' num2str(i) '.mat'];
+       fileStr = ['SepOct2012Training_J' num2str(curJ) 'rf5_tree' num2str(i) '.mat'];
 
 
         [perfTrain,perfTest,boostStruct] = ...
             BoostLSFixed(XTrPct, Ytr, XTePct, Yte, @boostTreeFun, boostArgs, [], []);
 
-        save(fileStr,'perfTrain','perfTest','boostStruct','boostArgs')
+        save(fileStr,'perfTrain','perfTest','boostStruct','boostArgs');
+        
+        save([dirStr fileStr],'perfTrain','perfTest','boostStruct','boostArgs');
     end
 end
 
-%%
+%{
+dirStr = 'C:/Users/Zach/Google Drive/WeatherProject/computed/';
+save([dirStr 'sample.mat'],'rmseTestVals');
+
+
 Jvals = [4 8 16 32 64];
 testErrors = cell(1,length(Jvals));
 trainErrors = cell(1,length(Jvals));
@@ -72,4 +78,4 @@ end
 legend('J=4','J=8','J=16','J=32','J=64');
 title('Training Error vs. Number of Iterations');
 hold off
-
+%}
