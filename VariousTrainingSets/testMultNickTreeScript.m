@@ -1,11 +1,12 @@
-numToUse = 15;
-numTotalTrees = 15;
+numToUse = 9;
+numTotalTrees = 9;
 treeNums = randperm(numTotalTrees);
 boostStructArray = cell(1,numToUse);
 
+rfVal = 5;
 
 for ii = 1:numToUse
-   curFile = ['SepOct2012Training_J' num2str(JVALUE) 'rf9_tree' num2str(treeNums(ii)) '.mat'];
+   curFile = ['SepOct2012Training_J' num2str(JVALUE) 'rf' num2str(rfVal) '_tree' num2str(treeNums(ii)) '.mat'];
    curFile
    curData = load(curFile,'boostStruct','boostArgs');
    boostStructArray{ii} = curData.boostStruct;

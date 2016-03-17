@@ -1,5 +1,5 @@
 
-for JVALUE = 16
+for JVALUE = 4
     load('decTreeSepOct2012.mat');
     load('sep2011TestDataSetAll.mat');
 

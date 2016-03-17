@@ -8,13 +8,14 @@ boostArgs.v = 0.5;
 rf = 0.5; J = 32;
 boostArgs.funargs = {rf J};
 
-boostArgs.nIter = 1000;
+boostArgs.nIter = 100;
 boostArgs.evaliter = 1:boostArgs.nIter;
 totalTreesToTrain = 15;
 
 %Jvals = [4 8 16 32 64 128];
 
-Jvals = [4 8 16];
+%Jvals = [4 8 16];
+Jvals = [2 3];
 dirStr = 'C:/Users/Zach/Google Drive/WeatherProject/computed/';
 for i = 1:totalTreesToTrain
     

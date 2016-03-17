@@ -5,7 +5,7 @@ for JVALUE = 8
 
     testMultNickTreeScript;
 
-    save(['rmseTestSep2011Averaged_J' num2str(JVALUE) 'rf9A.mat'],...
+    save(['rmseTestSep2011Averaged_J' num2str(JVALUE) 'rf5.mat'],...
         'rmseTestVals');
 end
 
