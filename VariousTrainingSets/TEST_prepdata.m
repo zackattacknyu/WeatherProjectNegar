@@ -14,8 +14,6 @@ arrayDATA = cell(1,l);
 
 numberPoints = zeros(1,l);
 
-diffRR = zeros(1,l);
-
 FDATA = [];
 
 for i= 1:l
@@ -54,33 +52,33 @@ for i= 1:l
       
       
       
-      %temp = ir(kk);
+      temp = ir(kk);
       rain = rr(kk);
-      %feat = FF(j,:);
+      feat = FF(j,:);
       
       numberPoints(i) = numberPoints(i) + length(find(rain>=0));
       
-      %DATA = zeros(length(temp),14);
-      %DATA(:,1) = temp;
-      %DATA(:,2:13) = repmat(feat,length(kk),1);
-      %DATA(:,14) = rain;
+      DATA = zeros(length(temp),14);
+      DATA(:,1) = temp;
+      DATA(:,2:13) = repmat(feat,length(kk),1);
+      DATA(:,14) = rain;
       
       
       
-      %currentPatchData{j} = DATA;
-      %FDATA = [FDATA;DATA];
+      currentPatchData{j} = DATA;
+      FDATA = [FDATA;DATA];
       
-      %clear DATA
-      %clear temp
-      %clear rain
+      clear DATA
+      clear temp
+      clear rain
       
   end
   
-  %arrayDATA{i} = currentPatchData;
+  arrayDATA{i} = currentPatchData;
     
 end
 
-%{
+
 numDataPoints=0;
 for ii = 1:length(arrayDATA)
    currentDATA = arrayDATA{ii};
@@ -105,14 +103,18 @@ for ii = 1:length(arrayDATA)
 end
 
 
-
+FDATA2_old = FDATA2;
  nn = find(FDATA2(:,14) >= 0);
  FDATA2 = FDATA2(nn,:);
  
- save('SepOct2012PrepData.mat','FDATA');
+ FDATA_old = FDATA;
+ nn2 = find(FDATA(:,14) >= 0);
+ FDATA = FDATA(nn2,:);
+ 
+save('TESTING_DATA_Sep2011.mat');
 
 
-%}
+
 
 %{
 save('negar_3_16_datapreptesting_zachVersion.mat','numberPatchPoints');
@@ -122,5 +124,5 @@ load('negar_3_16_datapreptesting.mat','numPatchPoints');
 negarNumPoints = numPatchPoints;
 load('negar_3_16_datapreptesting_zachVersion.mat','numberPatchPoints');
 zachNumPoints = numberPatchPoints;
-%}
 
+%}

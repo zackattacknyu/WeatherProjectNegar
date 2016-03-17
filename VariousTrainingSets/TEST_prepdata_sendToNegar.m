@@ -59,4 +59,4 @@ end
 
 totalNumberPoints = sum(numberPointsArray);
 
-save('negarNumDataPoints.mat','numberPointsArray','totalNumberPoints');
+save('negarNumDataPoints.mat','numberPointsArray');

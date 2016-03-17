@@ -4,7 +4,7 @@ close all;
 
 DIM=[1000,1750]; 
 
-files = dir('irData/bghrus12*');
+files = dir('irData/bghrus1109*');
 l = length(files);
 
 path_ir = 'irData/';
@@ -68,7 +68,7 @@ for i= 1:l
   arrayDATA{i} = currentPatchData;
     
 end
-%%
+
 numDataPoints=0;
 for ii = 1:length(arrayDATA)
    currentDATA = arrayDATA{ii};
@@ -76,7 +76,7 @@ for ii = 1:length(arrayDATA)
       numDataPoints = numDataPoints + size(currentDATA{jj},1); 
    end
 end
-%%
+
 FDATA = zeros(numDataPoints,14);
 curStartInd = 1;
 for ii = 1:length(arrayDATA)
@@ -94,10 +94,8 @@ end
 
 
 
- nn = find(FDATA(:,14) >= 0);
-% 
+ nn = find(FDATA(:,14) >= 0); 
  FDATA = FDATA(nn,:);
  
- %%
  
- save('SepOct2012PrepData.mat','FDATA');
+ save('Sep2011PrepData.mat','FDATA');

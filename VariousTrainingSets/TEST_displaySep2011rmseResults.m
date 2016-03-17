@@ -61,7 +61,9 @@ hold off
 %%
 
 J4dataAvg = load('rmseTestSep2011Averaged_J4rf9.mat');
+J4dataAvg2 = load('rmseTestSep2011Averaged_J4rf5.mat');
 J8dataAvg = load('rmseTestSep2011Averaged_J8rf9.mat');
+J8dataAvg2 = load('rmseTestSep2011Averaged_J8rf5.mat');
 %J4data = load('rmseValidationSep2011_J4rf9.mat');
 %J8data = load('rmseValidationSep2011_J8rf9.mat');
 %J16data = load('rmseValidationSep2011_J16rf9.mat');
@@ -80,9 +82,46 @@ plot(J2dataAvg.rmseTestVals(indsToSee),'LineWidth',2);
 plot(J3data.rmseTestVals(indsToSee));
 plot(J3dataAvg.rmseTestVals(indsToSee),'LineWidth',2);
 plot(J4dataAvg.rmseTestVals(indsToSee));
+plot(J4dataAvg2.rmseTestVals(indsToSee));
 plot(J8dataAvg.rmseTestVals(indsToSee));
-legend('2 leaf nodes','2 leaf nodes avg','3 leaf nodes','3 leaf nodes avg','4 leaf, avg','8 leaf, avg',...
+plot(J8dataAvg2.rmseTestVals(indsToSee));
+legend('2 leaf nodes','2 leaf nodes avg','3 leaf nodes','3 leaf nodes avg',...
+    '4 leaf, avg','4 leaf, avg 2','8 leaf, avg','8 leaf, avg 2',...
     'Location','eastoutside');
+
+title('Test RMSE for Sep 2011 data');
+hold off
+
+%%
+
+J4dataAvg = load('rmseTestSep2011Averaged_J4rf9.mat');
+J4dataAvg2 = load('rmseTestSep2011Averaged_J4rf5.mat');
+J8dataAvg = load('rmseTestSep2011Averaged_J8rf9.mat');
+J8dataAvg2 = load('rmseTestSep2011Averaged_J8rf5.mat');
+%J4data = load('rmseValidationSep2011_J4rf9.mat');
+%J8data = load('rmseValidationSep2011_J8rf9.mat');
+%J16data = load('rmseValidationSep2011_J16rf9.mat');
+%J16dataAvg = load('rmseTestSep2011Averaged_J16rf9.mat');
+
+J2data = load('rmseValidationSep2011_J2rf5.mat');
+J2dataAvg = load('rmseTestSep2011Averaged_J2rf5.mat');
+J3data = load('rmseValidationSep2011_J3rf5.mat');
+J3dataAvg = load('rmseTestSep2011Averaged_J3rf5.mat');
+
+indsToSee = 1:1000;
+figure
+hold on
+%plot(J2dataAvg.rmseTestVals(indsToSee),'LineWidth',2);
+%plot(J3dataAvg.rmseTestVals(indsToSee),'LineWidth',2);
+plot(J4dataAvg.rmseTestVals(indsToSee));
+plot(J4dataAvg2.rmseTestVals(indsToSee));
+plot(J8dataAvg.rmseTestVals(indsToSee));
+plot(J8dataAvg2.rmseTestVals(indsToSee));
+legend('4 leaf, avg','4 leaf, avg 2','8 leaf, avg','8 leaf, avg 2',...
+    'Location','eastoutside');
+%legend('2 leaf nodes avg','3 leaf nodes avg',...
+%    '4 leaf, avg','4 leaf, avg 2','8 leaf, avg','8 leaf, avg 2',...
+%    'Location','eastoutside');
 
 title('Test RMSE for Sep 2011 data');
 hold off
