@@ -10,9 +10,11 @@ boostArgs.funargs = {rf J};
 
 boostArgs.nIter = 1000;
 boostArgs.evaliter = 1:boostArgs.nIter;
-totalTreesToTrain = 15;
+totalTreesToTrain = 8;
 
 Jvals = [2 3 4 8];
+rfVals = [0.5 0.9 1];
+rfDisp = [5 9 10];
 dirStr = 'C:/Users/Zach/Google Drive/WeatherProject/computed/';
 for i = 1:totalTreesToTrain
     
@@ -21,18 +23,23 @@ for i = 1:totalTreesToTrain
     for jj = 1:length(Jvals)
         
         curJ = Jvals(jj)
-        boostArgs.funargs = {rf curJ};
         
+        for kk = 1:length(rfVals)
+            rf = rfVals(kk);
+            boostArgs.funargs = {rf curJ};
 
-       fileStr = ['Sep2011Training_J' num2str(curJ) 'rf5_tree' num2str(i) '.mat'];
+
+           fileStr = ['Sep2011Training_J' num2str(curJ) 'rf' num2str(rfDisp(kk)) '_tree' num2str(i) '.mat'];
 
 
-        [perfTrain,perfTest,boostStruct] = ...
-            BoostLSFixed(XTrPct, Ytr, XTePct, Yte, @boostTreeFun, boostArgs, [], []);
+            [perfTrain,perfTest,boostStruct] = ...
+                BoostLSFixed(XTrPct, Ytr, XTePct, Yte, @boostTreeFun, boostArgs, [], []);
 
-        save(fileStr,'perfTrain','perfTest','boostStruct','boostArgs');
-        
-        save([dirStr fileStr],'perfTrain','perfTest','boostStruct','boostArgs');
+            save(fileStr,'perfTrain','perfTest','boostStruct','boostArgs');
+
+            save([dirStr fileStr],'perfTrain','perfTest','boostStruct','boostArgs');
+
+        end
     end
 end
 
