@@ -37,16 +37,16 @@ NN = length(files);
 precip = zeros(500,750);
 precipNick = zeros(500,750);
 precipCCS = zeros(500,750);
-%%
+
 numToUse = 1;
 numTotalTrees = 1;
 treeNums = randperm(numTotalTrees);
 boostStructArray = cell(1,numToUse);
 
-
-for JVALUE = [4,8,16]
+%%
+for JVALUE = [2]
     for ii = 1:numToUse
-       curFile = ['SepOct2012Training_J' num2str(JVALUE) 'rf9_tree' num2str(treeNums(ii)) '.mat'];
+       curFile = ['SepOct2012Training_J' num2str(JVALUE) 'rf5_tree' num2str(treeNums(ii)) '.mat'];
        curFile
        curData = load(curFile,'boostStruct');
        boostStructArray{ii} = curData.boostStruct;
@@ -120,7 +120,7 @@ for JVALUE = [4,8,16]
         boostArgs.v = 0.5; 
         rf = 0.9; 
         boostArgs.funargs = {rf JVALUE};
-        totalIterTry = 400;
+        totalIterTry = 10;
         nickPredsArray = cell(1,length(boostStructArray));
         for kk = 1:length(boostStructArray)
            nickPredsArray{kk} =  boostTreeVal3(boostStructArray{kk},totalIterTry,uint8(XtePct),boostArgs.v);
@@ -141,7 +141,7 @@ for JVALUE = [4,8,16]
             %precipNick(ir>0 & L>0) = nickPreds{jj};   
             precipNick(ir>0 & L>0) = avgPred;   
 
-            if(mod(jj,10)==0)
+            if(mod(jj,1)==0)
                 %figInd = figInd + 1;
                 fig = figure;
                 imagesc(precipNick)
@@ -150,8 +150,8 @@ for JVALUE = [4,8,16]
                 drwvect([-130 25 -100 45],[500 750],'us_states_outl_ug.tmp','k')
                 colorbar('vertical')
                 title(['Results after ' num2str(jj) ' trees applied for boosting'])
-                fileNm = ['sepOct2012PngFiles/SINGLE_J' num2str(JVALUE) 'rf9_time' num2str(i) '_Iter' num2str(jj) 'Map.png'];
-                print(fig,fileNm,'-dpng');
+                %fileNm = ['sepOct2012PngFiles/SINGLE_J' num2str(JVALUE) 'rf9_time' num2str(i) '_Iter' num2str(jj) 'Map.png'];
+                %print(fig,fileNm,'-dpng');
                 pause(2);
                 close(fig);
             end
