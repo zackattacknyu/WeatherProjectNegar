@@ -1,0 +1,92 @@
+%%
+%% Class homework & solution template for latex
+%% Alex Ihler
+%%
+\documentclass[twoside,11pt]{article}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{graphicx,color}
+\usepackage{verbatim,url}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{upquote}
+\usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+\usepackage[scaled]{beramono}
+%\usepackage{textcomp}
+
+% Directories for other source files and images
+\newcommand{\bibtexdir}{../bib}
+\newcommand{\figdir}{fig}
+
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\matlab}{{\sc Matlab}\ }
+
+\setlength{\textheight}{9in} \setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{-.25in}  % Centers text.
+\setlength{\evensidemargin}{-.25in} %
+\setlength{\topmargin}{0in} %
+\setlength{\headheight}{0in} %
+\setlength{\headsep}{0in} %
+
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+
+\theoremstyle{definition}
+\newtheorem{MatEx}{M{\scriptsize{ATLAB}} Usage Example}
+
+\definecolor{comments}{rgb}{0,.5,0}
+\definecolor{backgnd}{rgb}{.95,.95,.95}
+\definecolor{string}{rgb}{.2,.2,.2}
+\lstset{language=Matlab}
+\lstset{basicstyle=\small\ttfamily,
+        mathescape=true,
+        emptylines=1, showlines=true,
+        backgroundcolor=\color{backgnd},
+        commentstyle=\color{comments}\ttfamily, %\rmfamily,
+        stringstyle=\color{string}\ttfamily,
+        keywordstyle=\ttfamily, %\normalfont,
+        showstringspaces=false}
+\newcommand{\matp}{\mathbf{\gg}}
+
+
+
+
+\begin{document}
+
+Let $P$ be a sampling of patches that covers as many areas with precipitation as possible in the target set. \\
+\\
+Let $N$ be the number of patches in $P$\\
+Let $I$ be the numbers 1 to $N$\\
+\\
+Let $\{q_i\}_{i \in I}$ be target patches\\
+Let $\{\hat{q}_i\}_{i \in I}$ be the corresponding prediction patches\\
+\\
+There are two goals with my loss function $L$\\
+1. Have values of $L$ correspond well to visual inspection of target and prediction maps in the same way EMD did that for target and prediction patches.\\
+2. Use a subset of $P$ to calculate $L$ within a reasonable bound\\
+\\
+Let $L_k$ be a random variable corresponding to calculating $L$ for a random subset of $P$ of size $k$ and I will define $L=L_N$\\
+\\
+To accomplish goal 2, I will pick an $\epsilon$ and see how large $k$ must be in order for
+\[
+(1) Pr( |L_k-L| > \epsilon) = 0
+\]
+The hope is that this is satisfied with a $k$ not too large, thus only $k$ EMD calculations would need to be made.\\
+\\
+Let $f(q_i,\hat{q}_i)$ be the EMD between patch $q_i$ and $\hat{q}_i$\\
+Let $x$ and $\hat{x}$ be individual precipitation values in the patches\\
+Let $g(q_i,\hat{q}_i)$ be $min(\sum_{x \in q_i}{x},\sum_{\hat{x} \in \hat{q}_i}{\hat{x}})$\\
+\\
+Let $I'(k)$ be the indices for a random subset of $P$ of size $k$. My $L_k$ was as follows:
+\[
+L_k = \frac{1}{k} \sum_{i \in I'(k)}{f(q_i,\hat{q}_i)}
+\]
+However $k$ needed to be near $N$ in order satisfy (1). I thus want to try a new loss function which is closer to what an EMD approximation over the whole image would be
+\[
+L_k = \frac{\sum_{i \in I'(k)}{f(q_i,\hat{q}_i)g(q_i,\hat{q}_i)}}{\sum_{i \in I'(k)}{g(q_i,\hat{q}_i)}} 
+\]
+
+
+\end{document}

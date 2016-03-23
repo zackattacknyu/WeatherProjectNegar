@@ -1,0 +1,8 @@
+*.pdf
+*.log
+*.blg
+*.bbl
+*.aux
+/*.synctex.gz
+/emdApprox.out
+*.out
