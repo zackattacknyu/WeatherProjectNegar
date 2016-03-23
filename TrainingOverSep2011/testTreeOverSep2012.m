@@ -19,22 +19,6 @@ end
 
 
 %%
-
-testingData = load('sep2012TestDataSet_every4thT.mat');
-rmseBaseline = std(testingData.YteSept);
-
-rmseLinReg = zeros(1,13);
-for kk = 1:13
-    xx = testingData.XteSept(:,kk);
-    yy = testingData.YteSept;
-    pp = polyfit(xx,yy,1);
-    yfit = polyval(pp,xx);
-    rmseLinReg(kk) = sqrt(mean((yfit-yy).^2));
-end
-
-rmseBaselineLin = min(rmseLinReg);
-
-%%
 ind = 1;
 
 rfVals = [5];
