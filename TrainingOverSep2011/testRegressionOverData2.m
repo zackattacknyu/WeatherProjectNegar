@@ -52,3 +52,17 @@ ylabel('Coefficient with Feature');
 title('Coefficients in Mult Lin Reg Model for each feature');
 hold off
 
+%%
+
+numPts = size(xData,1);
+ratioDisp = 0.01;
+randInds = randperm(numPts);
+randIndsDisp = randInds(1:ceil(ratioDisp*numPts));
+figure
+xlabel('Feature 2 Value');
+ylabel('Y Value');
+plot(xData(randIndsDisp,2),yData(randIndsDisp),'r.');
+title('Feature 2 vs Y for random 1% of Test Data');
+%%
+figure
+scatter3(xData(randIndsDisp,1),xData(randIndsDisp,2),yData(randIndsDisp));
