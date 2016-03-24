@@ -105,7 +105,11 @@ LkF1pred1result = max(abs(F1pred1diff));
 LkF2pred1result = max(abs(F2pred1diff));
 LkF1pred2result = max(abs(F1pred2diff));
 LkF2pred2result = max(abs(F2pred2diff));
-
+%%
+LkF1pred1bias = mean(F1pred1diff);
+LkF2pred1bias = mean(F2pred1diff);
+LkF1pred2bias = mean(F1pred2diff);
+LkF2pred2bias = mean(F2pred2diff);
  
 %{
 figure
