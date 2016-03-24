@@ -151,12 +151,17 @@ axis([startColInd endColInd 0 maxY]);
 xlabel('k value');
 ylabel('epsilon value required');
 
+prefEpsilon = (LvalF2pred2-LvalF2pred1)/2;
+
 figure
 hold on
 plot(LkF2pred1disp,'g-');
 plot(LkF2pred2disp,'k-');
-legend('Function 2, Pred 1','Function 2, Pred 2');
+plot(prefEpsilon.*ones(1,length(LkF2pred2disp)),'r--');
+legend('Function 2, Pred 1','Function 2, Pred 2','(L_2-L_1)/2');
 hold off
 axis([startColInd endColInd 0 maxY2]);
 xlabel('k value');
 ylabel('epsilon value required');
+%%
+numKneeded = find(LkF2pred2disp>prefEpsilon,1,'last')

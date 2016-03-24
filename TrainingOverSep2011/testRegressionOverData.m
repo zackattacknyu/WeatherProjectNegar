@@ -37,6 +37,23 @@ rmseBaselineLin3 = min(rmseLinReg3);
 [b,bint,r,rint,stats] = regress(yData,xData);
 
 rmseMultipleLinear = sqrt(stats(4));
+%%
+
+figure
+hold on
+plot(rmseLinReg);
+plot(rmseExpReg);
+hold off
+%%
+
+figure
+hold on
+plot(rmseLinReg(2:13));
+plot(rmseLinReg2(2:13));
+plot(rmseLinReg3(2:13));
+legend('Lin Reg','Quad Reg','Cubic Reg');
+hold off
+
 
 %%
 vv=fit([xData(:,1) xData(:,2)],yData,'poly44');
