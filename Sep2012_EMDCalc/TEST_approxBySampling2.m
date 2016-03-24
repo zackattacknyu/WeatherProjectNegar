@@ -41,37 +41,62 @@ end
 
 %%
 startColInd = 1000;
+dispRows = 1:50;
 lineWidth=3;
-numEntries = numPatches-startColInd;
+
+minYf1p1 = min(min(LkValuesF1pred1(dispRows,startColInd:end)));
+maxYf1p1 = max(max(LkValuesF1pred1(dispRows,startColInd:end)));
+
+minYf2p1 = min(min(LkValuesF2pred1(dispRows,startColInd:end)));
+maxYf2p1 = max(max(LkValuesF2pred1(dispRows,startColInd:end)));
+
+minYf1p2 = min(min(LkValuesF1pred2(dispRows,startColInd:end)));
+maxYf1p2 = max(max(LkValuesF1pred2(dispRows,startColInd:end)));
+
+minYf2p2 = min(min(LkValuesF2pred2(dispRows,startColInd:end)));
+maxYf2p2 = max(max(LkValuesF2pred2(dispRows,startColInd:end)));
+
 figure
 title('L_k values for Dec Tree Prediction, Original L_k');
 hold on
-plot(LkValuesF1pred1(:,startColInd:end)') 
-plot(LvalF1pred1.*ones(1,numEntries),'k--','LineWidth',lineWidth);
+plot(LkValuesF1pred1(dispRows,:)') 
+plot(LvalF1pred1.*ones(1,numPatches),'k--','LineWidth',lineWidth);
+axis([startColInd numPatches minYf1p1 maxYf1p1]);
+xlabel('k value');
+ylabel('L_k value');
 hold off
 
 figure
 title('L_k values for Dec Tree Prediction, New L_k');
 hold on
-plot(LkValuesF2pred1(:,startColInd:end)')
-plot(LvalF2pred1.*ones(1,numEntries),'k--','LineWidth',lineWidth);
+plot(LkValuesF2pred1(dispRows,:)')
+plot(LvalF2pred1.*ones(1,numPatches),'k--','LineWidth',lineWidth);
+axis([startColInd numPatches minYf2p1 maxYf2p1]);
+xlabel('k value');
+ylabel('L_k value');
 hold off
 
 figure
 title('L_k values for CCS Prediction, Original L_k');
 hold on
-plot(LkValuesF1pred2(:,startColInd:end)')  
-plot(LvalF1pred2.*ones(1,numEntries),'k--','LineWidth',lineWidth);
+plot(LkValuesF1pred2(dispRows,:)')  
+plot(LvalF1pred2.*ones(1,numPatches),'k--','LineWidth',lineWidth);
+axis([startColInd numPatches minYf1p2 maxYf1p2]);
+xlabel('k value');
+ylabel('L_k value');
 hold off
 
 figure
 title('L_k values for CCS Prediction, New L_k');
 hold on
-plot(LkValuesF2pred2(:,startColInd:end)')  
-plot(LvalF2pred2.*ones(1,numEntries),'k--','LineWidth',lineWidth);
+plot(LkValuesF2pred2(dispRows,:)')  
+plot(LvalF2pred2.*ones(1,numPatches),'k--','LineWidth',lineWidth);
+axis([startColInd numPatches minYf2p2 maxYf2p2]);
+xlabel('k value');
+ylabel('L_k value');
 hold off
 
-
+%%
 F1pred1diff = LkValuesF1pred1-LvalF1pred1;
 F2pred1diff = LkValuesF2pred1-LvalF2pred1;
 F1pred2diff = LkValuesF1pred2-LvalF1pred2;
@@ -101,7 +126,7 @@ LkF2pred1disp = LkF2pred1result;
 LkF1pred2disp = LkF1pred2result;
 LkF2pred2disp = LkF2pred2result;
 
-startColInd = 2000;
+startColInd = 1000;
 endColInd = numPatches;
 maxY = max([LkF1pred1disp(startColInd:endColInd) ...
     LkF2pred1disp(startColInd:endColInd) ...
@@ -110,7 +135,6 @@ maxY = max([LkF1pred1disp(startColInd:endColInd) ...
 maxY2 = max([LkF2pred1disp(startColInd:endColInd) ...
     LkF2pred2disp(startColInd:endColInd)]);
 figure
-title('Lowest Epsilon Value Possible');
 hold on
 plot(LkF1pred1disp,'r-');
 plot(LkF2pred1disp,'g-');
@@ -120,12 +144,15 @@ legend('Function 1, Pred 1','Function 2, Pred 1',...
     'Function 1, Pred 2','Function 2, Pred 2');
 hold off
 axis([startColInd endColInd 0 maxY]);
+xlabel('k value');
+ylabel('epsilon value required');
 
 figure
-title('Lowest Epsilon Value Possible');
 hold on
 plot(LkF2pred1disp,'g-');
 plot(LkF2pred2disp,'k-');
 legend('Function 2, Pred 1','Function 2, Pred 2');
 hold off
 axis([startColInd endColInd 0 maxY2]);
+xlabel('k value');
+ylabel('epsilon value required');
