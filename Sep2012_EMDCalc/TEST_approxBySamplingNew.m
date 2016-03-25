@@ -7,7 +7,19 @@ load('patchesSep2011Data_allT_new1.mat');
 numPatches = size(predErrorsEMD,2);
 LvaluesFunc1 = sum(totalWorkEMD,2);
 
+LOGWORK1 = sort(log(totalWorkEMD(1,:)));
+LOGWORK2 = sort(log(totalWorkEMD(2,:)));
+
+INDS = 1:length(LOGWORK1);
+%L/(exp(-k*(x-a))+1)
+%Put in file logisticCurvesOnWork.sfit
+%Type cftool to view it
+%%
+figure
+hold on
 plot(sort(log(totalWorkEMD(1,:))))
+plot(sort(log(totalWorkEMD(2,:))))
+hold off
 
 %{
 log(work) vs patchNum is logistic model
