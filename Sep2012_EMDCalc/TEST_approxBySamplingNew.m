@@ -4,6 +4,8 @@ load('patchesSep2011Data_results_allT_new1.mat');
 load('patchesSep2011Data_allT_new1.mat');
 
 
+
+
 numPatches = size(predErrorsEMD,2);
 LvaluesFunc1 = sum(totalWorkEMD,2);
 
@@ -14,6 +16,37 @@ INDS = 1:length(LOGWORK1);
 %L/(exp(-k*(x-a))+1)
 %Put in file logisticCurvesOnWork.sfit
 %Type cftool to view it
+%%
+
+predErrorsMSE = zeros(size(predErrorsEMD));
+for i = 1:numPatches
+    for j = 1:2
+        predErrorsMSE(j,i) = sqrt(sum(sum((targetPatches{i}-predPatches{j,i}).^2)));
+    end
+end
+plot(sort(log(predErrorsMSE(1,:))))
+%%
+
+WORK1 = sort(totalWorkEMD(1,:));
+WORK2 = sort(totalWorkEMD(2,:));
+
+%%
+figure
+hold on
+XX = INDS./length(INDS);
+LOGWORK1norm = (LOGWORK1-mean(LOGWORK1))./(max(LOGWORK1)-min(LOGWORK1));
+YY = log(XX./(1-XX));
+plot(XX,LOGWORK1norm*9);
+plot(XX,YY);
+legend('log work','log');
+hold off
+
+%{
+THERE IS A LOGIT REGRESSION RELATIONSHIP
+BETWEEN LOG OF WORK AND INDEX
+TODO: SEE IF THIS WILL HELP US
+%}
+
 %%
 figure
 hold on
