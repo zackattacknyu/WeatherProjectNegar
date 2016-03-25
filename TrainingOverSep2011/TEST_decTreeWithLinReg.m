@@ -17,8 +17,21 @@ Y = FDATA(indsUse,14);
 
 save('Sep2011SetupDataZach_decTreeLinReg.mat');
 %%
-%for d = 1:100
-    
-    %d = 23
+load('Sep2011SetupDataZach_decTreeLinReg.mat','Xtr','Xte','Ytr','Yte');
+load('sep2012TestDataSet_every4thT.mat','XteSept','YteSept');
+Xtr = [Xtr ones(size(Xtr,1),1)];
+Xte = [Xte ones(size(Xte,1),1)];
+XteSept = [XteSept ones(size(XteSept,1),1)];
+%%
+d=4;
 
-%tc = treeRegress(Xtr,Ytr,0,d,-1,inf);
+tc = treeRegressWithLinReg(Xtr,Ytr,'maxdepth',d,'minparent',50,'minscore',1);
+tc2 = treeRegress(Xtr,Ytr,'maxdepth',d,'minparent',50,'minscore',1);
+
+trainingRMSE = rmse(tc,Xtr,Ytr);
+validRMSE = rmse(tc,Xte,Yte);
+testRMSE = rmse(tc,XteSept,YteSept);
+
+trainingRMSE2 = sqrt(mse(tc2,Xtr,Ytr));
+validRMSE2 = sqrt(mse(tc2,Xte,Yte));
+testRMSE2 = sqrt(mse(tc2,XteSept,YteSept));

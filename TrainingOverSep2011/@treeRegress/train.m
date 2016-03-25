@@ -31,31 +31,26 @@ function obj=train(obj, X,Y, varargin)
   % Allocate memory for binary tree with given max depth and >= 1 datum per leaf
   sz = min(2*N,2^(maxDepth+1)); 
   L=zeros(1,sz); R=L; F=L; T=L;
-  
-  BETA = zeros(sz,D); %coefficients
 
   % Unfortunately, Matlab cannot use the JIT compiler if we pass an object, so pass arrays
-  [L,R,F,T,BETA, last] = dectreeTrain(X,Y, L,R,F,T,BETA, 1, 0,  minParent,maxDepth,minScore,nFeat);
+  [L,R,F,T, last] = dectreeTrain(X,Y, L,R,F,T, 1, 0,  minParent,maxDepth,minScore,nFeat);
 
   % Store returned data structure info in the object
   obj.L=L(1:last-1); obj.R=R(1:last-1); obj.F=F(1:last-1); obj.T=T(1:last-1);
-  obj.BETA=BETA(1:last-1,:);
 
 
 
 %%%%%% Recursive training function:
 
-function  [L,R,F,T,BETA, next] = dectreeTrain(X,Y,  L,R,F,T,BETA,  next, depth, minParent,maxDepth,minScore,nFeat)
+function  [L,R,F,T, next] = dectreeTrain(X,Y,  L,R,F,T,  next, depth, minParent,maxDepth,minScore,nFeat)
 
 [N,D] = size(X);
-fprintf(['Current Depth:' num2str(depth) '\n']);
 
 % check leaf conditions:
 if (N<minParent || depth >= maxDepth || var(Y)<minScore )
   if (N==0) error('Tried to create size-zero node'); end;
   F(next) = 0;
   T(next) = mean(Y,1);
-  BETA(next,:)=regress(Y,X);
   next = next+1;
   return;
 end;
@@ -100,7 +95,6 @@ end;
 if (BestFeat == -1)  % no split possible?  output a leaf node
   F(next) = 0;
   T(next) = mean(Y);
-  BETA(next,:)=regress(Y,X);
   next = next+1;
   return;
 end;
@@ -117,9 +111,9 @@ next = next+1;
 
  
 L(myidx) = next;   % Recurse left
-[L,R,F,T,BETA,next]=dectreeTrain(X(goLeft,:),Y(goLeft), L,R,F,T,BETA, next,depth+1, minParent,maxDepth,minScore,nFeat);
+[L,R,F,T,next]=dectreeTrain(X(goLeft,:),Y(goLeft), L,R,F,T, next,depth+1, minParent,maxDepth,minScore,nFeat);
 
 R(myidx) = next;   % Recurse right
-[L,R,F,T,BETA,next]=dectreeTrain(X(~goLeft,:),Y(~goLeft), L,R,F,T,BETA, next,depth+1, minParent,maxDepth,minScore,nFeat);
+[L,R,F,T,next]=dectreeTrain(X(~goLeft,:),Y(~goLeft), L,R,F,T, next,depth+1, minParent,maxDepth,minScore,nFeat);
 
 
