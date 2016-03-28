@@ -40,12 +40,28 @@ plot(XX,LOGWORK1norm*9);
 plot(XX,YY);
 legend('log work','log');
 hold off
+%%
 
-%{
-THERE IS A LOGIT REGRESSION RELATIONSHIP
-BETWEEN LOG OF WORK AND INDEX
-TODO: SEE IF THIS WILL HELP US
-%}
+%NORMAL DISTRIBUTION OF LOG(WORK) VALUES
+[pLOGWORK,LOGWORKVALS] = hist(LOGWORK1,50);
+pLOGWORK = pLOGWORK./sum(pLOGWORK);
+[MU,SIGMA] = normfit(LOGWORKVALS);
+xx = 0:0.05:12;
+figure
+hold on
+plot(LOGWORKVALS,pLOGWORK)
+%plot(xx,normpdf(xx,MU,SIGMA))
+hold off
+%%
+
+vals = 50:100;
+sums = zeros(size(vals));
+ind = 1;
+for N = vals
+    sums(ind) = sum((N:-1:1)./(1:1:N));
+    ind = ind+1;
+end
+
 
 %%
 figure
