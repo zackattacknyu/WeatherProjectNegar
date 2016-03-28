@@ -22,23 +22,58 @@ load('sep2012TestDataSet_every4thT.mat','XteSept','YteSept');
 Xtr = [Xtr ones(size(Xtr,1),1)];
 Xte = [Xte ones(size(Xte,1),1)];
 XteSept = [XteSept ones(size(XteSept,1),1)];
-%%
+
 d=15;
-minPar = 100;
-minScore=1;
+minPar = 30;
+minScore=0.5;
 
-tc = treeRegressWithLinReg(Xtr,Ytr,'maxdepth',d,'minparent',minPar,'minscore',minScore);
-tc2 = treeRegress(Xtr,Ytr,'maxdepth',d,'minparent',minPar,'minscore',minScore);
-%tc3 = treeRegressWithExpReg(Xtr,Ytr,'maxdepth',d,'minparent',minPar,'minscore',minScore);
+maxDepthVals = 1:20;
 
-trainingRMSE = rmse(tc,Xtr,Ytr);
-validRMSE = rmse(tc,Xte,Yte);
-testRMSE = rmse(tc,XteSept,YteSept);
+trainingRMSEwithLin = zeros(1,length(maxDepthVals));
+validRMSEwithLin = zeros(1,length(maxDepthVals));
+testRMSEwithLin = zeros(1,length(maxDepthVals));
 
-trainingRMSE2 = sqrt(mse(tc2,Xtr,Ytr));
-validRMSE2 = sqrt(mse(tc2,Xte,Yte));
-testRMSE2 = sqrt(mse(tc2,XteSept,YteSept));
+trainingRMSEconst = zeros(1,length(maxDepthVals));
+validRMSEconst = zeros(1,length(maxDepthVals));
+testRMSEconst = zeros(1,length(maxDepthVals));
 
-%trainingRMSE3 = rmse(tc3,Xtr,Ytr);
-%validRMSE3 = rmse(tc3,Xte,Yte);
-%testRMSE3 = rmse(tc3,XteSept,YteSept);
+for ind = 1:length(maxDepthVals)
+    
+    dd = maxDepthVals(ind);
+    
+    tc = treeRegressWithLinReg(Xtr,Ytr,'maxdepth',dd,'minparent',minPar,'minscore',minScore);
+    tc2 = treeRegress(Xtr,Ytr,'maxdepth',dd,'minparent',minPar,'minscore',minScore);
+
+
+    trainingRMSEwithLin(ind) = rmse(tc,Xtr,Ytr);
+    validRMSEwithLin(ind) = rmse(tc,Xte,Yte);
+    testRMSEwithLin(ind) = rmse(tc,XteSept,YteSept);
+
+    trainingRMSEconst(ind) = sqrt(mse(tc2,Xtr,Ytr));
+    validRMSEconst(ind) = sqrt(mse(tc2,Xte,Yte));
+    testRMSEconst(ind) = sqrt(mse(tc2,XteSept,YteSept));
+end
+%%
+
+figure
+hold on
+plot(maxDepthVals,testRMSEwithLin);
+plot(maxDepthVals,testRMSEconst);
+legend('With Linear Regression','Without Linear Regression');
+hold off
+
+figure
+hold on
+plot(maxDepthVals,validRMSEwithLin);
+plot(maxDepthVals,validRMSEconst);
+legend('With Linear Regression','Without Linear Regression');
+hold off
+
+figure
+hold on
+plot(maxDepthVals,trainingRMSEwithLin);
+plot(maxDepthVals,trainingRMSEconst);
+legend('With Linear Regression','Without Linear Regression');
+hold off
+%%
+save('decTreeWithLinReg_testRunData.mat')
