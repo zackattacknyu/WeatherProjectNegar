@@ -55,25 +55,36 @@ for ind = 1:length(maxDepthVals)
 end
 %%
 
-figure
-hold on
-plot(maxDepthVals,testRMSEwithLin);
-plot(maxDepthVals,testRMSEconst);
-legend('With Linear Regression','Without Linear Regression');
-hold off
+indsDisp = 1:10;
 
 figure
 hold on
-plot(maxDepthVals,validRMSEwithLin);
-plot(maxDepthVals,validRMSEconst);
+plot(maxDepthVals(indsDisp),testRMSEwithLin(indsDisp),'r-');
+plot(maxDepthVals(indsDisp),testRMSEconst(indsDisp),'g--');
 legend('With Linear Regression','Without Linear Regression');
 hold off
+title('Test RMSE vs Max Depth');
+xlabel('Max Depth Value');
+ylabel('RMSE');
 
 figure
 hold on
-plot(maxDepthVals,trainingRMSEwithLin);
-plot(maxDepthVals,trainingRMSEconst);
+plot(maxDepthVals(indsDisp),validRMSEwithLin(indsDisp),'r-');
+plot(maxDepthVals(indsDisp),validRMSEconst(indsDisp),'g--');
 legend('With Linear Regression','Without Linear Regression');
 hold off
+title('Validation RMSE vs Max Depth');
+xlabel('Max Depth Value');
+ylabel('RMSE');
+
+figure
+hold on
+plot(maxDepthVals(indsDisp),trainingRMSEwithLin(indsDisp),'r-');
+plot(maxDepthVals(indsDisp),trainingRMSEconst(indsDisp),'g--');
+legend('With Linear Regression','Without Linear Regression');
+hold off
+title('Training RMSE vs Max Depth');
+xlabel('Max Depth Value');
+ylabel('RMSE');
 %%
-save('decTreeWithLinReg_testRunData.mat')
+%based on above graphs, set maxDepth to 5
