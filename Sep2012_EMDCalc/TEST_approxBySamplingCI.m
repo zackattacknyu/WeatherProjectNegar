@@ -64,8 +64,8 @@ mu=phatML(1);
 sigma = phatML(2);
 
 %numbers of samples that will be tried
-startInd = 10;
-indsNumTry = startInd:30:length(WORK1);
+startInd = 1500;
+indsNumTry = startInd:100:length(WORK1);
 
 numTries = length(indsNumTry);
 numPerms = 10;
@@ -102,12 +102,12 @@ for j = 1:numPerms
         resInd = resInd+1;
     end
 end
-
+%%
 %expVal = exp(mu+sigma^2/2);
 figure
 hold on
 for j = 1:numPerms
-    curZscores = (meanCurData(j,10:end)-mu)/sigma;
+    curZscores = (meanCurData(j,:)-mu)/sigma;
     plot(indsNumTry,curZscores);
 end
 plot(indsNumTry,zeros(size(indsNumTry)),'k--','LineWidth',2);
