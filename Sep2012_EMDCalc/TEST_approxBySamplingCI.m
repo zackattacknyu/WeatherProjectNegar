@@ -68,47 +68,87 @@ startInd = 10;
 indsNumTry = startInd:30:length(WORK1);
 
 numTries = length(indsNumTry);
-muIntervalSize = zeros(1,numTries);
-sigmaIntervalSize = zeros(1,numTries);
-nllValuesFinalDist = zeros(1,numTries);
-nllValuesCurDist = zeros(1,numTries);
-meanDiff = zeros(1,numTries);
-sigmaDiff = zeros(1,numTries);
-inds = randperm(length(WORK1));
+numPerms = 10;
+muIntervalSize = zeros(numPerms,numTries);
+sigmaIntervalSize = zeros(numPerms,numTries);
+nllValuesFinalDist = zeros(numPerms,numTries);
+nllValuesCurDist = zeros(numPerms,numTries);
+meanDiff = zeros(numPerms,numTries);
+sigmaDiff = zeros(numPerms,numTries);
+meanCurData = zeros(numPerms,numTries);
+
 resInd = 1;
-for i = indsNumTry
-    curDataSet = WORK1(inds(1:i));
-    [phatCur,pciCur] = mle(curDataSet,'distribution','lognormal');
-    sizeVec = pciCur(2,:)-pciCur(1,:);
-    
-    nllValuesFinalDist(resInd) = normlike(phatML,curDataSet)/i;
-    nllValuesCurDist(resInd) = normlike(phatCur,curDataSet)/i;
-    
-    muIntervalSize(resInd) = sizeVec(1);
-    sigmaIntervalSize(resInd) = sizeVec(2);
-    
-    meanDiff(resInd) = abs(phatML(1)-phatCur(1));
-    sigmaDiff(resInd) = abs(phatML(2)-phatCur(2));
-    
-    resInd = resInd+1;
+
+for j = 1:numPerms
+    inds = randperm(length(WORK1));
+    resInd = 1;
+    for i = indsNumTry
+        curDataSet = WORK1(inds(1:i));
+        
+        meanCurData(j,resInd)=mean(log(curDataSet));
+        
+        [phatCur,pciCur] = mle(curDataSet,'distribution','lognormal');
+        sizeVec = pciCur(2,:)-pciCur(1,:);
+
+        nllValuesFinalDist(j,resInd) = normlike(phatML,log(curDataSet))/i;
+        nllValuesCurDist(j,resInd) = normlike(phatCur,log(curDataSet))/i;
+
+        muIntervalSize(j,resInd) = sizeVec(1);
+        sigmaIntervalSize(j,resInd) = sizeVec(2);
+
+        meanDiff(j,resInd) = abs(phatML(1)-phatCur(1));
+        sigmaDiff(j,resInd) = abs(phatML(2)-phatCur(2));
+
+        resInd = resInd+1;
+    end
 end
-%%
+
+%expVal = exp(mu+sigma^2/2);
 figure
 hold on
-plot(indsNumTry,nllValuesFinalDist,'r-');
-plot(indsNumTry,nllValuesCurDist,'b-');
-legend('Final Distribution','Current Distribution');
+for j = 1:numPerms
+    curZscores = (meanCurData(j,10:end)-mu)/sigma;
+    plot(indsNumTry,curZscores);
+end
+plot(indsNumTry,zeros(size(indsNumTry)),'k--','LineWidth',2);
 hold off
 
 %%
-figure
-plot(indsNumTry,muIntervalSize);
 
 figure
-plot(indsNumTry,sigmaIntervalSize);
-%%
-figure
-plot(indsNumTry,meanDiff);
+hold on
+for j= 1:numPerms
+    plot(indsNumTry,nllValuesFinalDist(j,:),'r-');
+    plot(indsNumTry,nllValuesCurDist(j,:),'b-');
+end
+legend('Final Distribution','Current Distribution');
+hold off
+
 
 figure
-plot(indsNumTry,sigmaDiff);
+hold on
+for j = 1:numPerms
+    plot(indsNumTry,muIntervalSize(j,:));
+end
+hold off
+
+figure
+hold on
+for j = 1:numPerms
+    plot(indsNumTry,sigmaIntervalSize(j,:));
+end
+hold off
+
+figure
+hold on
+for j = 1:numPerms
+    plot(indsNumTry,meanDiff(j,:));
+end
+hold off
+
+figure
+hold on
+for j = 1:numPerms
+    plot(indsNumTry,sigmaDiff(j,:));
+end
+hold off
