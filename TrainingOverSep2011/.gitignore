@@ -103,3 +103,5 @@
 /Sep2011PrepData_FDATA_arrayOnly.mat
 /Sep2011SetupDataZach_decTreeLinReg.mat
 /decTreeWithLinReg_testRunData.mat
+/decTreeWithLinReg_minParamTestRun.mat
+/decTreeWithLinReg_minScoreTestRun.mat
