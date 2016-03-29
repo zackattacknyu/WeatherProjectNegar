@@ -45,10 +45,10 @@ end
 save('decTreeWithLinReg_minParentTestRun.mat');
 %%
 
-%{
+
 load('decTreeWithLinReg_minParentTestRun.mat');
 
-indsDisp = 15:20;
+indsDisp = 1:20;
 
 figure
 hold on
@@ -80,4 +80,4 @@ title('Training RMSE vs Min Parent');
 xlabel('Min Parent Value');
 ylabel('RMSE');
 
-%}
+%MINPARENT HAS LITTLE TO NO EFFECT ON RMSE

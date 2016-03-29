@@ -62,33 +62,53 @@ SHOW IHLER THESE RESULTS
 
 mu=phatML(1);
 sigma = phatML(2);
+
+%numbers of samples that will be tried
 startInd = 10;
-numTries = (length(WORK1)-startInd);
+indsNumTry = startInd:30:length(WORK1);
+
+numTries = length(indsNumTry);
 muIntervalSize = zeros(1,numTries);
 sigmaIntervalSize = zeros(1,numTries);
+nllValuesFinalDist = zeros(1,numTries);
+nllValuesCurDist = zeros(1,numTries);
 meanDiff = zeros(1,numTries);
 sigmaDiff = zeros(1,numTries);
 inds = randperm(length(WORK1));
 resInd = 1;
-for i = startInd:length(WORK1)
+for i = indsNumTry
     curDataSet = WORK1(inds(1:i));
     [phatCur,pciCur] = mle(curDataSet,'distribution','lognormal');
     sizeVec = pciCur(2,:)-pciCur(1,:);
+    
+    nllValuesFinalDist(resInd) = normlike(phatML,curDataSet)/i;
+    nllValuesCurDist(resInd) = normlike(phatCur,curDataSet)/i;
+    
     muIntervalSize(resInd) = sizeVec(1);
     sigmaIntervalSize(resInd) = sizeVec(2);
+    
     meanDiff(resInd) = abs(phatML(1)-phatCur(1));
     sigmaDiff(resInd) = abs(phatML(2)-phatCur(2));
+    
     resInd = resInd+1;
 end
 %%
 figure
-plot(startInd:length(WORK1),muIntervalSize);
+hold on
+plot(indsNumTry,nllValuesFinalDist,'r-');
+plot(indsNumTry,nllValuesCurDist,'b-');
+legend('Final Distribution','Current Distribution');
+hold off
+
+%%
+figure
+plot(indsNumTry,muIntervalSize);
 
 figure
-plot(startInd:length(WORK1),sigmaIntervalSize);
+plot(indsNumTry,sigmaIntervalSize);
+%%
+figure
+plot(indsNumTry,meanDiff);
 
 figure
-plot(startInd:length(WORK1),meanDiff);
-
-figure
-plot(startInd:length(WORK1),sigmaDiff);
+plot(indsNumTry,sigmaDiff);
