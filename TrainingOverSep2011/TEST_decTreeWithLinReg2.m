@@ -1,30 +1,20 @@
 
-bad=true;
-while(bad)
-    try
-        load('Sep2011SetupDataZach_decTreeLinReg.mat','Xtr','Xte','Ytr','Yte');
-        load('sep2012TestDataSet_every4thT.mat','XteSept','YteSept');
-        Xtr = [Xtr ones(size(Xtr,1),1)];
-        Xte = [Xte ones(size(Xte,1),1)];
-        XteSept = [XteSept ones(size(XteSept,1),1)];
-        bad = false;
-    catch
-        bad=true;
-        fprintf('File not found. Waiting 30 seconds...\n');
-        pause(30);
-        
-    end
-end
+load('Sep2011SetupDataZach_decTreeLinReg.mat','Xtr','Xte','Ytr','Yte');
+load('sep2012TestDataSet_every4thT.mat','XteSept','YteSept');
+Xtr = [Xtr ones(size(Xtr,1),1)];
+Xte = [Xte ones(size(Xte,1),1)];
+XteSept = [XteSept ones(size(XteSept,1),1)];
 
 
 
 %based on previous graphs, set maxDepth to 5
 dd=5;
 minPar = 30;
-minScore=1;
+minScore=0.8;
 
-paramVals = [1000 900 800 700 600 500 450 400 300 250 200 150 100 ...
-    75 60 50 40 20 15 10];
+%paramVals = [1000 900 800 700 600 500 450 400 300 250 200 150 100 ...
+%    75 60 50 40 20 15 10];
+paramVals = 1:20;
 
 trainingRMSEwithLin = zeros(1,length(paramVals));
 validRMSEwithLin = zeros(1,length(paramVals));
@@ -52,11 +42,12 @@ for ind = 1:length(paramVals)
     testRMSEconst(ind) = sqrt(mse(tc2,XteSept,YteSept));
 end
 
-save('decTreeWithLinReg_minParamTestRun.mat');
+save('decTreeWithLinReg_minParentTestRun.mat');
 %%
 
-load('decTreeWithLinReg_minParamTestRun.mat');
-%%
+%{
+load('decTreeWithLinReg_minParentTestRun.mat');
+
 indsDisp = 15:20;
 
 figure
@@ -89,4 +80,4 @@ title('Training RMSE vs Min Parent');
 xlabel('Min Parent Value');
 ylabel('RMSE');
 
-
+%}

@@ -80,7 +80,7 @@ for i = startInd:length(WORK1)
     sigmaDiff(resInd) = abs(phatML(2)-phatCur(2));
     resInd = resInd+1;
 end
-
+%%
 figure
 plot(startInd:length(WORK1),muIntervalSize);
 
