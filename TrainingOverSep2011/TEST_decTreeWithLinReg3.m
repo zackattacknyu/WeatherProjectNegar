@@ -55,8 +55,9 @@ for ind = 1:length(paramVals)
 end
 
 save('decTreeWithLinReg_minScoreTestRun.mat');
-%{
-indsDisp = 1:10;
+%%
+
+indsDisp = 5:22;
 
 figure
 hold on
@@ -65,7 +66,7 @@ plot(paramVals(indsDisp),testRMSEconst(indsDisp),'g--');
 legend('With Linear Regression','Without Linear Regression');
 hold off
 title('Test RMSE vs Max Depth');
-xlabel('Max Depth Value');
+xlabel('Min Score Value');
 ylabel('RMSE');
 
 figure
@@ -75,7 +76,7 @@ plot(paramVals(indsDisp),validRMSEconst(indsDisp),'g--');
 legend('With Linear Regression','Without Linear Regression');
 hold off
 title('Validation RMSE vs Max Depth');
-xlabel('Max Depth Value');
+xlabel('Min Score Value');
 ylabel('RMSE');
 
 figure
@@ -85,7 +86,8 @@ plot(paramVals(indsDisp),trainingRMSEconst(indsDisp),'g--');
 legend('With Linear Regression','Without Linear Regression');
 hold off
 title('Training RMSE vs Max Depth');
-xlabel('Max Depth Value');
+xlabel('Min Score Value');
 ylabel('RMSE');
-%}
+
+%IDEAL MIN SCORE IS 0.8 FROM THESE TESTS
 

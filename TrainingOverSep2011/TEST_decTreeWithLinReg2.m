@@ -53,8 +53,11 @@ for ind = 1:length(paramVals)
 end
 
 save('decTreeWithLinReg_minParamTestRun.mat');
-%{
-indsDisp = 1:10;
+%%
+
+load('decTreeWithLinReg_minParamTestRun.mat');
+%%
+indsDisp = 15:20;
 
 figure
 hold on
@@ -62,8 +65,8 @@ plot(paramVals(indsDisp),testRMSEwithLin(indsDisp),'r-');
 plot(paramVals(indsDisp),testRMSEconst(indsDisp),'g--');
 legend('With Linear Regression','Without Linear Regression');
 hold off
-title('Test RMSE vs Max Depth');
-xlabel('Max Depth Value');
+title('Test RMSE vs Min Parent');
+xlabel('Min Parent Value');
 ylabel('RMSE');
 
 figure
@@ -72,8 +75,8 @@ plot(paramVals(indsDisp),validRMSEwithLin(indsDisp),'r-');
 plot(paramVals(indsDisp),validRMSEconst(indsDisp),'g--');
 legend('With Linear Regression','Without Linear Regression');
 hold off
-title('Validation RMSE vs Max Depth');
-xlabel('Max Depth Value');
+title('Validation RMSE vs Min Parent');
+xlabel('Min Parent Value');
 ylabel('RMSE');
 
 figure
@@ -82,8 +85,8 @@ plot(paramVals(indsDisp),trainingRMSEwithLin(indsDisp),'r-');
 plot(paramVals(indsDisp),trainingRMSEconst(indsDisp),'g--');
 legend('With Linear Regression','Without Linear Regression');
 hold off
-title('Training RMSE vs Max Depth');
-xlabel('Max Depth Value');
+title('Training RMSE vs Min Parent');
+xlabel('Min Parent Value');
 ylabel('RMSE');
-%}
+
 
