@@ -66,13 +66,14 @@ sigma = phatML(2);
 %numbers of samples that will be tried
 startInd = 1500;
 indsNumTry = startInd:100:length(WORK1);
-
+%%
 numTries = length(indsNumTry);
 numPerms = 10;
 muIntervalSize = zeros(numPerms,numTries);
 sigmaIntervalSize = zeros(numPerms,numTries);
 nllValuesFinalDist = zeros(numPerms,numTries);
 nllValuesCurDist = zeros(numPerms,numTries);
+rangeValues = zeros(numPerms,numTries);
 meanDiff = zeros(numPerms,numTries);
 sigmaDiff = zeros(numPerms,numTries);
 meanCurData = zeros(numPerms,numTries);
@@ -92,6 +93,12 @@ for j = 1:numPerms
 
         nllValuesFinalDist(j,resInd) = normlike(phatML,log(curDataSet))/i;
         nllValuesCurDist(j,resInd) = normlike(phatCur,log(curDataSet))/i;
+        
+        muUpper = pciCur(2,1); muLower = pciCur(1,1);
+        sigmaUpper = pciCur(2,2); sigmaLower = pciCur(1,2);
+        meanUpper = exp(muUpper + sigmaUpper^2/2);
+        meanLower = exp(muLower + sigmaLower^2/2);
+        rangeValues(j,resInd)=meanUpper-meanLower;
 
         muIntervalSize(j,resInd) = sizeVec(1);
         sigmaIntervalSize(j,resInd) = sizeVec(2);
@@ -111,6 +118,14 @@ for j = 1:numPerms
     plot(indsNumTry,curZscores);
 end
 plot(indsNumTry,zeros(size(indsNumTry)),'k--','LineWidth',2);
+hold off
+%%
+
+figure
+hold on
+for j= 1:numPerms
+    plot(indsNumTry,rangeValues(j,:));
+end
 hold off
 
 %%
