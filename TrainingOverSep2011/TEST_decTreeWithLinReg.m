@@ -55,18 +55,23 @@ for ind = 1:length(maxDepthVals)
 end
 %%
 
-indsDisp = 1:10;
+indsDisp = 1:12;
+
+load('regressionData_3-23.mat','rmseMultipleLinear');
 
 figure
 hold on
 plot(maxDepthVals(indsDisp),testRMSEwithLin(indsDisp),'r-');
 plot(maxDepthVals(indsDisp),testRMSEconst(indsDisp),'g--');
-legend('With Linear Regression','Without Linear Regression');
+plot(maxDepthVals(indsDisp),rmseMultipleLinear.*ones(size(indsDisp)),'b:','LineWidth',2)
+legend('Dec Tree With Linear Regression',...
+    'Dec Tree Without Linear Regression',...
+    'Baseline: Linear Regression on Test Data');
 hold off
 title('Test RMSE vs Max Depth');
 xlabel('Max Depth Value');
 ylabel('RMSE');
-
+%%
 figure
 hold on
 plot(maxDepthVals(indsDisp),validRMSEwithLin(indsDisp),'r-');

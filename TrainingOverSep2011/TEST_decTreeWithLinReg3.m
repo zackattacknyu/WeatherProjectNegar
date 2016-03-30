@@ -57,12 +57,14 @@ end
 save('decTreeWithLinReg_minScoreTestRun.mat');
 %%
 
+load('decTreeWithLinReg_minScoreTestRun.mat');
 indsDisp = 5:22;
-
+load('regressionData_3-23.mat','rmseMultipleLinear');
 figure
 hold on
 plot(paramVals(indsDisp),testRMSEwithLin(indsDisp),'r-');
 plot(paramVals(indsDisp),testRMSEconst(indsDisp),'g--');
+plot(paramVals(indsDisp),rmseMultipleLinear.*ones(size(indsDisp)),'b:','LineWidth',2)
 legend('With Linear Regression','Without Linear Regression');
 hold off
 title('Test RMSE vs Max Depth');

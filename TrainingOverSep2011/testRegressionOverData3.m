@@ -1,5 +1,5 @@
 testingData = load('sep2012TestDataSet_every4thT.mat');
-%%
+
 rmseBaseline = std(testingData.YteSept);
 
 xData = testingData.XteSept;
@@ -25,9 +25,19 @@ rmseMultExp = sqrt(mean((yfit-yData).^2));
 numFeat = 14;
 modelfun = @(b,x)(b(1)+exp(x*b(2:(numFeat+1))));
 beta0 = [1;bPrime];
+
 [BETA,R,J,COVB,MSE] = nlinfit(xData,yData,modelfun,beta0);
 
 rmseMultExp2 = sqrt(MSE);
+
+%%
+
+modelfun = @(b,x)(b(1)+exp(x*b(2:end)));
+beta0 = ones(size(xData,2)+1,1);
+
+[BETA,R,J,COVB,MSE] = nlinfit(xData,yData,modelfun,beta0);
+
+rmseMultExp4 = sqrt(MSE);
 
 %%
 
