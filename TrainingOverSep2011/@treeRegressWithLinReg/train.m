@@ -48,7 +48,7 @@ function obj=train(obj, X,Y, varargin)
 function  [L,R,F,T,BETA, next] = dectreeTrain(X,Y,  L,R,F,T,BETA,  next, depth, minParent,maxDepth,minScore,nFeat)
 
 [N,D] = size(X);
-fprintf(['Current Depth:' num2str(depth) '\n']);
+%fprintf(['Current Depth:' num2str(depth) '\n']);
 
 % check leaf conditions:
 if (N<minParent || depth >= maxDepth || var(Y)<minScore )
