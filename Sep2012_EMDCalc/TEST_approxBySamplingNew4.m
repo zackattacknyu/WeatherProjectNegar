@@ -14,8 +14,8 @@ LOGWORK2 = sort(log(totalWorkEMD(2,:)));
 
 INDS = 1:length(LOGWORK1);
 cdfVals = INDS./length(LOGWORK1);
-
-%[phatML,pciML] = mle(LOGWORK1)
+%%
+[phatML,pciML] = mle(LOGWORK1)
 %%
 startInd = 1000;
 numTries = (length(LOGWORK1)-startInd);

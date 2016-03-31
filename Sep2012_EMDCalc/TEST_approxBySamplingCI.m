@@ -15,6 +15,16 @@ LOGWORK2 = sort(log(totalWorkEMD(2,:)));
 INDS = 1:length(LOGWORK1);
 cdfVals = INDS./length(LOGWORK1);
 %%
+
+mu = phatML(1);
+sigma = phatML(2);
+figure
+hold on
+plot(xx,normcdf(xx,mu,sigma),'r-')
+plot(LOGWORK1,cdfVals,'b--');
+hold off
+%%
+
 [phatML,pciML] = mle(LOGWORK1);
 
 mu=phatML(1);
