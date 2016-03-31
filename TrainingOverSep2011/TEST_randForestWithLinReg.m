@@ -68,43 +68,38 @@ for ind = 1:length(maxDepthVals)
 end
 
 save('randForestWithLinRegResults.mat');
-
-%{
-indsDisp = 1:12;
-
-load('regressionData_3-23.mat','rmseMultipleLinear');
-
-figure
-hold on
-plot(maxDepthVals(indsDisp),testRMSEwithLin(indsDisp),'r-');
-plot(maxDepthVals(indsDisp),testRMSEconst(indsDisp),'g--');
-plot(maxDepthVals(indsDisp),rmseMultipleLinear.*ones(size(indsDisp)),'b:','LineWidth',2)
-legend('Dec Tree With Linear Regression',...
-    'Dec Tree Without Linear Regression',...
-    'Baseline: Linear Regression on Test Data');
-hold off
-title('Test RMSE vs Max Depth');
-xlabel('Max Depth Value');
-ylabel('RMSE');
+%%
+load('partialRandForestResults.mat');
+%%
+indsDisp = 1:7;
+paramVals = maxDepthVals;
 
 figure
 hold on
-plot(maxDepthVals(indsDisp),validRMSEwithLin(indsDisp),'r-');
-plot(maxDepthVals(indsDisp),validRMSEconst(indsDisp),'g--');
+plot(paramVals(indsDisp),testRMSEwithLin(indsDisp),'r-');
+plot(paramVals(indsDisp),testRMSEconst(indsDisp),'g--');
 legend('With Linear Regression','Without Linear Regression');
 hold off
-title('Validation RMSE vs Max Depth');
+title('Test RMSE vs Min Parent');
 xlabel('Max Depth Value');
 ylabel('RMSE');
 
 figure
 hold on
-plot(maxDepthVals(indsDisp),trainingRMSEwithLin(indsDisp),'r-');
-plot(maxDepthVals(indsDisp),trainingRMSEconst(indsDisp),'g--');
+plot(paramVals(indsDisp),validRMSEwithLin(indsDisp),'r-');
+plot(paramVals(indsDisp),validRMSEconst(indsDisp),'g--');
 legend('With Linear Regression','Without Linear Regression');
 hold off
-title('Training RMSE vs Max Depth');
+title('Validation RMSE vs Min Parent');
 xlabel('Max Depth Value');
 ylabel('RMSE');
 
-%}
+figure
+hold on
+plot(paramVals(indsDisp),trainingRMSEwithLin(indsDisp),'r-');
+plot(paramVals(indsDisp),trainingRMSEconst(indsDisp),'g--');
+legend('With Linear Regression','Without Linear Regression');
+hold off
+title('Training RMSE vs Min Parent');
+xlabel('Max Depth Value');
+ylabel('RMSE');
