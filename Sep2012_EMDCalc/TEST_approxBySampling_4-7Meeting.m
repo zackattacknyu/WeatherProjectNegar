@@ -57,5 +57,47 @@ ylabel('L_k value');
 hold off
 %%
 
+%{
+Taken from the following:
+https://en.wikipedia.org/wiki/Standard_error#Standard_error_of_the_mean
+%}
+pred1sampleStandardDev = std(LkPred1);
+pred2sampleStandardDev = std(LkPred2);
+SEx_pred1=pred1sampleStandardDev./sqrt(1:numPatches);
+SEx_pred2=pred2sampleStandardDev./sqrt(1:numPatches);
+
+figure
+hold on
+plot(SEx_pred1,'r');
+plot(SEx_pred2,'b');
+hold off
+
+%%
 
 
+[orderedVals1,orderedInds1] = sort(LkPred1);
+[orderedVals2,orderedInds2] = sort(LkPred2);
+
+numOrd = 2000;
+mean1Low = zeros(1,numOrd);
+mean1High = zeros(1,numOrd);
+mean2Low = zeros(1,numOrd);
+mean2High = zeros(1,numOrd);
+
+for NN=1:numOrd
+
+    mean1Low(NN) = mean(orderedVals1(1,1:NN));
+    mean1High(NN) = mean(orderedVals1(1,end-NN:end));
+
+    mean2Low(NN) = mean(orderedVals2(1,1:NN));
+    mean2High(NN) = mean(orderedVals2(1,end-NN:end));
+
+end
+
+figure
+hold on
+plot(mean1Low,'r-');
+plot(mean1High,'r-');
+plot(mean2Low,'b-');
+plot(mean2High,'b-');
+hold off
