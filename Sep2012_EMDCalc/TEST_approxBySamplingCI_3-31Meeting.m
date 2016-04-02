@@ -1,7 +1,7 @@
 %load('patchesSep2011Data_results_new1.mat');
-%load('patchesSep2011Data_results_allT_new1.mat');
+load('patchesSep2011Data_results_allT_new1.mat');
 %load('patchesSep2011Data_results_all2.mat');
-load('patchesOct2012Data_results_all4.mat');
+%load('patchesOct2012Data_results_all4.mat');
 
 numPatches = size(predErrorsEMD,2);
 LvaluesFunc1 = sum(totalWorkEMD,2);

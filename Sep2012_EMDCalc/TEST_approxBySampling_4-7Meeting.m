@@ -9,7 +9,7 @@ LvaluesFunc1 = mean(totalWorkEMD,2);
 Lpred1 = LvaluesFunc1(1);
 Lpred2 = LvaluesFunc1(2);
 
-numTrials = 100;
+numTrials = 10;
 LkPred1 = zeros(numTrials,size(predErrorsEMD,2));
 LkPred2 = zeros(numTrials,size(predErrorsEMD,2));
 
@@ -31,8 +31,31 @@ for trialN = 1:numTrials
     
 end
 %%
+
+msePatches = zeros(1,numPatches);
+sumTarget = zeros(1,numPatches);
+sumPred1 = zeros(1,numPatches);
+sumPred2 = zeros(1,numPatches);
+for k = 1:numPatches
+    curTarget = targetPatches{k};
+    curPred1 = predPatches{1,k};
+    curPred2 = predPatches{1,k};
+    sumTarget(k) = sum(curTarget(:));
+    sumPred1(k) = sum(curPred1(:));
+    sumPred2(k) = sum(curPred2(:));
+    msePatches(k) = mean((curTarget(:)-curPred1(:)).^2);
+end
+plot(msePatches,LkPred1(1,:),'r.');
+
+figure
+hold on
+plot(sort(log(sumTarget)))
+plot(sort(log(sumPred1)))
+plot(sort(log(sumPred2)))
+hold off
+%%
 startColInd = 500;
-dispRows = 1:100;
+dispRows = 1:10;
 lineWidth=3;
 
 minYf1p1 = min(min(LkPred1(dispRows,startColInd:end)));
@@ -100,4 +123,84 @@ plot(mean1Low,'r-');
 plot(mean1High,'r-');
 plot(mean2Low,'b-');
 plot(mean2High,'b-');
+hold off
+
+%%
+
+%{
+Gives bounds to the means
+%}
+
+workArray = {WORK1,WORK2};
+loopInd = 1;
+AlphaVal = 0.05;
+displaySpecs = {'r','b'};
+
+meanArray = cell(1,length(workArray));
+upperMeanArray = cell(1,length(workArray));
+lowerMeanArray = cell(1,length(workArray));
+
+startInd = 100;
+indsNumTry = startInd:50:length(WORK1);
+indsNumTry = [indsNumTry length(WORK1)];
+numTries = length(indsNumTry);
+
+for ii=1:length(workArray)
+    
+    WORKCURRENT = workArray{ii};
+    LOGWORKCURRENT = log(WORKCURRENT);
+    
+
+    %numbers of samples that will be tried
+
+    numPerms = 1;
+    upperMeanVal = zeros(numPerms,numTries);
+    lowerMeanVal = zeros(numPerms,numTries);
+    meanCurDist = zeros(numPerms,numTries);
+
+    resInd = 1;
+
+
+    for j = 1:numPerms
+        [orderedWork,inds] = sort(WORKCURRENT);
+        resInd = 1;
+        for i = indsNumTry
+            curDataSet = orderedWork(end-i+1:end);
+
+            [phatCur,pciCur] = mle(curDataSet,'distribution','lognormal','Alpha',AlphaVal);
+            sizeVec = pciCur(2,:)-pciCur(1,:);
+
+            muCur = phatCur(1); sigmaCur = phatCur(2);
+            muUpper = pciCur(2,1); muLower = pciCur(1,1);
+            sigmaUpper = pciCur(2,2); sigmaLower = pciCur(1,2);
+
+            meanCurDist(j,resInd)=exp(muCur + sigmaCur^2/2);
+            upperMeanVal(j,resInd) = exp(muUpper + sigmaUpper^2/2);
+            lowerMeanVal(j,resInd) = exp(muLower + sigmaLower^2/2);
+
+            resInd = resInd+1;
+        end
+    end
+    
+    meanArray{loopInd} = meanCurDist;
+    upperMeanArray{loopInd} = upperMeanVal;
+    lowerMeanArray{loopInd} = lowerMeanVal;
+    
+    loopInd = loopInd + 1;
+end
+
+
+figure
+hold on
+title('Range of expected values for W_1 (blue) and W_2 (red) vs Number of Samples');
+for jj = 1:length(meanArray)
+    spec1 = [displaySpecs{jj} '-'];
+    spec2 = [displaySpecs{jj} '--'];
+    
+    plot(indsNumTry,meanArray{jj},spec1,'LineWidth',2);
+    plot(indsNumTry,lowerMeanArray{jj},spec2);
+    plot(indsNumTry,upperMeanArray{jj},spec2);
+end
+xlabel('Number of Samples used in MLE estimation');
+ylabel('Expected Value via MLE parameters');
 hold off
