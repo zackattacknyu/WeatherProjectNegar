@@ -60,8 +60,8 @@ timeStamps2 = sort(timeStamps2);
 %%
 
 %timeStamps2 = [435 437 440 481 485];
-indTime=437;
-timeStamps2 = [indTime];
+%indTime=485;
+%timeStamps2 = [indTime];
 
 numTimeStamps = length(timeStamps2);
 
@@ -217,7 +217,7 @@ for i = 1:length(patchesT)
     
 end
 
-save(['patchesSep2011DataTest2_time' num2str(indTime) '.mat'],'targetPatches','predPatches');
+%save(['patchesSep2011DataTest2_time' num2str(indTime) '.mat'],'targetPatches','predPatches');
 
 %save('patchesSep2011Data_allT_new3.mat','targetPatches','predPatches','patchesT','patchesPred');
 
