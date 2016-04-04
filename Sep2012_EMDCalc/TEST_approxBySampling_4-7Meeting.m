@@ -4,6 +4,10 @@ https://en.wikipedia.org/wiki/Standard_error#Standard_error_of_the_mean
 
 as well as this:
 http://www.statlect.com/fundamentals-of-statistics/mean-estimation
+
+TODO:
+CONTRAST THE CONFIDENCE INTERVALS WITH THE ONES
+    OBTAINED VIA LOG-NORMAL DISTRIBUTION
 %}
 
 %load('patchesSep2011Data_results_new1.mat');

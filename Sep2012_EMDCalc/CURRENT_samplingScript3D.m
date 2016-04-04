@@ -8,14 +8,15 @@ dataFiles3 = dir('negarPredMaps2/decTreePred1109*');
 %%
 numT = min([length(dataFiles) length(dataFiles2) length(dataFiles3)]);
 numSampleTimes = 400;
-minTimeDiff = 2;
+minTimeDiff = 0;
 epsilon = 1e-2;
-precipThresh = 1000;
+precipThresh = 20000;
 
 timeStamps = getSampledPoints(numT,numSampleTimes,minTimeDiff);
 %timeStamps = 1:numT;
 %%
 timeStamps2 = zeros(1,length(timeStamps));
+targetSums = zeros(1,length(timeStamps));
 curInd = 1;
 for tt = 1:length(timeStamps)
     
@@ -43,6 +44,7 @@ for tt = 1:length(timeStamps)
     curImage(curImage<0)=0;
     
     curSum = sum(curImage(:));
+    targetSums(tt) = curSum;
     if(curSum>precipThresh)
         %curSum
         timeStamps2(curInd) = fileNum;
@@ -56,6 +58,10 @@ timeStamps2 = timeStamps2(1:(curInd-1));
 timeStamps2 = sort(timeStamps2);
 
 %%
+
+%timeStamps2 = [435 437 440 481 485];
+indTime=437;
+timeStamps2 = [indTime];
 
 numTimeStamps = length(timeStamps2);
 
@@ -167,15 +173,19 @@ for tt = 1:numTimeStamps
     patchesT{tt} = targetPatches(indicesToKeep);
     patchesPred{tt} = curPredPatches(:,indicesToKeep);
     
+    %figure
+    %drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
+    
     figure
-    subplot(2,2,1)
+    subplot(1,3,1)
     drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
     
-    subplot(2,2,2)
+    subplot(1,3,2)
     drawMapWithPatches(precipMap,randPatchesCornerCoord(indicesToKeep),patchSize);
     
-    subplot(2,2,4)
+    subplot(1,3,3)
     drawMapWithPatches(ccsOverUS,randPatchesCornerCoord(indicesToKeep),patchSize);
+    
     
     pause(5);
     
@@ -207,9 +217,10 @@ for i = 1:length(patchesT)
     
 end
 
+save(['patchesSep2011DataTest2_time' num2str(indTime) '.mat'],'targetPatches','predPatches');
 
 %save('patchesSep2011Data_allT_new3.mat','targetPatches','predPatches','patchesT','patchesPred');
-%%
-save('patchesSep2011DataNew_time9.mat','targetPatches','predPatches');
+
+
 
 
