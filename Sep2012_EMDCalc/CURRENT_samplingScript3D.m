@@ -10,10 +10,10 @@ numT = min([length(dataFiles) length(dataFiles2) length(dataFiles3)]);
 numSampleTimes = 400;
 minTimeDiff = 0;
 epsilon = 1e-2;
-precipThresh = 20000;
+precipThresh = 500;
 
-timeStamps = getSampledPoints(numT,numSampleTimes,minTimeDiff);
-%timeStamps = 1:numT;
+%timeStamps = getSampledPoints(numT,numSampleTimes,minTimeDiff);
+timeStamps = 1:numT;
 %%
 timeStamps2 = zeros(1,length(timeStamps));
 targetSums = zeros(1,length(timeStamps));
@@ -73,9 +73,11 @@ for tt = 1:numTimeStamps
     
     %tt
     
-    fileNum = timeStamps2(tt);
     
-    fileNum
+    
+    fileNum = timeStamps2(tt);
+    fprintf(['Now Sampling Image ' num2str(tt) ' of ' num2str(numTimeStamps) ...
+        ' (File Number: ' num2str(fileNum) ')\n']);
     
     %fn = ['zach_RR/q2hrus' dataFiles3(fileNum).name(12:end)];
     %fn2 = ['zach_ccs/rgo' dataFiles3(fileNum,1).name(12:end)];
@@ -125,8 +127,8 @@ for tt = 1:numTimeStamps
     curPredImages{2} = ccsOverUS;
     
     indicesUse = find(curImage>0);
-    decTreeRMSE = sqrt(mean((curImage(indicesUse)-precipMap(indicesUse)).^2))
-    ccsRMSE = sqrt(mean((curImage(indicesUse)-ccsOverUS(indicesUse)).^2))
+    decTreeRMSE = sqrt(mean((curImage(indicesUse)-precipMap(indicesUse)).^2));
+    ccsRMSE = sqrt(mean((curImage(indicesUse)-ccsOverUS(indicesUse)).^2));
     
     minDist = 18;
     patchSize = 20;
@@ -175,7 +177,7 @@ for tt = 1:numTimeStamps
     
     %figure
     %drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
-    
+    %{
     figure
     subplot(1,3,1)
     drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
@@ -185,9 +187,9 @@ for tt = 1:numTimeStamps
     
     subplot(1,3,3)
     drawMapWithPatches(ccsOverUS,randPatchesCornerCoord(indicesToKeep),patchSize);
+    %}
     
-    
-    pause(5);
+    %pause(5);
     
 end
 
@@ -217,6 +219,23 @@ for i = 1:length(patchesT)
     
 end
 
+save(['patchesSep2011DataTest4.mat'],'targetPatches','predPatches');
+%%
+masterTarget = targetPatches;
+masterPred = predPatches;
+%%
+
+for kk=1:9
+    targetPatches = masterTarget;
+    predPatches = masterPred;
+    inds = randperm(9628);
+    randTenPerc = inds(1:963);
+    targetPatches = targetPatches(randTenPerc);
+    predPatches = predPatches(:,randTenPerc);
+    save(['patchesSep2011DataTest4_rand' num2str(kk) '.mat'],...
+        'targetPatches','predPatches');
+end
+%%
 %save(['patchesSep2011DataTest2_time' num2str(indTime) '.mat'],'targetPatches','predPatches');
 
 %save('patchesSep2011Data_allT_new3.mat','targetPatches','predPatches','patchesT','patchesPred');
