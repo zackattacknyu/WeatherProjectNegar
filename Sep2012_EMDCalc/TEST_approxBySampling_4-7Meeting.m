@@ -46,9 +46,24 @@ for trialN = 1:numTrials
     
 end
 %%
+
+multiplier1 = 1.96;
+upperConfidenceP1 = meanWbar1 + multiplier1.*sqrt(varWbar1);
+upperConfidenceP2 = meanWbar2 + multiplier1.*sqrt(varWbar2);
+lowerConfidenceP1 = meanWbar1 - multiplier1.*sqrt(varWbar1);
+lowerConfidenceP2 = meanWbar2 - multiplier1.*sqrt(varWbar2);
+%%
 startColInd = 1000;
 dispRows = 1:10;
 lineWidth=3;
+
+minCI1 = min(min(lowerConfidenceP1(dispRows,startColInd:end)));
+minCI2 = min(min(lowerConfidenceP2(dispRows,startColInd:end)));
+minCI = min([minCI1 minCI2]);
+
+maxCI1 = max(max(upperConfidenceP1(dispRows,startColInd:end)));
+maxCI2 = max(max(upperConfidenceP2(dispRows,startColInd:end)));
+maxCI = max([maxCI1 maxCI2]);
 
 minYp1 = min(min(meanWbar1(dispRows,startColInd:end)));
 maxYp1 = max(max(meanWbar1(dispRows,startColInd:end)));
@@ -67,6 +82,21 @@ maxVar2 = max(max(varWbar2(dispRows,startColInd:end)));
 
 minVar = min([minVar1 minVar2]);
 maxVar = max([maxVar1 maxVar2]);
+
+figure
+title('CI For Mean');
+hold on
+plot(upperConfidenceP1(dispRows,:)','b--') 
+plot(upperConfidenceP2(dispRows,:)','r--')  
+plot(lowerConfidenceP1(dispRows,:)','b:') 
+plot(lowerConfidenceP2(dispRows,:)','r:')  
+plot(Wpred1.*ones(1,numPatches),'k--','LineWidth',lineWidth);
+plot(Wpred2.*ones(1,numPatches),'k--','LineWidth',lineWidth);
+axis([startColInd numPatches minCI maxCI]);
+xlabel('k value');
+ylabel('W_k value');
+hold off
+
 
 figure
 title('Wbar values for Mean');
