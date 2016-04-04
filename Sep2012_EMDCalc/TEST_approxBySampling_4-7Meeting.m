@@ -1,3 +1,11 @@
+%{
+Taken from the following:
+https://en.wikipedia.org/wiki/Standard_error#Standard_error_of_the_mean
+
+as well as this:
+http://www.statlect.com/fundamentals-of-statistics/mean-estimation
+%}
+
 %load('patchesSep2011Data_results_new1.mat');
 %load('patchesSep2011Data_new1.mat');
 load('patchesSep2011Data_results_allT_new1.mat');
@@ -5,13 +13,16 @@ load('patchesSep2011Data_allT_new1.mat');
 
 
 numPatches = size(predErrorsEMD,2);
-LvaluesFunc1 = mean(totalWorkEMD,2);
-Lpred1 = LvaluesFunc1(1);
-Lpred2 = LvaluesFunc1(2);
+Wvalues = mean(totalWorkEMD,2);
+Wpred1 = Wvalues(1);
+Wpred2 = Wvalues(2);
 
-numTrials = 100;
-LkPred1 = zeros(numTrials,size(predErrorsEMD,2));
-LkPred2 = zeros(numTrials,size(predErrorsEMD,2));
+numTrials = 10;
+meanWbar1 = zeros(numTrials,size(predErrorsEMD,2));
+meanWbar2 = zeros(numTrials,size(predErrorsEMD,2));
+
+varWbar1 = zeros(numTrials,size(predErrorsEMD,2));
+varWbar2 = zeros(numTrials,size(predErrorsEMD,2));
 
 for trialN = 1:numTrials
     randPatches = randperm(numPatches);
@@ -21,83 +32,61 @@ for trialN = 1:numTrials
         %randPatchesUse = [randPatchesUse ceil(numPatches*rand(1,1))];
         workSampled = totalWorkEMD(:,randPatchesUse);
         
-        f1Vals = mean(workSampled,2);
+        meanVals = mean(workSampled,2);
+        varVals = var(workSampled,[],2)./k;
         
-        LkPred1(trialN,k) = f1Vals(1);      
-        LkPred2(trialN,k) = f1Vals(2);
         
+        meanWbar1(trialN,k) = meanVals(1);      
+        meanWbar2(trialN,k) = meanVals(2);
+        
+        varWbar1(trialN,k) = varVals(1);      
+        varWbar2(trialN,k) = varVals(2);
     end
     
     
 end
 %%
-startColInd = 500;
-dispRows = 1:100;
+startColInd = 1000;
+dispRows = 1:10;
 lineWidth=3;
 
-minYf1p1 = min(min(LkPred1(dispRows,startColInd:end)));
-maxYf1p1 = max(max(LkPred1(dispRows,startColInd:end)));
+minYp1 = min(min(meanWbar1(dispRows,startColInd:end)));
+maxYp1 = max(max(meanWbar1(dispRows,startColInd:end)));
 
-minYf1p2 = min(min(LkPred2(dispRows,startColInd:end)));
-maxYf1p2 = max(max(LkPred2(dispRows,startColInd:end)));
+minYp2 = min(min(meanWbar2(dispRows,startColInd:end)));
+maxYp2 = max(max(meanWbar2(dispRows,startColInd:end)));
 
-minY = min([minYf1p1 minYf1p2]);
-maxY = max([maxYf1p1 maxYf1p2]);
+minY = min([minYp1 minYp2]);
+maxY = max([maxYp1 maxYp2]);
+
+minVar1 = min(min(varWbar1(dispRows,startColInd:end)));
+maxVar1 = max(max(varWbar1(dispRows,startColInd:end)));
+
+minVar2 = min(min(varWbar2(dispRows,startColInd:end)));
+maxVar2 = max(max(varWbar2(dispRows,startColInd:end)));
+
+minVar = min([minVar1 minVar2]);
+maxVar = max([maxVar1 maxVar2]);
 
 figure
-title('L_k values for Predictions');
+title('Wbar values for Mean');
 hold on
-plot(LkPred1(dispRows,:)','b') 
-plot(LkPred2(dispRows,:)','r')  
-plot(Lpred1.*ones(1,numPatches),'k--','LineWidth',lineWidth);
-plot(Lpred2.*ones(1,numPatches),'k--','LineWidth',lineWidth);
+plot(meanWbar1(dispRows,:)','b') 
+plot(meanWbar2(dispRows,:)','r')  
+plot(Wpred1.*ones(1,numPatches),'k--','LineWidth',lineWidth);
+plot(Wpred2.*ones(1,numPatches),'k--','LineWidth',lineWidth);
 axis([startColInd numPatches minY maxY]);
 xlabel('k value');
-ylabel('L_k value');
+ylabel('W_k value');
 hold off
-%%
-
-%{
-Taken from the following:
-https://en.wikipedia.org/wiki/Standard_error#Standard_error_of_the_mean
-%}
-pred1sampleStandardDev = std(LkPred1);
-pred2sampleStandardDev = std(LkPred2);
-SEx_pred1=pred1sampleStandardDev./sqrt(1:numPatches);
-SEx_pred2=pred2sampleStandardDev./sqrt(1:numPatches);
 
 figure
+title('Wbar Variance');
 hold on
-plot(SEx_pred1,'r');
-plot(SEx_pred2,'b');
+plot(varWbar1(dispRows,:)','b') 
+plot(varWbar2(dispRows,:)','r')  
+axis([startColInd numPatches minVar maxVar]);
+xlabel('k value');
+ylabel('Variance value');
 hold off
 
-%%
-
-
-[orderedVals1,orderedInds1] = sort(LkPred1);
-[orderedVals2,orderedInds2] = sort(LkPred2);
-
-numOrd = 2000;
-mean1Low = zeros(1,numOrd);
-mean1High = zeros(1,numOrd);
-mean2Low = zeros(1,numOrd);
-mean2High = zeros(1,numOrd);
-
-for NN=1:numOrd
-
-    mean1Low(NN) = mean(orderedVals1(1,1:NN));
-    mean1High(NN) = mean(orderedVals1(1,end-NN:end));
-
-    mean2Low(NN) = mean(orderedVals2(1,1:NN));
-    mean2High(NN) = mean(orderedVals2(1,end-NN:end));
-
-end
-
-figure
-hold on
-plot(mean1Low,'r-');
-plot(mean1High,'r-');
-plot(mean2Low,'b-');
-plot(mean2High,'b-');
-hold off
