@@ -90,8 +90,8 @@ plot(upperConfidenceP1(dispRows,:)','b--')
 plot(upperConfidenceP2(dispRows,:)','r--')  
 plot(lowerConfidenceP1(dispRows,:)','b:') 
 plot(lowerConfidenceP2(dispRows,:)','r:')  
-plot(Wpred1.*ones(1,numPatches),'k--','LineWidth',lineWidth);
-plot(Wpred2.*ones(1,numPatches),'k--','LineWidth',lineWidth);
+plot(Wvalues(1).*ones(1,numPatches),'k--','LineWidth',lineWidth);
+plot(Wvalues(2).*ones(1,numPatches),'k--','LineWidth',lineWidth);
 axis([startColInd numPatches minCI maxCI]);
 xlabel('k value');
 ylabel('W_k value');
@@ -103,8 +103,8 @@ title('Wbar values for Mean');
 hold on
 plot(meanWbar1(dispRows,:)','b') 
 plot(meanWbar2(dispRows,:)','r')  
-plot(Wpred1.*ones(1,numPatches),'k--','LineWidth',lineWidth);
-plot(Wpred2.*ones(1,numPatches),'k--','LineWidth',lineWidth);
+plot(Wvalues(1).*ones(1,numPatches),'k--','LineWidth',lineWidth);
+plot(Wvalues(2).*ones(1,numPatches),'k--','LineWidth',lineWidth);
 axis([startColInd numPatches minY maxY]);
 xlabel('k value');
 ylabel('W_k value');
