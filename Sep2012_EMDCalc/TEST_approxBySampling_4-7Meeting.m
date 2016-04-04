@@ -36,13 +36,14 @@ for trialN = 1:numTrials
 end
 %%
 
-multiplier1 = 1.96;
+multiplier1 = 3;
 upperConfidence = meanWbar + multiplier1.*sqrt(varWbar);
 lowerConfidence = meanWbar - multiplier1.*sqrt(varWbar);
-%%
+
 startColInd = 1000;
 dispRows = 1:10;
 lineWidth=3;
+lineWidth2=2;
 predColors = {'b' 'r'};
 
 minCI = min(reshape(lowerConfidence(:,dispRows,startColInd:end),1,[]));
@@ -59,6 +60,8 @@ for pp = 1:numPred
         [predColors{pp} '--']) 
     plot(permute(lowerConfidence(pp,dispRows,:),[3 2 1]),...
         [predColors{pp} ':']) 
+    plot(permute(meanWbar(pp,dispRows,:),[3 2 1]),...
+        [predColors{pp} '-'],'LineWidth',lineWidth2) 
     plot(Wvalues(pp).*ones(1,numPatches),...
         'k--','LineWidth',lineWidth);
 end
@@ -71,10 +74,12 @@ hold off
 figure
 title('Wbar values for Mean');
 hold on
-plot(meanWbar1(dispRows,:)','b') 
-plot(meanWbar2(dispRows,:)','r')  
-plot(Wvalues(1).*ones(1,numPatches),'k--','LineWidth',lineWidth);
-plot(Wvalues(2).*ones(1,numPatches),'k--','LineWidth',lineWidth);
+for pp = 1:numPred
+    plot(permute(meanWbar(pp,dispRows,:),[3 2 1]),...
+        [predColors{pp} '-']) 
+    plot(Wvalues(pp).*ones(1,numPatches),...
+        'k--','LineWidth',lineWidth);
+end
 axis([startColInd numPatches minY maxY]);
 xlabel('k value');
 ylabel('W_k value');
