@@ -8,6 +8,11 @@ http://www.statlect.com/fundamentals-of-statistics/mean-estimation
 TODO:
 CONTRAST THE CONFIDENCE INTERVALS WITH THE ONES
     OBTAINED VIA LOG-NORMAL DISTRIBUTION
+
+NOTE: IT IS POSSIBLE TO HAVE NON-INTERSECTING
+    CONFIDENCE INTERVALS BEFORE THE RIGHT CONCLUSION
+    IS DRAWN FROM THE SAMPLE MEAN. THAT IS WHY
+    I WILL ENFORCE A MIN OF 1000 SAMPLES OR 10% OF THE DATA
 %}
 
 %load('patchesSep2011Data_results_new1.mat');
@@ -73,8 +78,8 @@ lowerConfidence = meanWbar - multiplier1.*sqrt(varWbar);
 upperConfidence2 = meanWbar2 + multiplier1.*sqrt(varWbar2);
 lowerConfidence2 = meanWbar2 - multiplier1.*sqrt(varWbar2);
 
-startColInd = 200;
-endColInd = 2000;
+startColInd = 100;
+endColInd = 600;
 dispRows = 1:10;
 lineWidth=3;
 lineWidth2=2;
@@ -97,12 +102,12 @@ for pp = 1:numPred
     
     if(pp==1) %only care about upper CI for lower pred
         plot(max(upperCI,[],2),[predColors{pp} '--'],'LineWidth',lineWidth2) 
-        %plot(min(upperCI,[],2),[predColors{pp} '--'],'LineWidth',lineWidth2) 
+        plot(min(upperCI,[],2),[predColors{pp} '--'],'LineWidth',lineWidth2) 
     end
     
     if(pp==2) %only care about lower CI for upper pred
         plot(min(lowerCI,[],2),[predColors3{pp} ':'],'LineWidth',lineWidth2) 
-        %plot(max(lowerCI,[],2),[predColors3{pp} ':'],'LineWidth',lineWidth2) 
+        plot(max(lowerCI,[],2),[predColors3{pp} ':'],'LineWidth',lineWidth2) 
     end
     
     wbarVals = permute(meanWbar(pp,dispRows,:),[3 2 1]);
@@ -118,9 +123,11 @@ for pp = 1:numPred
 end
 axis([startColInd endColInd minCI maxCI]);
 legend('Max Upper CI for lower Pred',...
+    'Min Upper CI for lower Pred',...
     'Maximal empiricial Mean for lower Pred',...
     'Population Mean',...
     'Min Lower CI for higher Pred',...
+    'Max Lower CI for higher Pred',...
     'Minimial empiricial Mean for higher Pred',...
     'Population Mean');
 xlabel('k value');
@@ -137,12 +144,12 @@ for pp = 1:numPred
     
     if(pp==1) %only care about upper CI for lower pred
         plot(max(upperCI2,[],2),[predColors{pp} '--'],'LineWidth',lineWidth2) 
-        %plot(min(upperCI2,[],2),[predColors{pp} '--'],'LineWidth',lineWidth2) 
+        plot(min(upperCI2,[],2),[predColors{pp} '--'],'LineWidth',lineWidth2) 
     end
     
     if(pp==2) %only care about lower CI for upper pred
         plot(min(lowerCI2,[],2),[predColors3{pp} ':'],'LineWidth',lineWidth2) 
-        %plot(max(lowerCI2,[],2),[predColors3{pp} ':'],'LineWidth',lineWidth2) 
+        plot(max(lowerCI2,[],2),[predColors3{pp} ':'],'LineWidth',lineWidth2) 
     end
     
     wbarVals2 = permute(meanWbar2(pp,dispRows,:),[3 2 1]);
@@ -157,9 +164,11 @@ for pp = 1:numPred
 end
 axis([startColInd endColInd minCI maxCI]);
 legend('Max Upper CI for lower Pred',...
+    'Min Upper CI for lower Pred',...
     'Maximal empiricial Mean for lower Pred',...
     'Population Mean',...
     'Min Lower CI for higher Pred',...
+    'Max Lower CI for higher Pred',...
     'Minimial empiricial Mean for higher Pred',...
     'Population Mean');
 xlabel('k value');
