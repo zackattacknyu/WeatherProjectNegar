@@ -15,24 +15,38 @@ for ii = 1:numFiles
     numSecPerPatch(ii) = numSeconds/numel(totalWorkEMD);
 end
 
+load('patchesSep2011DataTest3_numSeconds.mat');
+load('patchesSep2011DataTest3_results.mat');
+numMinutesAll = numSeconds/60;
+meanWall = mean(totalWorkEMD,2);
+numSecPerPatchAll = numSeconds/numel(totalWorkEMD);
+
 figure
 plot(numMinutesArray);
 xlabel('Trial Num');
 ylabel('Number Minutes');
-title('Number of Minutes versus Trial');
+title(['Number of Minutes versus Trial ('...
+    num2str(numMinutesAll) ' Minutes without Sampling)']);
 
 figure
+hold on
 plot(numSecPerPatch);
+plot(numSecPerPatchAll.*ones(1,length(numSecPerPatch)),'r');
+hold off
 xlabel('Trial Num');
 ylabel('Average Number Seconds');
+legend('Trials','Without Sampling');
 title('Avg Number of Seconds for Each Patch (with multithreading)');
 
 figure
 hold on
 plot(meanWarray(1,:),'r-');
 plot(meanWarray(2,:),'b-');
+plot(meanWall(1).*ones(1,size(meanWarray,2)),'r--');
+plot(meanWall(2).*ones(1,size(meanWarray,2)),'b--');
 hold off
 title('Mean W versus Trial');
-legend('Prediction 1','Prediction 2');
+legend('Prediction 1','Prediction 2','Pred 1 All','Pred 2 All');
 xlabel('Trial Num');
 ylabel('Mean W');
+
