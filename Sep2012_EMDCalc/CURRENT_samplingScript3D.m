@@ -59,7 +59,7 @@ timeStamps2 = sort(timeStamps2);
 
 %%
 
-%timeStamps2 = [435 437 440 481 485];
+timeStamps2 = [435 437 440 481 485];
 %indTime=485;
 %timeStamps2 = [indTime];
 
@@ -129,6 +129,8 @@ for tt = 1:numTimeStamps
     indicesUse = find(curImage>0);
     decTreeRMSE = sqrt(mean((curImage(indicesUse)-precipMap(indicesUse)).^2));
     ccsRMSE = sqrt(mean((curImage(indicesUse)-ccsOverUS(indicesUse)).^2));
+    
+    %save(['patchesSep2011DataTest2_time' num2str(fileNum) '_rmse.mat'],'decTreeRMSE','ccsRMSE');
     
     minDist = 18;
     patchSize = 20;
@@ -218,7 +220,7 @@ for i = 1:length(patchesT)
     end
     
 end
-
+%%
 save(['patchesSep2011DataTest4.mat'],'targetPatches','predPatches');
 %%
 masterTarget = targetPatches;
