@@ -59,7 +59,8 @@ timeStamps2 = sort(timeStamps2);
 
 %%
 
-timeStamps2 = [435 437 440 481 485];
+timeStamps2 = [2 3 5:9 44:52 57 61 95 107:111 138:148 157];
+%timeStamps2 = [435 437 440 481 485];
 %indTime=485;
 %timeStamps2 = [indTime];
 
@@ -130,7 +131,7 @@ for tt = 1:numTimeStamps
     decTreeRMSE = sqrt(mean((curImage(indicesUse)-precipMap(indicesUse)).^2));
     ccsRMSE = sqrt(mean((curImage(indicesUse)-ccsOverUS(indicesUse)).^2));
     
-    %save(['patchesSep2011DataTest2_time' num2str(fileNum) '_rmse.mat'],'decTreeRMSE','ccsRMSE');
+    save(['patchesSep2011DataTest5_time' num2str(fileNum) '_rmse.mat'],'decTreeRMSE','ccsRMSE');
     
     minDist = 18;
     patchSize = 20;
@@ -177,7 +178,11 @@ for tt = 1:numTimeStamps
     patchesT{tt} = targetPatches(indicesToKeep);
     patchesPred{tt} = curPredPatches(:,indicesToKeep);
     
-    %figure
+    targetPatches = targetPatches(indicesToKeep);
+    predPatches = curPredPatches(:,indicesToKeep);
+    save(['patchesSep2011DataTest5_time' num2str(fileNum) '.mat'],'targetPatches','predPatches');
+    
+    %fg = figure
     %drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
     %{
     figure
@@ -193,6 +198,7 @@ for tt = 1:numTimeStamps
     
     %pause(5);
     
+    %close(fg);
 end
 
 
