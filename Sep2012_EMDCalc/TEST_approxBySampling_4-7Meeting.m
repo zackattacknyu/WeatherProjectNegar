@@ -13,6 +13,10 @@ NOTE: IT IS POSSIBLE TO HAVE NON-INTERSECTING
     CONFIDENCE INTERVALS BEFORE THE RIGHT CONCLUSION
     IS DRAWN FROM THE SAMPLE MEAN. THAT IS WHY
     I WILL ENFORCE A MIN OF 1000 SAMPLES OR 10% OF THE DATA
+
+TODO: Estimate the std of the without replacement estimator using this:
+    https://www.ma.utexas.edu/users/parker/sampling/woreplshort.htm
+    I WILL USE THAT FOR CONFIDENCE BOUND
 %}
 
 %load('patchesSep2011Data_results_new1.mat');
