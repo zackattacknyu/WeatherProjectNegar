@@ -59,8 +59,10 @@ timeStamps2 = sort(timeStamps2);
 
 %%
 
-timeStamps2 = [2 3 5:9 44:52 57 61 95 107:111 138:148 157];
+%timeStamps2 = [2 3 5:9 44:52 57 61 95 107:111 138:148 157];
 %timeStamps2 = [435 437 440 481 485];
+
+%timeStamps2 = predsDifferTimes;
 %indTime=485;
 %timeStamps2 = [indTime];
 
@@ -184,7 +186,7 @@ for tt = 1:numTimeStamps
     
     %fg = figure
     %drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
-    %{
+    
     figure
     subplot(1,3,1)
     drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
@@ -194,9 +196,9 @@ for tt = 1:numTimeStamps
     
     subplot(1,3,3)
     drawMapWithPatches(ccsOverUS,randPatchesCornerCoord(indicesToKeep),patchSize);
-    %}
     
-    %pause(5);
+    
+    pause(5);
     
     %close(fg);
 end

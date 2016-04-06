@@ -16,6 +16,7 @@ NOTE: IT IS POSSIBLE TO HAVE NON-INTERSECTING
 
 TODO: Estimate the std of the without replacement estimator using this:
     https://www.ma.utexas.edu/users/parker/sampling/woreplshort.htm
+http://stattrek.com/survey-research/simple-random-sample-analysis.aspx
     I WILL USE THAT FOR CONFIDENCE BOUND
 %}
 
@@ -50,8 +51,11 @@ for trialN = 1:numTrials
         workSampled = totalWorkEMD_A(:,1:k);
         workSampled2 = totalWorkEMD_B(:,1:k);
         
+        %without replacement multiplier for variance given k
+        woReplaceMult = (numPatches-k)/(k*(numPatches-1));
+        
         meanWbar(:,trialN,k) = mean(workSampled,2);
-        varWbar(:,trialN,k) = var(workSampled,[],2)./k;
+        varWbar(:,trialN,k) = var(workSampled,[],2).*woReplaceMult;
  
         meanWbar2(:,trialN,k) = mean(workSampled2,2);
         varWbar2(:,trialN,k) = var(workSampled2,[],2)./k;
@@ -82,11 +86,11 @@ lowerConfidence = meanWbar - multiplier1.*sqrt(varWbar);
 upperConfidence2 = meanWbar2 + multiplier1.*sqrt(varWbar2);
 lowerConfidence2 = meanWbar2 - multiplier1.*sqrt(varWbar2);
 
-startColInd = 100;
-endColInd = 600;
+startColInd = 400;
+endColInd = 9610;
 dispRows = 1:10;
-lineWidth=3;
-lineWidth2=2;
+lineWidth=1;
+lineWidth2=1;
 predColors = {'b' 'r'};
 predColors2 = {'c' 'm'};
 predColors3 = {'y' 'g'};
@@ -139,45 +143,6 @@ ylabel('W_k value');
 hold off
 
 
-figure
-title('CI For Mean with Replacement');
-hold on
-for pp = 1:numPred
-    upperCI2 = permute(upperConfidence2(pp,dispRows,:),[3 2 1]);
-    lowerCI2 = permute(lowerConfidence2(pp,dispRows,:),[3 2 1]);
-    
-    if(pp==1) %only care about upper CI for lower pred
-        plot(max(upperCI2,[],2),[predColors{pp} '--'],'LineWidth',lineWidth2) 
-        plot(min(upperCI2,[],2),[predColors{pp} '--'],'LineWidth',lineWidth2) 
-    end
-    
-    if(pp==2) %only care about lower CI for upper pred
-        plot(min(lowerCI2,[],2),[predColors3{pp} ':'],'LineWidth',lineWidth2) 
-        plot(max(lowerCI2,[],2),[predColors3{pp} ':'],'LineWidth',lineWidth2) 
-    end
-    
-    wbarVals2 = permute(meanWbar2(pp,dispRows,:),[3 2 1]);
-
-    if(pp==1)
-        plot(max(wbarVals2,[],2),[predColors2{pp} '-'],'LineWidth',lineWidth2) 
-    elseif(pp==2)
-        plot(min(wbarVals2,[],2),[predColors2{pp} '-'],'LineWidth',lineWidth2) 
-    end
-    plot(Wvalues(pp).*ones(1,numPatches),...
-        'k--','LineWidth',lineWidth);
-end
-axis([startColInd endColInd minCI maxCI]);
-legend('Max Upper CI for lower Pred',...
-    'Min Upper CI for lower Pred',...
-    'Maximal empiricial Mean for lower Pred',...
-    'Population Mean',...
-    'Min Lower CI for higher Pred',...
-    'Max Lower CI for higher Pred',...
-    'Minimial empiricial Mean for higher Pred',...
-    'Population Mean');
-xlabel('k value');
-ylabel('W_k value');
-hold off
 %%
 figure
 title('Wbar values for Mean');
