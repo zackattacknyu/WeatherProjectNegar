@@ -62,7 +62,7 @@ timeStamps2 = sort(timeStamps2);
 %used as pixel value for 0<x<1 pixels
 delta = 0.1;
 
-%timeStamps2 = [2 3 5:9 44:52 57 61 95 107:111 138:148 157];
+timeStamps2 = [2 3 5:9 44:52 57 61 95 107:111 138:148 157];
 %timeStamps2 = [435 437 440 481 485];
 
 %timeStamps2 = predsDifferOrdered;
@@ -84,12 +84,13 @@ for tt = 1:numTimeStamps
     fileNum = timeStamps2(tt);
     fprintf(['Now Sampling Image ' num2str(tt) ' of ' num2str(numTimeStamps) ...
         ' (File Number: ' num2str(fileNum) ')\n']);
-    
+    %{
     prefPred = preferredPredByW(tt);
     fprintf(['Preferred Prediction: ' num2str(prefPred) '\n']);
     fprintf(['W Difference: ' num2str(largestDiffsW(tt)) '\n']);
     fprintf(['RMSE Difference: ' num2str(rValInLargestDiffsW(tt)) '\n\n']);
-    
+    %}
+        
     %fn = ['zach_RR/q2hrus' dataFiles3(fileNum).name(12:end)];
     %fn2 = ['zach_ccs/rgo' dataFiles3(fileNum,1).name(12:end)];
     %fn3 = ['negarPredMaps/decTreePred' dataFiles3(fileNum,1).name(12:end)];
@@ -143,7 +144,7 @@ for tt = 1:numTimeStamps
     decTreeRMSE = sqrt(mean((curImage(indicesUse)-precipMap(indicesUse)).^2));
     ccsRMSE = sqrt(mean((curImage(indicesUse)-ccsOverUS(indicesUse)).^2));
     
-    save(['patchesSep2011DataTest6_time' num2str(fileNum) '_rmse.mat'],'decTreeRMSE','ccsRMSE');
+    save(['patchesSep2011DataTest5_time' num2str(fileNum) '_rmse.mat'],'decTreeRMSE','ccsRMSE');
     
     minDist = 18;
     patchSize = 20;
@@ -196,25 +197,26 @@ for tt = 1:numTimeStamps
     predPatches = curPredPatches(:,indicesToKeep);
     
     patchesT{tt} = targetPatches;
-    patchesPred{tt} = curPredPatches;
+    patchesPred{tt} = predPatches;
 
-    save(['patchesSep2011DataTest6_time' num2str(fileNum) '.mat'],'targetPatches','predPatches');
+    save(['patchesSep2011DataTest5_time' num2str(fileNum) '.mat'],'targetPatches','predPatches');
     
     %fg = figure
     %drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
     %{
     figure
-    subplot(3,1,1)
+    subplot(1,3,1)
     curImage(leaveOutIndices)=-1;
     drawMapWithPatches(curImage,randPatchesCornerCoord(indicesToKeep),patchSize);
     
-    subplot(3,1,2)
+    subplot(1,3,2)
     precipMap(leaveOutIndices)=-1;
     drawMapWithPatches(precipMap,randPatchesCornerCoord(indicesToKeep),patchSize);
     
-    subplot(3,1,3)
+    subplot(1,3,3)
     ccsOverUS(leaveOutIndices)=-1;
     drawMapWithPatches(ccsOverUS,randPatchesCornerCoord(indicesToKeep),patchSize);
+    
     %}
     
     %pause(1);

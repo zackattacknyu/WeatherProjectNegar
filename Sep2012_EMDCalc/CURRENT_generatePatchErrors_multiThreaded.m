@@ -26,6 +26,17 @@ parfor patchI = 1:NN
 
         curPred = predPatches{predJ,patchI};
         
+        sumVals = [sum(curTarget(:)) sum(curPred(:))];
+        maxVals = [max(curTarget(:)) max(curPred(:))];
+        
+        if(min(sumVals) < 3 || min(maxVals) < 1)
+            WORK = 0.1*sum((curTarget(:)-curPred(:)).^2);
+            predErrorsEMD(predJ) = WORK;
+            totalWorkEMD(predJ) = WORK;
+            totalFlowEMD(predJ) = 0;
+            continue;
+        end
+        
         try
             [emdVal,WORK,FLOW] = getEMDwQP(curTarget,curPred);
             predErrorsEMD(predJ) = emdVal;
