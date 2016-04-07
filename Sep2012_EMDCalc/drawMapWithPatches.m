@@ -12,7 +12,7 @@ hold on
 for i = 1:length(randPatchesCornerCoord)
    centerLoc = randPatchesCornerCoord{i};
    centerLoc = centerLoc - [patchSize/2 patchSize/2];
-   rectangle('Position',[centerLoc(2) centerLoc(1) patchSize patchSize]);
+   %rectangle('Position',[centerLoc(2) centerLoc(1) patchSize patchSize]);
 end
 hold off
 

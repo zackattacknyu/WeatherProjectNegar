@@ -22,15 +22,17 @@ http://stattrek.com/survey-research/simple-random-sample-analysis.aspx
 
 %load('patchesSep2011Data_results_new1.mat');
 %load('patchesSep2011Data_new1.mat');
-load('patchesSep2011Data_results_allT_new1.mat');
-load('patchesSep2011Data_allT_new1.mat');
+%load('patchesSep2011Data_results_allT_new1.mat');
+%load('patchesSep2011Data_allT_new1.mat');
+
+load('patchesSep2011DataTest3_results.mat');
 
 %%
 numPatches = size(predErrorsEMD,2);
 Wvalues = mean(totalWorkEMD,2);
 
 numPred = size(totalWorkEMD,1);
-numTrials = 50;
+numTrials = 10;
 
 meanWbar = zeros(numPred,numTrials,size(predErrorsEMD,2));
 varWbar = zeros(numPred,numTrials,size(predErrorsEMD,2));
@@ -46,7 +48,6 @@ for trialN = 1:numTrials
     for k = 1:numPatches
 
         workSampled = totalWorkEMD_A(:,1:k);
-        workSampled2 = totalWorkEMD_B(:,1:k);
         
         %without replacement multiplier for variance given k
         woReplaceMult = (numPatches-k)/(k*(numPatches-1));
@@ -80,8 +81,8 @@ multiplier1 = 3.9; %for 99.99% confidence
 upperConfidence = meanWbar + multiplier1.*sqrt(varWbar);
 lowerConfidence = meanWbar - multiplier1.*sqrt(varWbar);
 
-startColInd = 100;
-endColInd = 2000;
+startColInd = 50;
+endColInd = 6839;
 dispRows = 1:10;
 lineWidth=1;
 lineWidth2=1;
@@ -98,7 +99,8 @@ goodInds = lowerPredUpperCIvals<upperPredLowerCIvals;
 lastBadInd = zeros(1,numTrials);
 firstGoodInd = zeros(1,numTrials);
 ciIntersectLastBad = zeros(1,numTrials);
-ciIntersectFirstGood = zeros(1,numTrials);
+ciIntersectFirstGoodUpper = zeros(1,numTrials);
+ciIntersectFirstGoodLower = zeros(1,numTrials);
 for ii = 1:numTrials
     curTrial = reshape(badInds(1,ii,:),[1 numPatches]);
     curTrial2 = reshape(goodInds(1,ii,:),[1 numPatches]);
@@ -107,10 +109,9 @@ for ii = 1:numTrials
     firstGoodInd(ii) = find(curTrial2,1,'first');
     
     ciIntersectLastBad(ii) = upperPredLowerCIvals(1,ii,lastBadInd(ii));
-    ciIntersectFirstGood(ii) = upperPredLowerCIvals(1,ii,firstGoodInd(ii));
+    ciIntersectFirstGoodUpper(ii) = upperPredLowerCIvals(1,ii,firstGoodInd(ii));
+    ciIntersectFirstGoodLower(ii) = lowerPredUpperCIvals(1,ii,firstGoodInd(ii));
 end
-
-%%
 
 minCI = min(reshape(lowerConfidence(:,dispRows,startColInd:endColInd),1,[]));
 maxCI = max(reshape(upperConfidence(:,dispRows,startColInd:endColInd),1,[]));
@@ -120,10 +121,11 @@ maxY = max(reshape(meanWbar(:,dispRows,startColInd:endColInd),1,[]));
 
 margin=20;
 figure
-title('CI For Mean without Replacement');
+title('Estimating Mean using Sampling Without Replacement Results');
 hold on
-plot(lastBadInd,ciIntersectLastBad,'kx');
-plot(firstGoodInd,ciIntersectFirstGood,'r.');
+%plot(lastBadInd,ciIntersectLastBad,'kx');
+plot(firstGoodInd,ciIntersectFirstGoodUpper,'r.');
+%plot(firstGoodInd,ciIntersectFirstGoodLower,'c.');
 for pp = 1:numPred
     wbarVals = permute(meanWbar(pp,dispRows,:),[3 2 1]);
 
@@ -141,11 +143,10 @@ for pp = 1:numPred
 end
 axis([startColInd endColInd Wvalues(1)-margin Wvalues(2)+margin]);
 legend('Potential Stopping Points in Algorithm',...
-    'Potential Stopping Points in Algorithm 2',...
-    'Maximal empiricial Mean for lower Pred',...
-    'Population Mean for lower Pred',...
-    'Minimial empiricial Mean for higher Pred',...
-    'Population Mean for higher Pred');
+    'Maximal Sample Mean with lower Prediction Value',...
+    'Population Mean with lower Prediction Value',...
+    'Minimial Sample Mean with upper Prediction Value',...
+    'Population Mean with upper Prediction Value');
 xlabel('k value');
 ylabel('W_k value');
 hold off

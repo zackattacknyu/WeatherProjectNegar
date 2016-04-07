@@ -1,11 +1,12 @@
 
 numFiles = 9;
+testNum=4;
 numMinutesArray = zeros(1,numFiles);
 meanWarray = zeros(2,numFiles);
 numSecPerPatch = zeros(1,numFiles);
 for ii = 1:numFiles
-    numSecondsFileNm = ['patchesSep2011DataTest3_rand' num2str(ii) '_numSeconds.mat'];
-    resFileNm = ['patchesSep2011DataTest3_rand' num2str(ii) '_results.mat'];
+    numSecondsFileNm = ['patchesSep2011DataTest' num2str(testNum) '_rand' num2str(ii) '_numSeconds.mat'];
+    resFileNm = ['patchesSep2011DataTest' num2str(testNum) '_rand' num2str(ii) '_results.mat'];
     
     load(numSecondsFileNm,'numSeconds');
     load(resFileNm,'totalWorkEMD');
@@ -15,8 +16,8 @@ for ii = 1:numFiles
     numSecPerPatch(ii) = numSeconds/numel(totalWorkEMD);
 end
 
-load('patchesSep2011DataTest3_numSeconds.mat');
-load('patchesSep2011DataTest3_results.mat');
+load(['patchesSep2011DataTest' num2str(testNum) '_numSeconds.mat']);
+load(['patchesSep2011DataTest' num2str(testNum) '_results.mat']);
 numMinutesAll = numSeconds/60;
 meanWall = mean(totalWorkEMD,2);
 numSecPerPatchAll = numSeconds/numel(totalWorkEMD);

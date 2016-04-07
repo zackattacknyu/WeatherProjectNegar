@@ -1,9 +1,9 @@
 
 
 %timeVals = [435 437 440 481 485]; %test 2
-%timeVals = [2 3 5:9 44:52 57 61 95 107:111 138:148 157]; %test 5
-timeVals = [111   147   157   146   140   145   141   110]; %test 6
-testNum=6;
+timeVals = [2 3 5:9 44:52 57 61 95 107:111 138:148 157]; %test 5
+%timeVals = [111   147   157   146   140   145   141   110]; %test 6
+testNum=5;
 
 numFiles = length(timeVals);
 
