@@ -30,21 +30,18 @@ numPatches = size(predErrorsEMD,2);
 Wvalues = mean(totalWorkEMD,2);
 
 numPred = size(totalWorkEMD,1);
-numTrials = 10;
+numTrials = 50;
 
 meanWbar = zeros(numPred,numTrials,size(predErrorsEMD,2));
 varWbar = zeros(numPred,numTrials,size(predErrorsEMD,2));
 
-meanWbar2 = zeros(numPred,numTrials,size(predErrorsEMD,2));
-varWbar2 = zeros(numPred,numTrials,size(predErrorsEMD,2));
 
 for trialN = 1:numTrials
     trialN
     randPatches = randperm(numPatches);
-    randPatches2 = ceil(rand(1,numPatches)*numPatches);
+    %randPatches2 = ceil(rand(1,numPatches)*numPatches);
     
     totalWorkEMD_A = totalWorkEMD(:,randPatches);
-    totalWorkEMD_B = totalWorkEMD(:,randPatches2);
     
     for k = 1:numPatches
 
@@ -56,9 +53,7 @@ for trialN = 1:numTrials
         
         meanWbar(:,trialN,k) = mean(workSampled,2);
         varWbar(:,trialN,k) = var(workSampled,[],2).*woReplaceMult;
- 
-        meanWbar2(:,trialN,k) = mean(workSampled2,2);
-        varWbar2(:,trialN,k) = var(workSampled2,[],2)./k;
+
     end
     
     
@@ -74,20 +69,19 @@ for ind = 1:length(multiplierValues)
         diff(normcdf([-tt tt],0,1));
 end
 
-desiredRatio = 0.999999;
+desiredRatio = 0.9999;
 indReq = find(areaRatioWithMultiplier>=desiredRatio,1,'first');
 reqMultiplier = multiplierValues(indReq);
 
 %%
-multiplier1 = 1.96; %for 95% confidence
+%multiplier1 = 1.96; %for 95% confidence
 %multiplier1 = 2.58; %for 99% confidence
+multiplier1 = 3.9; %for 99.99% confidence
 upperConfidence = meanWbar + multiplier1.*sqrt(varWbar);
 lowerConfidence = meanWbar - multiplier1.*sqrt(varWbar);
-upperConfidence2 = meanWbar2 + multiplier1.*sqrt(varWbar2);
-lowerConfidence2 = meanWbar2 - multiplier1.*sqrt(varWbar2);
 
-startColInd = 400;
-endColInd = 9610;
+startColInd = 100;
+endColInd = 2000;
 dispRows = 1:10;
 lineWidth=1;
 lineWidth2=1;
@@ -95,49 +89,63 @@ predColors = {'b' 'r'};
 predColors2 = {'c' 'm'};
 predColors3 = {'y' 'g'};
 
+lowerPredInd = 1; upperPredInd = 2;
+lowerPredUpperCIvals = upperConfidence(lowerPredInd,:,:);
+upperPredLowerCIvals = lowerConfidence(upperPredInd,:,:);
+badInds = lowerPredUpperCIvals>upperPredLowerCIvals;
+goodInds = lowerPredUpperCIvals<upperPredLowerCIvals;
+
+lastBadInd = zeros(1,numTrials);
+firstGoodInd = zeros(1,numTrials);
+ciIntersectLastBad = zeros(1,numTrials);
+ciIntersectFirstGood = zeros(1,numTrials);
+for ii = 1:numTrials
+    curTrial = reshape(badInds(1,ii,:),[1 numPatches]);
+    curTrial2 = reshape(goodInds(1,ii,:),[1 numPatches]);
+    
+    lastBadInd(ii) = find(curTrial,1,'last')+1;
+    firstGoodInd(ii) = find(curTrial2,1,'first');
+    
+    ciIntersectLastBad(ii) = upperPredLowerCIvals(1,ii,lastBadInd(ii));
+    ciIntersectFirstGood(ii) = upperPredLowerCIvals(1,ii,firstGoodInd(ii));
+end
+
+%%
+
 minCI = min(reshape(lowerConfidence(:,dispRows,startColInd:endColInd),1,[]));
 maxCI = max(reshape(upperConfidence(:,dispRows,startColInd:endColInd),1,[]));
 
 minY = min(reshape(meanWbar(:,dispRows,startColInd:endColInd),1,[]));
 maxY = max(reshape(meanWbar(:,dispRows,startColInd:endColInd),1,[]));
 
+margin=20;
 figure
 title('CI For Mean without Replacement');
 hold on
+plot(lastBadInd,ciIntersectLastBad,'kx');
+plot(firstGoodInd,ciIntersectFirstGood,'r.');
 for pp = 1:numPred
-    upperCI = permute(upperConfidence(pp,dispRows,:),[3 2 1]);
-    lowerCI = permute(lowerConfidence(pp,dispRows,:),[3 2 1]);
-    
-    if(pp==1) %only care about upper CI for lower pred
-        plot(max(upperCI,[],2),[predColors{pp} '--'],'LineWidth',lineWidth2) 
-        plot(min(upperCI,[],2),[predColors{pp} '--'],'LineWidth',lineWidth2) 
-    end
-    
-    if(pp==2) %only care about lower CI for upper pred
-        plot(min(lowerCI,[],2),[predColors3{pp} ':'],'LineWidth',lineWidth2) 
-        plot(max(lowerCI,[],2),[predColors3{pp} ':'],'LineWidth',lineWidth2) 
-    end
-    
     wbarVals = permute(meanWbar(pp,dispRows,:),[3 2 1]);
 
     if(pp==1)
         plot(max(wbarVals,[],2),[predColors2{pp} '-'],'LineWidth',lineWidth2) 
+        plot(Wvalues(pp).*ones(1,numPatches),...
+            'k--','LineWidth',lineWidth);
     elseif(pp==2)
         plot(min(wbarVals,[],2),[predColors2{pp} '-'],'LineWidth',lineWidth2) 
+        plot(Wvalues(pp).*ones(1,numPatches),...
+            'k:','LineWidth',lineWidth);
     end
     
-    plot(Wvalues(pp).*ones(1,numPatches),...
-        'k--','LineWidth',lineWidth);
+    
 end
-axis([startColInd endColInd minCI maxCI]);
-legend('Max Upper CI for lower Pred',...
-    'Min Upper CI for lower Pred',...
+axis([startColInd endColInd Wvalues(1)-margin Wvalues(2)+margin]);
+legend('Potential Stopping Points in Algorithm',...
+    'Potential Stopping Points in Algorithm 2',...
     'Maximal empiricial Mean for lower Pred',...
-    'Population Mean',...
-    'Min Lower CI for higher Pred',...
-    'Max Lower CI for higher Pred',...
+    'Population Mean for lower Pred',...
     'Minimial empiricial Mean for higher Pred',...
-    'Population Mean');
+    'Population Mean for higher Pred');
 xlabel('k value');
 ylabel('W_k value');
 hold off
