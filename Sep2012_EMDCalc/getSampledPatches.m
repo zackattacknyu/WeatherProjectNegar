@@ -1,5 +1,5 @@
 function [ randPatches, randPatchesCornerCoord, patchSum ] = ...
-    getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries,minPatchSum )
+    getSampledPatches( curImage, patchSize, minDist, maxNumPatches, maxTries,delta )
 %GETSAMPLEDPATCHES gets patches
 %   This samples patches from an image
 %
@@ -88,10 +88,10 @@ for k = 1:maxTries %try to obtain the sample patches
    randPatch = curImage(startRow:endRow,startCol:endCol);
 
    %add the patch as long as there is some precip in it
-   curPatchSum = sum(randPatch(:));
    curPatchMax = max(randPatch(:));
-   if(curPatchMax > 1 && curPatchSum > minPatchSum)
-        patchSum(imgIndex) = curPatchSum;
+   randPatch(randPatch<=delta)=0;
+   if(curPatchMax >= delta)
+        patchSum(imgIndex) = sum(randPatch(:));
         randPatches{imgIndex} = randPatch;
         randPatchesCornerCoord{imgIndex} = curLocation;
         imgIndex = imgIndex+1;

@@ -24,7 +24,7 @@ DistV=maxV-minV;  NBIN=10;
 %%%%%% Parameters, Recommend use the default value%%%%%%%%%
 dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 
-files = dir('matFiles/data1210*');
+files = dir('matFiles/data1209*');
 NN = length(files);
 
 ccsPredictionArray = cell(1,NN);
@@ -78,6 +78,11 @@ end_of_loop = 0;
     indicesToUse = (rrTestUse>=0);
     
     ccsPrediction = ccsUSuse(indicesToUse);
+    if(~isempty(find(ccsPrediction<0, 1)))
+        fn2
+        
+    end
+    
     targetVals = rrTestUse(indicesToUse);
     
     ccsPredictionArray{i} = ccsPrediction;

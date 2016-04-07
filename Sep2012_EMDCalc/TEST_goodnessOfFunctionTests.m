@@ -66,6 +66,26 @@ ylabel('RMSE');
 %+1 if pred 2 better. -1 otherwise
 betterPredByMeanW = sign(meanWarray(2,:)-meanWarray(1,:));
 betterPredByRMSE = sign(rmseArray(2,:)-rmseArray(1,:));
-predsDiffer = (abs(betterPredByMeanW-betterPredByRMSE)>0);
-predsDifferTimes = timeVals(predsDiffer)
+predictionDifference = betterPredByMeanW-betterPredByRMSE;
+predsDiffer = (abs(predictionDifference)>0);
+predsDifferTimes = timeVals(predsDiffer);
 
+%go from -1 or 1 to 1 or 2
+preferredPredByW = (betterPredByMeanW(predsDiffer).*0.5)+1.5;
+wDifference = abs(meanWarray(2,predsDiffer)-meanWarray(1,predsDiffer));
+rDifference = abs(rmseArray(2,predsDiffer)-rmseArray(1,predsDiffer));
+[largestDiffsW,predsDifferI] = sort(wDifference,'descend');
+predsDifferOrdered = predsDifferTimes(predsDifferI);
+rValInLargestDiffsW = rDifference(predsDifferI);
+
+
+%%
+
+
+for ii = 1:length(targetPatches)
+   curP = targetPatches{ii};
+   numBad = length(find(curP>0 & curP<1));
+   if(numBad>0)
+      numBad 
+   end
+end
