@@ -70,7 +70,7 @@ while needMoreSamples
     indsForTest = randomInds(1:curEndInd);
     totalWorkFound = totalWorkEMD(:,indsForTest);
     meanW = mean(totalWorkFound,2);
-    woReplaceMult = (NN-numSamples)/(numSampled*(NN-1));
+    woReplaceMult = (NN-numSampled)/(numSampled*(NN-1));
     varW = var(totalWorkFound,[],2).*woReplaceMult;
     multiplier1 = 3.9; %for 99.99% confidence
     upperConfidence = meanW + multiplier1.*sqrt(varW);

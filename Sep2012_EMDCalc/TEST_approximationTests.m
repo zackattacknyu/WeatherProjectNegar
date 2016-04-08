@@ -1,19 +1,30 @@
 
-numFiles = 9;
-testNum=4;
+numFiles = 5;
+testNum=7;
 numMinutesArray = zeros(1,numFiles);
 meanWarray = zeros(2,numFiles);
 numSecPerPatch = zeros(1,numFiles);
 for ii = 1:numFiles
-    numSecondsFileNm = ['patchesSep2011DataTest' num2str(testNum) '_rand' num2str(ii) '_numSeconds.mat'];
-    resFileNm = ['patchesSep2011DataTest' num2str(testNum) '_rand' num2str(ii) '_results.mat'];
+    %numSecondsFileNm = ['patchesSep2011DataTest' num2str(testNum) '_rand' num2str(ii) '_numSeconds.mat'];
+    %resFileNm = ['patchesSep2011DataTest' num2str(testNum) '_rand' num2str(ii) '_results.mat'];
+    
+    numSecondsFileNm = ['patchesSep2011DataTest' num2str(testNum) '_samplingTest' num2str(ii) '_numSeconds.mat'];
+    resFileNm = ['patchesSep2011DataTest' num2str(testNum) '_samplingTest' num2str(ii) '_results.mat'];
+    
     
     load(numSecondsFileNm,'numSeconds');
-    load(resFileNm,'totalWorkEMD');
     
+    load(resFileNm,'totalWorkFound');
+    numMinutesArray(ii) = numSeconds/60;
+    meanWarray(:,ii) = mean(totalWorkFound,2);
+    numSecPerPatch(ii) = numSeconds/numel(totalWorkFound);
+    
+    %{
+    load(resFileNm,'totalWorkEMD');
     numMinutesArray(ii) = numSeconds/60;
     meanWarray(:,ii) = mean(totalWorkEMD,2);
     numSecPerPatch(ii) = numSeconds/numel(totalWorkEMD);
+    %}
 end
 
 load(['patchesSep2011DataTest' num2str(testNum) '_numSeconds.mat']);
