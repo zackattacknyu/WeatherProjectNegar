@@ -25,7 +25,9 @@ http://stattrek.com/survey-research/simple-random-sample-analysis.aspx
 %load('patchesSep2011Data_results_allT_new1.mat');
 %load('patchesSep2011Data_allT_new1.mat');
 
-load('patchesSep2011DataTest3_results.mat');
+%load('patchesSep2011DataTest3_results.mat');
+%load('patchesSep2011DataTest7_results.mat');
+load('patchesOct2012Data_results_all4.mat');
 
 %%
 numPatches = size(predErrorsEMD,2);
@@ -82,7 +84,7 @@ upperConfidence = meanWbar + multiplier1.*sqrt(varWbar);
 lowerConfidence = meanWbar - multiplier1.*sqrt(varWbar);
 
 startColInd = 50;
-endColInd = 6839;
+endColInd = 800;
 dispRows = 1:10;
 lineWidth=1;
 lineWidth2=1;
@@ -166,5 +168,15 @@ axis([startColInd numPatches minY maxY]);
 xlabel('k value');
 ylabel('W_k value');
 hold off
+%%
 
+vUpper = [4 6 2];
+vLower = [3 5 1];
 
+[~,ii] = sort(vLower);
+
+endPtsTest2 = zeros(1,length(vLower)*2);
+endPtsTest2(1:2:end)=vLower(ii);
+endPtsTest2(2:2:end)=vUpper(ii);
+
+isGood2 = all(diff(endPtsTest2)>0);
