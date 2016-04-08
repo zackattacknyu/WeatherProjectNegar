@@ -34,7 +34,7 @@ numPatches = size(predErrorsEMD,2);
 Wvalues = mean(totalWorkEMD,2);
 
 numPred = size(totalWorkEMD,1);
-numTrials = 20;
+numTrials = 10;
 
 meanWbar = zeros(numPred,numTrials,size(predErrorsEMD,2));
 varWbar = zeros(numPred,numTrials,size(predErrorsEMD,2));
@@ -84,7 +84,7 @@ upperConfidence = meanWbar + multiplier1.*sqrt(varWbar);
 lowerConfidence = meanWbar - multiplier1.*sqrt(varWbar);
 
 startColInd = 50;
-endColInd = 3000;
+endColInd = 800;
 dispRows = 1:10;
 lineWidth=1;
 lineWidth2=1;
@@ -92,37 +92,27 @@ predColors = {'b' 'r'};
 predColors2 = {'c' 'm'};
 predColors3 = {'y' 'g'};
 
-goodIndex = zeros(numTrials,numPatches);
-for ii = 1:numTrials
-   for jj = 1:numPatches
-       curUpperCI = upperConfidence(:,ii,jj);
-       curLowerCI = lowerConfidence(:,ii,jj);
-       intervalVals = zeros(1,2*numPred);
-       [~,sorting] = sort(curLowerCI);
-       intervalVals(1:2:end) = curLowerCI(sorting);
-       intervalVals(2:2:end) = curUpperCI(sorting);
-       goodIndex(ii,jj) = all(diff(intervalVals)>0);
-   end
-end
-%%
 lowerPredInd = 1; upperPredInd = 2;
 lowerPredUpperCIvals = upperConfidence(lowerPredInd,:,:);
 upperPredLowerCIvals = lowerConfidence(upperPredInd,:,:);
-
+badInds = lowerPredUpperCIvals>upperPredLowerCIvals;
 goodInds = lowerPredUpperCIvals<upperPredLowerCIvals;
 
+lastBadInd = zeros(1,numTrials);
 firstGoodInd = zeros(1,numTrials);
-
+ciIntersectLastBad = zeros(1,numTrials);
 ciIntersectFirstGoodUpper = zeros(1,numTrials);
 ciIntersectFirstGoodLower = zeros(1,numTrials);
 for ii = 1:numTrials
-
-    %curTrial2 = reshape(goodInds(1,ii,:),[1 numPatches]);
-    curTrial3 = goodIndex(ii,startColInd:endColInd);
-    firstGoodInd(ii) = find(curTrial3,1,'first')+startColInd;
+    curTrial = reshape(badInds(1,ii,:),[1 numPatches]);
+    curTrial2 = reshape(goodInds(1,ii,:),[1 numPatches]);
     
-
+    lastBadInd(ii) = find(curTrial,1,'last')+1;
+    firstGoodInd(ii) = find(curTrial2,1,'first');
+    
+    ciIntersectLastBad(ii) = upperPredLowerCIvals(1,ii,lastBadInd(ii));
     ciIntersectFirstGoodUpper(ii) = upperPredLowerCIvals(1,ii,firstGoodInd(ii));
+    ciIntersectFirstGoodLower(ii) = lowerPredUpperCIvals(1,ii,firstGoodInd(ii));
 end
 
 minCI = min(reshape(lowerConfidence(:,dispRows,startColInd:endColInd),1,[]));
@@ -135,7 +125,9 @@ margin=20;
 figure
 title('Estimating Mean using Sampling Without Replacement Results');
 hold on
+%plot(lastBadInd,ciIntersectLastBad,'kx');
 plot(firstGoodInd,ciIntersectFirstGoodUpper,'r.');
+%plot(firstGoodInd,ciIntersectFirstGoodLower,'c.');
 for pp = 1:numPred
     wbarVals = permute(meanWbar(pp,dispRows,:),[3 2 1]);
 
