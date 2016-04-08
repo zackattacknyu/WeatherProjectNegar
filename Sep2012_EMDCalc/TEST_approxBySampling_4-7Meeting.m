@@ -34,7 +34,7 @@ numPatches = size(predErrorsEMD,2);
 Wvalues = mean(totalWorkEMD,2);
 
 numPred = size(totalWorkEMD,1);
-numTrials = 20;
+numTrials = 100;
 
 meanWbar = zeros(numPred,numTrials,size(predErrorsEMD,2));
 varWbar = zeros(numPred,numTrials,size(predErrorsEMD,2));
@@ -84,7 +84,7 @@ upperConfidence = meanWbar + multiplier1.*sqrt(varWbar);
 lowerConfidence = meanWbar - multiplier1.*sqrt(varWbar);
 
 startColInd = 50;
-endColInd = 3000;
+endColInd = 860;
 dispRows = 1:10;
 lineWidth=1;
 lineWidth2=1;
