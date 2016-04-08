@@ -21,6 +21,9 @@ curStartInd = 1;
 while needMoreSamples
     
     curEndInd = curStartInd+numSamplesPerIter;
+    if(curEndInd>NN)
+       curEndInd=NN; 
+    end
     curIndsToSample = randomInds(curStartInd:curEndInd);
     
     workEMD = cell(1,(numSamplesPerIter+1));
@@ -82,6 +85,10 @@ while needMoreSamples
     intervalVals(1:2:end) = lowerConfidence(sorting);
     intervalVals(2:2:end) = upperConfidence(sorting);
     needMoreSamples = ~all(diff(intervalVals)>0);
+    
+    if(curEndInd>=NN)
+       break; 
+    end
 end
 
 save(outputFile,'totalWorkEMD','meanW','totalWorkFound','indsForTest');
