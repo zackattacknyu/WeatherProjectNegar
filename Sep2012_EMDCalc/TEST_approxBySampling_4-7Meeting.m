@@ -26,15 +26,15 @@ http://stattrek.com/survey-research/simple-random-sample-analysis.aspx
 %load('patchesSep2011Data_allT_new1.mat');
 
 %load('patchesSep2011DataTest3_results.mat');
-%load('patchesSep2011DataTest7_results.mat');
-load('patchesOct2012Data_results_all4.mat');
+load('patchesSep2011DataTest7_results.mat');
+%load('patchesOct2012Data_results_all4.mat');
 
 %%
 numPatches = size(predErrorsEMD,2);
 Wvalues = mean(totalWorkEMD,2);
 
 numPred = size(totalWorkEMD,1);
-numTrials = 100;
+numTrials = 20;
 
 meanWbar = zeros(numPred,numTrials,size(predErrorsEMD,2));
 varWbar = zeros(numPred,numTrials,size(predErrorsEMD,2));
@@ -84,7 +84,7 @@ upperConfidence = meanWbar + multiplier1.*sqrt(varWbar);
 lowerConfidence = meanWbar - multiplier1.*sqrt(varWbar);
 
 startColInd = 50;
-endColInd = 860;
+endColInd = 10000;
 dispRows = 1:10;
 lineWidth=1;
 lineWidth2=1;
@@ -109,8 +109,6 @@ lowerPredInd = 1; upperPredInd = 2;
 lowerPredUpperCIvals = upperConfidence(lowerPredInd,:,:);
 upperPredLowerCIvals = lowerConfidence(upperPredInd,:,:);
 
-goodInds = lowerPredUpperCIvals<upperPredLowerCIvals;
-
 firstGoodInd = zeros(1,numTrials);
 
 ciIntersectFirstGoodUpper = zeros(1,numTrials);
@@ -125,12 +123,13 @@ for ii = 1:numTrials
     ciIntersectFirstGoodUpper(ii) = upperPredLowerCIvals(1,ii,firstGoodInd(ii));
 end
 
+%{
 minCI = min(reshape(lowerConfidence(:,dispRows,startColInd:endColInd),1,[]));
 maxCI = max(reshape(upperConfidence(:,dispRows,startColInd:endColInd),1,[]));
 
 minY = min(reshape(meanWbar(:,dispRows,startColInd:endColInd),1,[]));
 maxY = max(reshape(meanWbar(:,dispRows,startColInd:endColInd),1,[]));
-
+%}
 margin=20;
 figure
 title('Estimating Mean using Sampling Without Replacement Results');

@@ -1,6 +1,8 @@
 
-numFiles = 5;
-testNum=7;
+numFiles = 15;
+%testNum=4;
+%testNum=7;
+
 numMinutesArray = zeros(1,numFiles);
 meanWarray = zeros(2,numFiles);
 numSecPerPatch = zeros(1,numFiles);
@@ -33,12 +35,15 @@ end
 
 %load(['patchesSep2011DataTest' num2str(testNum) '_numSeconds.mat']);
 %load(['patchesSep2011DataTest' num2str(testNum) '_results.mat']);
+
 load('patchesOct2012Data_results_all4.mat');
 load('patchesOct2012Data_numSeconds_all3.mat');
-numMinutesAll = numSeconds/60;
+
+numMinutesAll = numSeconds/60
+[min(numMinutesArray) max(numMinutesArray) mean(numMinutesArray)]
 meanWall = mean(totalWorkEMD,2);
 numSecPerPatchAll = numSeconds/numel(totalWorkEMD);
-
+%{
 figure
 plot(numMinutesArray);
 xlabel('Trial Num');
@@ -55,16 +60,17 @@ xlabel('Trial Num');
 ylabel('Average Number Seconds');
 legend('Trials','Without Sampling');
 title('Avg Number of Seconds for Each Patch (with multithreading)');
-
+%}
 figure
 hold on
-plot(meanWarray(1,:),'r-');
-plot(meanWarray(2,:),'b-');
-plot(meanWall(1).*ones(1,size(meanWarray,2)),'r--');
-plot(meanWall(2).*ones(1,size(meanWarray,2)),'b--');
+plot(1:numFiles,meanWarray(1,:),'r-');
+plot(1:numFiles,meanWarray(2,:),'b-');
+plot(1:numFiles,meanWall(1).*ones(1,size(meanWarray,2)),'r--');
+plot(1:numFiles,meanWall(2).*ones(1,size(meanWarray,2)),'b--');
 hold off
-title('Mean W versus Trial');
-legend('Prediction 1','Prediction 2','Pred 1 All','Pred 2 All');
+title('Mean W value for each prediction vs Trial Run Number');
+legend('Prediction 1, from Sample Mean','Prediction 2, from Sample Mean',...
+    'Prediction 1, from Population Mean','Prediction 2, from Population Mean');
 xlabel('Trial Num');
 ylabel('Mean W');
 
