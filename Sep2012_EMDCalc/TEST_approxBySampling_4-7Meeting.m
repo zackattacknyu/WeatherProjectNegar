@@ -25,8 +25,9 @@ http://stattrek.com/survey-research/simple-random-sample-analysis.aspx
 %load('patchesSep2011Data_results_allT_new1.mat');
 %load('patchesSep2011Data_allT_new1.mat');
 
+load('patchesSep2011DataTest4_results.mat');
 %load('patchesSep2011DataTest3_results.mat');
-load('patchesSep2011DataTest7_results.mat');
+%load('patchesSep2011DataTest7_results.mat');
 %load('patchesOct2012Data_results_all4.mat');
 
 %%
@@ -34,7 +35,7 @@ numPatches = size(predErrorsEMD,2);
 Wvalues = mean(totalWorkEMD,2);
 
 numPred = size(totalWorkEMD,1);
-numTrials = 20;
+numTrials = 10;
 
 meanWbar = zeros(numPred,numTrials,size(predErrorsEMD,2));
 varWbar = zeros(numPred,numTrials,size(predErrorsEMD,2));
@@ -83,8 +84,14 @@ multiplier1 = 3.9; %for 99.99% confidence
 upperConfidence = meanWbar + multiplier1.*sqrt(varWbar);
 lowerConfidence = meanWbar - multiplier1.*sqrt(varWbar);
 
+meanDiff2 = meanWbar(2,:,:)-meanWbar(1,:,:);
+diffStdFactor = multiplier1.*sqrt(varWbar(2,:,:)+varWbar(1,:,:));
+
+upper2 = meanDiff2 + diffStdFactor;
+lower2 = meanDiff2 - diffStdFactor;
+
 startColInd = 50;
-endColInd = 10000;
+endColInd = 3000;
 dispRows = 1:10;
 lineWidth=1;
 lineWidth2=1;
@@ -93,6 +100,7 @@ predColors2 = {'c' 'm'};
 predColors3 = {'y' 'g'};
 
 goodIndex = zeros(numTrials,numPatches);
+goodIndex2 = zeros(numTrials,numPatches); %with diff definition of mean difference
 for ii = 1:numTrials
    for jj = 1:numPatches
        curUpperCI = upperConfidence(:,ii,jj);
@@ -102,25 +110,31 @@ for ii = 1:numTrials
        intervalVals(1:2:end) = curLowerCI(sorting);
        intervalVals(2:2:end) = curUpperCI(sorting);
        goodIndex(ii,jj) = all(diff(intervalVals)>0);
+       goodIndex2(ii,jj) = (lower2(1,ii,jj)>0);
    end
 end
-%%
+
 lowerPredInd = 1; upperPredInd = 2;
 lowerPredUpperCIvals = upperConfidence(lowerPredInd,:,:);
 upperPredLowerCIvals = lowerConfidence(upperPredInd,:,:);
 
 firstGoodInd = zeros(1,numTrials);
+firstGoodInd2 = zeros(1,numTrials);
 
 ciIntersectFirstGoodUpper = zeros(1,numTrials);
-ciIntersectFirstGoodLower = zeros(1,numTrials);
+ciLowerFirstGood = zeros(1,numTrials);
 for ii = 1:numTrials
 
     %curTrial2 = reshape(goodInds(1,ii,:),[1 numPatches]);
     curTrial3 = goodIndex(ii,startColInd:endColInd);
+    curTrial4 = goodIndex2(ii,startColInd:endColInd);
+    
     firstGoodInd(ii) = find(curTrial3,1,'first')+startColInd;
+    firstGoodInd2(ii) = find(curTrial4,1,'first')+startColInd;
     
 
     ciIntersectFirstGoodUpper(ii) = upperPredLowerCIvals(1,ii,firstGoodInd(ii));
+    ciLowerFirstGood(ii) = lower2(1,ii,firstGoodInd2(ii))+Wvalues(1);
 end
 
 %{
@@ -135,6 +149,7 @@ figure
 title('Estimating Mean using Sampling Without Replacement Results');
 hold on
 plot(firstGoodInd,ciIntersectFirstGoodUpper,'r.');
+plot(firstGoodInd2,ciLowerFirstGood,'kx');
 for pp = 1:numPred
     wbarVals = permute(meanWbar(pp,dispRows,:),[3 2 1]);
 
@@ -151,7 +166,8 @@ for pp = 1:numPred
     
 end
 axis([startColInd endColInd Wvalues(1)-margin Wvalues(2)+margin]);
-legend('Potential Stopping Points in Algorithm',...
+legend('Potential Stopping Points with nonoverlapping CIs',...
+    'Potential Stopping Points with positive CI for mean difference',...
     'Maximal Sample Mean with lower Prediction Value',...
     'Population Mean with lower Prediction Value',...
     'Minimial Sample Mean with upper Prediction Value',...
