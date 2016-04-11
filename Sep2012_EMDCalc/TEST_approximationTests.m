@@ -1,5 +1,6 @@
 
 numFiles = 15;
+testNum=3;
 %testNum=4;
 %testNum=7;
 
@@ -10,11 +11,11 @@ for ii = 1:numFiles
     %numSecondsFileNm = ['patchesSep2011DataTest' num2str(testNum) '_rand' num2str(ii) '_numSeconds.mat'];
     %resFileNm = ['patchesSep2011DataTest' num2str(testNum) '_rand' num2str(ii) '_results.mat'];
     
-    %numSecondsFileNm = ['patchesSep2011DataTest' num2str(testNum) '_samplingTest' num2str(ii) '_numSeconds.mat'];
-    %resFileNm = ['patchesSep2011DataTest' num2str(testNum) '_samplingTest' num2str(ii) '_results.mat'];
+    numSecondsFileNm = ['patchesSep2011DataTest' num2str(testNum) '_samplingTest' num2str(ii) '_numSeconds.mat'];
+    resFileNm = ['patchesSep2011DataTest' num2str(testNum) '_samplingTest' num2str(ii) '_results.mat'];
     
-    numSecondsFileNm = ['patchesOct2012Data_all4_samplingTest' num2str(ii) '_numSeconds.mat'];
-    resFileNm = ['patchesOct2012Data_all4_samplingTest' num2str(ii) '_results.mat'];
+    %numSecondsFileNm = ['patchesOct2012Data_all4_samplingTest' num2str(ii) '_numSeconds.mat'];
+    %resFileNm = ['patchesOct2012Data_all4_samplingTest' num2str(ii) '_results.mat'];
     
     
     
@@ -33,11 +34,11 @@ for ii = 1:numFiles
     %}
 end
 
-%load(['patchesSep2011DataTest' num2str(testNum) '_numSeconds.mat']);
-%load(['patchesSep2011DataTest' num2str(testNum) '_results.mat']);
+load(['patchesSep2011DataTest' num2str(testNum) '_numSeconds.mat']);
+load(['patchesSep2011DataTest' num2str(testNum) '_results.mat']);
 
-load('patchesOct2012Data_results_all4.mat');
-load('patchesOct2012Data_numSeconds_all3.mat');
+%load('patchesOct2012Data_results_all4.mat');
+%load('patchesOct2012Data_numSeconds_all3.mat');
 
 numMinutesAll = numSeconds/60
 [min(numMinutesArray) max(numMinutesArray) mean(numMinutesArray)]
