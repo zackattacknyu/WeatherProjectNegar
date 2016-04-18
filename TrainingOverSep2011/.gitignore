@@ -107,3 +107,6 @@
 /decTreeWithLinReg_minScoreTestRun.mat
 /decTreeWithLinReg_minParentTestRun.mat
 /partialRandForestResults.mat
+/Sep2010PrepData.mat
+/Sep2010SetupData.mat
+/decTreeWithLinReg_maxDepthTestRun2.mat
