@@ -24,9 +24,11 @@ DistV=maxV-minV;  NBIN=10;
 %%%%%% Parameters, Recommend use the default value%%%%%%%%%
 dim=size(1000, 1750); THDH=253; MergeThd=10; S=10;
 
-files = dir('zach_ccs2/rgo1209*');
-%files = dir('zach_ccs2/rgo1109*');
+%files = dir('zach_ccs2/rgo1209*');
+files = dir('zach_ccs2/rgo1109*');
 NN = length(files);
+
+covered = false(1,NN);
 
 for i = 1:NN
    
@@ -36,9 +38,9 @@ for i = 1:NN
     fn2 = ['zach_ccs2/' files(i).name];
     fn4 = ['zach_IR2_patches/segs_feat' files(i).name(4:end)];
     
-    if ~exist(fn,'file')
-                continue;
-    end
+    %if ~exist(fn,'file')
+    %            continue;
+    %end
     
     %if ~exist(fn2,'file')
     %            continue;
@@ -53,6 +55,7 @@ for i = 1:NN
     %end
     
     i
+    covered(i)=true;
     %{
     irData = load(fn3);
     ir = irData.ir;
